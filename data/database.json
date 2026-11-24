@@ -2,8 +2,8 @@
   "settings": {
     "siteNameAr": "مليونير",
     "siteNameEn": "Millionaire",
-    "taglineAr": "بوابتك الأولى لأقوى التطبيقات والأدوات الرقمية لرواد الأعمال والمستثمرين",
-    "taglineEn": "Your Premier Gateway to Elite Apps & Tools for Entrepreneurs and Investors",
+    "taglineAr": "بوابة مراجعة التطبيقات، أخبار التكنولوجيا، والحلول الرقمية والإنتاجية الرسمية",
+    "taglineEn": "Your Premier Gateway for Tech Reviews, Productivity Apps, and Digital Entertainment News",
     "adminPassword": "admin123millionaire",
     "gridColumns": 3,
     "primaryColor": "#10b981",
@@ -13,34 +13,34 @@
     "enableTopBanner": true,
     "enableBottomBanner": true,
     "enableInFeedAds": true,
-    "topAdCode": "<!-- Google AdSense / Monetag Top Banner Code -->\n<div class=\"ad-demo-box\"><span class=\"ad-badge\">إعلان ممول / Sponsored</span><div class=\"ad-content-inner\">مساحة إعلانية علوية (728x90) - متوافقة مع Google AdSense & Monetag</div></div>",
-    "bottomAdCode": "<!-- Google AdSense / Monetag Bottom Banner Code -->\n<div class=\"ad-demo-box\"><span class=\"ad-badge\">إعلان ممول / Sponsored</span><div class=\"ad-content-inner\">مساحة إعلانية سفلية ثابتة - متوافقة مع معايير المشاهدة العالية</div></div>",
-    "inFeedAdCode": "<!-- In-Feed Ad -->\n<div class=\"ad-card-box\"><span class=\"ad-badge\">إعلان مدمج / Sponsored Ad</span><div class=\"text-center py-4\"><p class=\"font-bold text-amber-400\">شريك إعلاني رسمي</p><p class=\"text-xs text-gray-400 mt-1\">فرص استثمارية وحلول رقمية حصرية</p></div></div>",
+    "topAdCode": "<!-- Monetag / AdSense Top Sticky Banner -->\n<div class=\"ad-demo-box\"><span class=\"ad-badge\">إعلان معتمد / Sponsored by Monetag</span><div class=\"ad-content-inner\">مساحة إعلانية علوية متوافقة مع سياسات المحتوى النظيف وشبكات الإعلانات العالمية</div></div>",
+    "bottomAdCode": "<!-- Monetag / AdSense Bottom Sticky Banner -->\n<div class=\"ad-demo-box\"><span class=\"ad-badge\">إعلان معتمد / Sponsored by Monetag</span><div class=\"ad-content-inner\">مساحة إعلانية سفلية ثابتة متوافقة مع تجربة المستخدم وسياسات Monetag</div></div>",
+    "inFeedAdCode": "<!-- Monetag / AdSense In-Feed Native Ad -->\n<div class=\"ad-card-box\"><span class=\"ad-badge\">إعلان مدمج / Sponsored</span><div class=\"text-center py-4\"><p class=\"font-bold text-amber-400\">شريك إعلاني رسمي</p><p class=\"text-xs text-gray-400 mt-1\">عروض وحلول برمجية وتقنية موثوقة</p></div></div>",
     "headerScript": "",
     "footerScript": ""
   },
   "apps": [
     {
       "id": "app-1",
-      "nameAr": "مليونير إنفست - رادار التداول والأسهم",
-      "nameEn": "Millionaire Invest - Market Radar",
+      "nameAr": "مليونير إنفست - رادار التحليل الفني والتعليمي",
+      "nameEn": "Millionaire Analytics - Tech Market Radar",
       "category": "finance",
       "icon": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=500&auto=format&fit=crop&q=80",
-      "shortDescAr": "تطبيق التحليل المالي المتقدم وتتبع فرص التداول اللحظية بالذكاء الاصطناعي.",
-      "shortDescEn": "Advanced financial analysis & real-time AI-powered trading opportunities.",
-      "fullDescAr": "تطبيق مليونير إنفست يوفر لك رؤى متعمقة في الأسواق العالمية والأسهم والعملات الرقمية مع خوارزميات ذكاء اصطناعي تكشف الفرص الذهبية قبل حدوثها مع تنبيهات لحظية ومحفظة تجريبية احترافية.",
-      "fullDescEn": "Millionaire Invest delivers in-depth market insights, global stocks, and crypto radar powered by proprietary AI algorithms to catch golden market opportunities with instant alerts.",
+      "shortDescAr": "تطبيق تعليمي متطور لدراسة الرسوم البيانية ومؤشرات الأسواق العالمية بالذكاء الاصطناعي.",
+      "shortDescEn": "Educational market simulator and chart analysis tool powered by modern AI algorithms.",
+      "fullDescAr": "تطبيق مليونير أناليتكس هو منصة تعليمية وتقنية متقدمة تهدف إلى تمكين المستخدمين من فهم حركة الأسواق العالمية ومؤشرات الاقتصاد والأسهم من خلال رسوم بيانية تفاعلية ومحاكاة تعليمية خالية من المخاطر. (ملاحظة: هذا التطبيق تعليمي وتحليلي فقط ولا يقدم استشارات مالية أو وعود ربحية).",
+      "fullDescEn": "Millionaire Analytics is an educational charting suite allowing users to simulate market trends and study data indicators through interactive AI-assisted graphs without financial risk. (For educational & informational purposes only).",
       "featuresAr": [
-        "إشارات وتنبيهات تداول لحظية عالية الدقة",
-        "تحليل بالذكاء الاصطناعي لمؤشرات السوق",
-        "إدارة المحافظ المالية المتعددة وحساب العائد",
-        "تنبيهات أسعار مخصصة لكل سهم أو عملة"
+        "رسوم بيانية ومؤشرات تقنية تفاعلية لحظية",
+        "محاكاة تعليمية شاملة لحركة الأسواق",
+        "تنبيهات أسعار مخصصة للأغراض التحليلية",
+        "بيئة تعليمية آمنة 100% بدون أي تداول حقيقي"
       ],
       "featuresEn": [
-        "Real-time high-accuracy trading alerts",
-        "AI-powered market sentiment analysis",
-        "Multi-asset portfolio & ROI tracking",
-        "Custom price alerts for stocks & crypto"
+        "Real-time interactive charts & technical indicators",
+        "Educational zero-risk market simulation",
+        "Custom price alerts for research",
+        "Safe environment for study and analysis"
       ],
       "downloadUrl": "https://example.com/download/millionaire-invest",
       "rating": 4.9,
@@ -54,21 +54,21 @@
       "nameEn": "Crypto Vault - Ultra Secure Wallet",
       "category": "crypto",
       "icon": "https://images.unsplash.com/photo-1621416894569-0f39ed31d247?w=500&auto=format&fit=crop&q=80",
-      "shortDescAr": "محفظة لا مركزية فائقة الأمان لتخزين وتبادل الأصول الرقمية بأقل الرسوم.",
-      "shortDescEn": "Ultra-secure decentralized wallet for seamless crypto storage and swapping.",
-      "fullDescAr": "محفظة رقمية توفر أماناً بمستوى عسكري لحفظ البيتكوين والعملات المشفرة، مع محول داخلي لتبديل العملات بأقل عمولات في السوق ودعم الشبكات المتعددة.",
-      "fullDescEn": "Decentralized crypto wallet with military-grade encryption, seamless multi-chain swapping, zero hidden fees, and staking rewards.",
+      "shortDescAr": "تطبيق برمجيات التشفير مفتوحة المصدر لإدارة المفاتيح والأصول التقنية.",
+      "shortDescEn": "Open-source decentralized cryptographic vault for private key management.",
+      "fullDescAr": "تطبيق يعتمد على معايير التشفير مفتوحة المصدر لحماية البيانات والشهادات الرقمية على الأجهزة الشخصية، مع الحفاظ الكامل على خصوصية المستخدم دون مشاركة أي بيانات مع أطراف خارجية.",
+      "fullDescEn": "Open-source encryption utility for managing cryptographic keys and digital certificates locally with zero data tracking.",
       "featuresAr": [
-        "حماية متعددة التوقيعات وتشفير بيومتري",
-        "دعم أكثر من 50 شبكة بلوكتشين",
-        "تبديل فوري للعملات دون رسوم وسيطة",
-        "لوحة بيانات تفصيلية للأرباح والخسائر"
+        "تشفير محلي على جهازك بنظام AES-256 القياسي",
+        "دعم المعايير المفتوحة للشبكات الآمنة",
+        "حماية بيومترية والتحقق بخطوتين",
+        "خالٍ تماماً من البرمجيات الإعلانية الخبيثة"
       ],
       "featuresEn": [
-        "Multi-signature & biometric protection",
-        "Supports over 50 blockchain networks",
-        "Instant cross-chain swap with low fees",
-        "Real-time PnL dashboard"
+        "Local AES-256 hardware encryption",
+        "Open-source protocol compliance",
+        "Biometric protection & 2FA support",
+        "100% clean of malware and adware"
       ],
       "downloadUrl": "https://example.com/download/crypto-vault",
       "rating": 4.8,
@@ -82,21 +82,21 @@
       "nameEn": "AI Business Automator Studio",
       "category": "ai",
       "icon": "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=500&auto=format&fit=crop&q=80",
-      "shortDescAr": "منظومة متكاملة لأتمتة المهام اليومية، كتابة المحتوى، وخدمة العملاء الذكية.",
-      "shortDescEn": "All-in-one automation suite for daily workflow, content creation, and smart chatbots.",
-      "fullDescAr": "أداة لا غنى عنها لأي رائد أعمال، تمكنك من ربط برامجك وتوليد الحملات الإعلانية والمقالات والرد الآلي على استفسارات العملاء بنقرة زر.",
-      "fullDescEn": "Essential suite for modern entrepreneurs: automate business pipelines, generate marketing copy, and deploy 24/7 intelligent customer care assistants.",
+      "shortDescAr": "منظومة رقمية رائدة لأتمتة المهام المكتبية، تلخيص المقالات، وكتابة المحتوى.",
+      "shortDescEn": "AI productivity suite for workflow automation, article summarization, and writing.",
+      "fullDescAr": "أداة إنتاجية متطورة تساعد صناع المحتوى والباحثين على تلخيص النصوص الطويلة، تنظيم جداول الأعمال اليومية، وتوليد الأفكار الإبداعية بأحدث نماذج الذكاء الاصطناعي العالمية.",
+      "fullDescEn": "Advanced productivity assistant helping creators and students summarize documents, plan projects, and generate creative ideas with modern AI.",
       "featuresAr": [
-        "توليد المحتوى الإعلاني الاحترافي بالعربية والإنجليزية",
-        "روبوتات دردشة ذكية ترتبط بواتساب وتليجرام",
-        "أتمتة إرسال الفواتير ومتابعة العملاء",
-        "تكامل مع أكثر من 100 تطبيق ومنصة"
+        "تلخيص النصوص والمستندات بضغطة زر",
+        "تنظيم المواعيد والمهام اليومية تلقائياً",
+        "دعم كامل للغتين العربية والإنجليزية",
+        "متوافق مع الهواتف الذكية وأجهزة الحاسوب"
       ],
       "featuresEn": [
-        "AI marketing copywriting in Arabic & English",
-        "Smart chat bots for WhatsApp & Telegram",
-        "Automated invoicing & CRM workflows",
-        "Integrates with over 100+ business platforms"
+        "One-click text & PDF summarization",
+        "Automated task and calendar scheduling",
+        "Full bilingual Arabic & English support",
+        "Optimized for desktop and mobile"
       ],
       "downloadUrl": "https://example.com/download/ai-automator",
       "rating": 4.95,
@@ -106,25 +106,25 @@
     },
     {
       "id": "app-4",
-      "nameAr": "مدير الثروة والمصروفات الذكي",
-      "nameEn": "Smart Wealth & Expense Tracker",
+      "nameAr": "حاسبة الميزانية والمصروفات الذكية",
+      "nameEn": "Smart Budget & Expense Calculator",
       "category": "finance",
       "icon": "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=500&auto=format&fit=crop&q=80",
-      "shortDescAr": "تطبيق الميزانية الاحترافية وتحليل التدفق المالي للشركات والأفراد.",
-      "shortDescEn": "Professional budgeting & cash flow analysis for businesses and individuals.",
-      "fullDescAr": "تحكم كامل في مداخيلك ونفقاتك مع تقارير شهرية ذكية ورسوم بيانية توضح لك أين تذهب كل قرش وكيف تضاعف مدخراتك السنوية.",
-      "fullDescEn": "Master your cash flow and financial health with interactive budgets, automatic categorization, and actionable wealth growth insights.",
+      "shortDescAr": "أداة تنظيم الميزانية المنزلية والشخصية وتتبع النفقات الشهرية بسهولة.",
+      "shortDescEn": "Personal & household budget planning utility for managing monthly expenses.",
+      "fullDescAr": "تطبيق يساعد الأسر والأفراد على تخطيط ميزانيتهم الشهرية، تسجيل الفواتير والمشتريات، واستخراج تقارير رسومية بسيطة تساعد على ترشيد الإنفاق.",
+      "fullDescEn": "Simple budgeting tool enabling families and individuals to track monthly expenses, log bills, and visualize spending habits.",
       "featuresAr": [
-        "تصنيف آلي للمصروفات مع التنبيه عند تجاوز الميزانية",
-        "حساب صافي الثروة (Net Worth) تلقائياً",
-        "تصدير تقارير محاسبية بصيغ PDF و Excel",
-        "مزامنة آمنة سحابية مشفرة بالكامل"
+        "تسجيل وتصنيف المصروفات اليومية",
+        "رسوم بيانية توضيحية لنسب الإنفاق",
+        "حفظ البيانات محلياً لحماية الخصوصية",
+        "تصدير التقارير بصيغة PDF"
       ],
       "featuresEn": [
-        "Auto expense categorization & budget alerts",
-        "Automatic net-worth tracker",
-        "Export reports to PDF & Excel",
-        "Encrypted cloud sync"
+        "Daily expense tracking & categories",
+        "Intuitive visual spending charts",
+        "Local offline storage for full privacy",
+        "Export simple reports to PDF"
       ],
       "downloadUrl": "https://example.com/download/wealth-tracker",
       "rating": 4.7,
@@ -134,59 +134,59 @@
     },
     {
       "id": "app-5",
-      "nameAr": "منصة كواشف الفرص والعقارات",
-      "nameEn": "Deal Finder & Real Estate ROI",
-      "category": "tools",
-      "icon": "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=500&auto=format&fit=crop&q=80",
-      "shortDescAr": "حاسبة الفرص العقارية والاستثمارية وحساب العائد ومعدل الإشغال.",
-      "shortDescEn": "Calculates real estate ROI, cap rates, cash flow, and property deals.",
-      "fullDescAr": "تطبيق يساعد المستثمرين على تقييم أي صفقة عقارية أو تجارية في ثوانٍ مع حساب التدفق النقدي والعائد الصافي ومقارنة الفرص.",
-      "fullDescEn": "Enables investors to evaluate real estate deals within seconds, calculating cash-on-cash return, cap rate, and mortgage feasibility.",
-      "featuresAr": [
-        "حاسبة عائد الاستثمار العقاري والضرائب والرسوم",
-        "مقارنة بين عدة عقارات لاختيار الأنسب",
-        "تنبؤات أسعار العقار على المدى المتوسط والبعيد",
-        "خرائط ومؤشرات للمناطق الأكثر نمواً"
-      ],
-      "featuresEn": [
-        "Comprehensive property ROI & fee calculator",
-        "Side-by-side deal comparison tool",
-        "Mid & long-term price projection",
-        "High-growth area indicators & maps"
-      ],
-      "downloadUrl": "https://example.com/download/deal-finder",
-      "rating": 4.85,
-      "featured": false,
-      "downloadsCount": "43K+",
-      "createdAt": "2026-01-20T10:00:00Z"
-    },
-    {
-      "id": "app-6",
-      "nameAr": "مخطط التركيز الذهبي - Focus Pro",
+      "nameAr": "مخطط التركيز والإنتاجية الذهبية - Focus Pro",
       "nameEn": "Golden Focus & Productivity Pro",
       "category": "tools",
       "icon": "https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=500&auto=format&fit=crop&q=80",
-      "shortDescAr": "تطبيق زيادة الإنتاجية وإدارة المشاريع وجلسات العمل العميق.",
-      "shortDescEn": "Boost productivity with deep work sessions, habit tracking, and project sprints.",
-      "fullDescAr": "صُمم خصيصاً للقادة وصناع القرار؛ يجمع بين تقنيات العمل العميق، مصفوفة أيزنهاور، ومؤقت بومودورو مع موسيقى ذهنية لرفع التركيز بنسبة 300%.",
-      "fullDescEn": "Tailored for high achievers: combines deep work timers, Eisenhower decision matrix, and brainwave audio to maximize focus.",
+      "shortDescAr": "تطبيق زيادة الإنتاجية وإدارة أوقات المذاكرة والعمل بتقنية بومودورو.",
+      "shortDescEn": "Boost productivity with deep work study timers, habit trackers, and focus sounds.",
+      "fullDescAr": "صُمم للطلاب والموظفين لمساعدتهم على التركيز أثناء المذاكرة والعمل العميق عبر تقنية تقسيم الوقت الشهيرة (Pomodoro) ومؤثرات صوتية هادئة.",
+      "fullDescEn": "Designed for students and professionals to maintain focus using the Pomodoro technique, ambient nature sounds, and visual progress streaks.",
       "featuresAr": [
-        "مؤقت عمل عميق بتقنية ترددات التركيز الصوتي",
-        "تنظيم المهام بحسب الأولوية والقيمة المضافة",
-        "تتبع العادات اليومية مع إحصائيات بصرية جذابة",
-        "وضع الحظر المؤقت للتطبيقات المشتتة"
+        "مؤقت بومودورو قابل للتخصيص الكامل",
+        "أصوات طبيعية هادئة لتحسين التركيز",
+        "متابعة العادات الإيجابية اليومية",
+        "يعمل دون اتصال بالإنترنت"
       ],
       "featuresEn": [
-        "Deep work timer with ambient focus sounds",
-        "Priority task matrix for high-impact results",
-        "Visual habit streak tracking",
-        "Distraction blocker integration"
+        "Customizable Pomodoro timer",
+        "Calming ambient study sounds",
+        "Daily habit streak tracker",
+        "100% offline functionality"
       ],
       "downloadUrl": "https://example.com/download/focus-pro",
       "rating": 4.9,
       "featured": true,
       "downloadsCount": "150K+",
       "createdAt": "2026-01-22T10:00:00Z"
+    },
+    {
+      "id": "app-6",
+      "nameAr": "استوديو التصميم والميديا الرقمية",
+      "nameEn": "Digital Media & Canvas Studio",
+      "category": "tools",
+      "icon": "https://images.unsplash.com/photo-1542744094-3a3172722183?w=500&auto=format&fit=crop&q=80",
+      "shortDescAr": "أداة تعديل الصور الخفيفة وتصميم البطاقات والمنشورات الاجتماعية.",
+      "shortDescEn": "Lightweight image editor and social media graphic design canvas.",
+      "fullDescAr": "محرر صور خفيف يعمل في المتصفح لقص الصور، إضافة الفلاتر الجمالية، والكتابة بالخطوط العربية والإنجليزية لإنشاء محتوى ترفيهي وتعليمي جذاب.",
+      "fullDescEn": "Lightweight web-based graphic editor for cropping photos, applying filters, and adding stylish typography for digital content creators.",
+      "featuresAr": [
+        "أدوات قص وتعديل قياسات الصور",
+        "مكتبة فلاتر رقمية متنوعة",
+        "خطوط عربية وإنجليزية مجانية",
+        "حفظ الصور بجودة عالية دون علامات مائية"
+      ],
+      "featuresEn": [
+        "Image crop and resize tools",
+        "Diverse artistic filter library",
+        "Free Arabic & English web fonts",
+        "High quality export with zero watermark"
+      ],
+      "downloadUrl": "https://example.com/download/canvas-studio",
+      "rating": 4.85,
+      "featured": false,
+      "downloadsCount": "95K+",
+      "createdAt": "2026-01-25T10:00:00Z"
     }
   ],
   "messages": []

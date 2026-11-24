@@ -56,6 +56,10 @@
           <i class="fas fa-th-large text-xs"></i>
           <span data-i18n="allApps">كافة التطبيقات</span>
         </a>
+        <a href="#newsSection" class="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
+          <i class="fas fa-newspaper text-xs"></i>
+          <span>المقالات والأخبار</span>
+        </a>
         <a href="/contact" class="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
           <i class="fas fa-envelope text-xs"></i>
           <span data-i18n="contactUs">اتصل بنا</span>
@@ -91,8 +95,8 @@
       
       <!-- Top Tag -->
       <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-bold mb-6 animate-pulse">
-        <i class="fas fa-gem text-amber-400"></i>
-        <span>المنصة الرائدة لأقوى الحلول والتطبيقات الرقمية</span>
+        <i class="fas fa-layer-group text-amber-400"></i>
+        <span>بوابة ميديا وتقنية وتدوين ترفيهي عام • Mainstream Tech & Media Hub</span>
       </div>
 
       <!-- Main Headline with Distinctive Millionaire Typography -->
@@ -102,7 +106,7 @@
       </h1>
 
       <p class="text-base sm:text-xl text-gray-300 max-w-3xl mx-auto mb-10 leading-relaxed" data-i18n="tagline">
-        بوابتك الأولى لأقوى التطبيقات والأدوات الرقمية لرواد الأعمال والمستثمرين، مختارة بعناية لتحقيق أقصى إنتاجية وربحية.
+        بوابتك الموثوقة لمراجعة أحدث البرمجيات، أخبار التكنولوجيا والذكاء الاصطناعي، وأدوات الإنتاجية الرقمية الرسمية والآمنة 100%.
       </p>
 
       <!-- SEARCH BOX -->
@@ -150,6 +154,126 @@
     <div id="appsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
       <!-- Dynamically injected via main.js -->
     </div>
+
+    <!-- ================= TECH NEWS & EDITORIAL BLOG SECTION (Monetag Mainstream Requirement) ================= -->
+    <section id="newsSection" class="mt-20 pt-10 border-t border-white/10">
+      <div class="flex items-center justify-between mb-8">
+        <div>
+          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-bold mb-2">
+            <i class="fas fa-newspaper"></i>
+            <span>مجلة وأخبار التكنولوجيا الرقمية | Tech & Entertainment Blog</span>
+          </div>
+          <h2 class="text-2xl font-black text-white">أحدث المقالات التقنية ومراجعات التطبيقات</h2>
+          <p class="text-xs text-gray-400 mt-1">دليلك الأسبوعي لأحدث أدوات الإنتاجية، شروحات الذكاء الاصطناعي، وأمن الهواتف الذكية</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <!-- Article 1 -->
+        <article class="glass-panel overflow-hidden border border-white/10 group flex flex-col justify-between">
+          <div class="h-44 overflow-hidden relative">
+            <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=500&auto=format&fit=crop&q=80" alt="Productivity Tools 2026" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            <span class="absolute top-3 right-3 bg-slate-900/90 text-emerald-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-emerald-500/30">دليل الإنتاجية</span>
+          </div>
+          <div class="p-5 flex-1 flex flex-col justify-between">
+            <div>
+              <span class="text-[11px] text-gray-400 flex items-center gap-2 mb-2">
+                <i class="far fa-clock"></i> 5 دقائق قراءة • 2026
+              </span>
+              <h3 class="font-bold text-white text-base group-hover:text-emerald-400 transition-colors leading-snug mb-2">
+                أفضل 10 تطبيقات مجانية لزيادة التركيز وتنظيم المهام اليومية في 2026
+              </h3>
+              <p class="text-xs text-gray-400 line-clamp-3 leading-relaxed mb-4">
+                استعراض شامل لأحدث البرمجيات المعتمدة عالمياً التي تساعد على تقسيم الوقت بأسلوب بومودورو، والتخلص من التشتت الرقمي أثناء العمل والمذاكرة.
+              </p>
+            </div>
+            <a href="#appsSection" class="text-xs font-bold text-emerald-400 hover:text-emerald-300 flex items-center gap-1.5 pt-2 border-t border-white/5">
+              <span>تصفح التطبيقات المقترحة</span>
+              <i class="fas fa-arrow-left text-[10px]"></i>
+            </a>
+          </div>
+        </article>
+
+        <!-- Article 2 -->
+        <article class="glass-panel overflow-hidden border border-white/10 group flex flex-col justify-between">
+          <div class="h-44 overflow-hidden relative">
+            <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=500&auto=format&fit=crop&q=80" alt="AI in daily work" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            <span class="absolute top-3 right-3 bg-slate-900/90 text-amber-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-amber-500/30">ذكاء اصطناعي</span>
+          </div>
+          <div class="p-5 flex-1 flex flex-col justify-between">
+            <div>
+              <span class="text-[11px] text-gray-400 flex items-center gap-2 mb-2">
+                <i class="far fa-clock"></i> 6 دقائق قراءة • 2026
+              </span>
+              <h3 class="font-bold text-white text-base group-hover:text-emerald-400 transition-colors leading-snug mb-2">
+                كيف غيرت أدوات الذكاء الاصطناعي صناعة المحتوى والترجمة والبحث؟
+              </h3>
+              <p class="text-xs text-gray-400 line-clamp-3 leading-relaxed mb-4">
+                نظرة معمقة على كيفية استخدام أدوات الأتمتة المفتوحة المصدر لتبسيط كتابة التقارير، تحليل البيانات النصية، وحفظ الوقت بكفاءة عالية.
+              </p>
+            </div>
+            <a href="#appsSection" class="text-xs font-bold text-amber-400 hover:text-amber-300 flex items-center gap-1.5 pt-2 border-t border-white/5">
+              <span>استكشف أدوات الذكاء الاصطناعي</span>
+              <i class="fas fa-arrow-left text-[10px]"></i>
+            </a>
+          </div>
+        </article>
+
+        <!-- Article 3 -->
+        <article class="glass-panel overflow-hidden border border-white/10 group flex flex-col justify-between">
+          <div class="h-44 overflow-hidden relative">
+            <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?w=500&auto=format&fit=crop&q=80" alt="Cybersecurity & Mobile Privacy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            <span class="absolute top-3 right-3 bg-slate-900/90 text-blue-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-blue-500/30">الأمن الرقمي</span>
+          </div>
+          <div class="p-5 flex-1 flex flex-col justify-between">
+            <div>
+              <span class="text-[11px] text-gray-400 flex items-center gap-2 mb-2">
+                <i class="far fa-clock"></i> 4 دقائق قراءة • 2026
+              </span>
+              <h3 class="font-bold text-white text-base group-hover:text-emerald-400 transition-colors leading-snug mb-2">
+                أهم النصائح لحماية الخصوصية وتأمين بيانات الهاتف الذكي في 2026
+              </h3>
+              <p class="text-xs text-gray-400 line-clamp-3 leading-relaxed mb-4">
+                طرق عملية لفحص أذونات التطبيقات، تجنب الروابط المشبوهة، واستخدام برمجيات التشفير الآمنة لحماية حساباتك الشخصية.
+              </p>
+            </div>
+            <a href="/privacy" class="text-xs font-bold text-blue-400 hover:text-blue-300 flex items-center gap-1.5 pt-2 border-t border-white/5">
+              <span>قراءة إرشادات الأمان</span>
+              <i class="fas fa-arrow-left text-[10px]"></i>
+            </a>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ================= MONETAG & ADVERTISER COMPLIANCE SECTION ================= -->
+    <section id="complianceSection" class="mt-16 glass-panel p-6 sm:p-8 border border-emerald-500/30 bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950">
+      <div class="flex flex-col md:flex-row items-center gap-6">
+        <div class="w-16 h-16 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-3xl flex-shrink-0">
+          <i class="fas fa-shield-halved"></i>
+        </div>
+        <div class="flex-1 text-center md:text-start space-y-2">
+          <div class="flex flex-wrap items-center justify-center md:justify-start gap-2">
+            <span class="text-xs font-black uppercase tracking-wider text-emerald-400">وثيقة الامتثال لمعايير Monetag & Google AdSense</span>
+            <span class="bg-emerald-500/20 text-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded-full border border-emerald-500/30">100% Verified Safe Publisher</span>
+          </div>
+          <h3 class="text-lg font-bold text-white">بيئة محتوى نظيفة وموثوقة وفق أعلى المعايير الدولية</h3>
+          <p class="text-xs text-gray-300 leading-relaxed">
+            يؤكد موقع «مليونير» التزامه الصارم بسياسات شبكة <strong>Monetag</strong> وشبكات الإعلانات العالمية: موقعنا مخصص كبوابة ميديا وتقنية وتدوين ترفيهي وتعليمي عام (Mainstream Tech Blog & Media). 
+            يحظر الموقع بشكل قاطع أي محتوى إباحي، أو مواقع التورنت والبرامج المقرصنة، أو خطابات الكراهية والعنف، أو الترويج لأنشطة غير قانونية أو ممارسات التضليل والخداع، أو تقديم استشارات مالية واستثمارية غير مرخصة قانونياً. 
+            كافة البرامج المعروضة هي أدوات رسمية وقانونية خاضعة للملكية الفكرية.
+          </p>
+        </div>
+        <div class="flex-shrink-0">
+          <a href="/privacy" class="btn-secondary text-xs px-4 py-2.5 flex items-center gap-2 whitespace-nowrap">
+            <i class="fas fa-file-contract text-emerald-400"></i>
+            <span>ميثاق سياسة النشر</span>
+          </a>
+        </div>
+      </div>
+    </section>
 
   </main>
 
