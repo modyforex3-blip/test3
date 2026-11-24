@@ -239,6 +239,7 @@ app.post('/api/admin/apps', requireAdmin, upload.single('iconFile'), (req, res) 
       featuresAr: featuresAr.length > 0 ? featuresAr : ['ميزة رقم 1', 'ميزة رقم 2'],
       featuresEn: featuresEn.length > 0 ? featuresEn : ['Feature 1', 'Feature 2'],
       downloadUrl: req.body.downloadUrl || '#',
+      webAppUrl: req.body.webAppUrl || '',
       rating: parseFloat(req.body.rating) || 4.8,
       featured: req.body.featured === 'true' || req.body.featured === true,
       downloadsCount: req.body.downloadsCount || '10K+',
@@ -292,6 +293,7 @@ app.put('/api/admin/apps/:id', requireAdmin, upload.single('iconFile'), (req, re
       featuresAr,
       featuresEn,
       downloadUrl: req.body.downloadUrl !== undefined ? req.body.downloadUrl : db.apps[appIndex].downloadUrl,
+      webAppUrl: req.body.webAppUrl !== undefined ? req.body.webAppUrl : (db.apps[appIndex].webAppUrl || ''),
       rating: req.body.rating !== undefined ? parseFloat(req.body.rating) : db.apps[appIndex].rating,
       featured: req.body.featured === 'true' || req.body.featured === true,
       downloadsCount: req.body.downloadsCount || db.apps[appIndex].downloadsCount,
@@ -342,6 +344,10 @@ app.delete('/api/admin/messages/:id', requireAdmin, (req, res) => {
 // Wildcard routing to serve pages
 app.get('/app/:id', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'app.html'));
+});
+
+app.get('/run/:id', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'run.html'));
 });
 
 app.get('/contact', (req, res) => {

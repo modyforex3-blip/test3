@@ -2,8 +2,12 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>تفاصيل التطبيق | مليونير</title>
+  
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#10b981">
+  <meta name="mobile-web-app-capable" content="yes">
   
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -71,9 +75,13 @@
           <p id="appShortDesc" class="text-gray-300 text-sm sm:text-base leading-relaxed mb-6"></p>
 
           <div class="flex flex-wrap items-center justify-center md:justify-start gap-4">
-            <a id="appActionBtn" href="#" target="_blank" rel="noopener noreferrer" class="btn-primary px-8 py-3 text-base shadow-xl">
+            <a id="appRunWebBtn" href="/run.html" class="btn-gold px-8 py-3 text-base shadow-xl flex items-center gap-2">
+              <i class="fas fa-play-circle text-lg"></i>
+              <span>تشغيل التطبيق الآن عبر الويب</span>
+            </a>
+            <a id="appActionBtn" href="#" target="_blank" rel="noopener noreferrer" class="btn-primary px-6 py-3 text-sm shadow-xl">
               <i class="fas fa-download"></i>
-              <span>الحصول على التطبيق الآن</span>
+              <span>تحميل للكمبيوتر / الموبايل</span>
             </a>
             <button onclick="shareCurrentApp()" class="btn-secondary px-5 py-3 text-sm">
               <i class="fas fa-share-alt"></i>

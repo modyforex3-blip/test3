@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>تشغيل التطبيق | مليونير</title>
+  
+  <!-- PWA Manifest & Meta -->
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#10b981">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="مليونير">
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="bg-[#080c14] text-slate-100 flex flex-col min-h-screen">
+
+  <!-- TOP AD BANNER (STAYS STICKY ON SCROLL) -->
+  <aside id="topAdContainer" class="ad-container-top" aria-label="إعلان ممول"></aside>
+
+  <!-- NAVBAR -->
+  <header class="bg-[#0b0f17] border-b border-white/10 px-4 sm:px-8 py-3 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <a href="/" class="flex items-center gap-2">
+        <div class="w-8 h-8 brand-logo-icon">
+          <img src="/assets/logo.svg" alt="مليونير Logo" class="w-full h-full object-contain">
+        </div>
+        <span class="text-xl font-black brand-title">مليونير</span>
+      </a>
+      <span class="text-gray-500">|</span>
+      <span class="text-xs text-emerald-400 font-bold hidden sm:inline">مشغل التطبيقات السحابي (Web Runner)</span>
+    </div>
+
+    <div class="flex items-center gap-3">
+      <a id="backToDetailsBtn" href="/app.html" class="btn-secondary text-xs py-1.5 px-3 flex items-center gap-1.5">
+        <i class="fas fa-arrow-right text-[10px]"></i>
+        <span>صفحة تفاصيل التطبيق</span>
+      </a>
+      <a href="/" class="btn-secondary text-xs py-1.5 px-3 flex items-center gap-1.5">
+        <i class="fas fa-home text-[10px]"></i>
+        <span>الرئيسية</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- RUNNER CONTAINER -->
+  <main class="flex-1 max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-6 w-full flex flex-col">
+    
+    <div id="runnerContainer" class="runner-container flex-1">
+      
+      <!-- Toolbar -->
+      <div class="runner-toolbar flex-wrap gap-3">
+        <div class="flex items-center gap-3">
+          <img id="runnerAppIcon" src="" class="w-10 h-10 rounded-xl object-cover bg-slate-800 border border-white/10">
+          <div>
+            <h1 id="runnerAppName" class="font-bold text-sm sm:text-base text-white"></h1>
+            <span id="runnerAppCategory" class="category-pill text-[10px]"></span>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <!-- Install on Mobile PWA Button -->
+          <button id="installAppBtn" class="btn-gold text-xs py-1.5 px-3 font-bold flex items-center gap-1.5" title="تثبيت التطبيق على الموبايل">
+            <i class="fas fa-mobile-alt"></i>
+            <span class="hidden sm:inline">تثبيت التطبيق على الموبايل</span>
+          </button>
+
+          <!-- Reload App -->
+          <button id="reloadAppBtn" class="btn-secondary text-xs p-2" title="إعادة تشغيل التطبيق">
+            <i class="fas fa-redo-alt"></i>
+          </button>
+
+          <!-- Fullscreen Toggle -->
+          <button id="fullscreenBtn" class="btn-secondary text-xs p-2" title="وضع ملء الشاشة">
+            <i class="fas fa-expand"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Application Viewport -->
+      <div id="runnerViewport" class="runner-viewport flex-1">
+        <!-- Injected via runner.js -->
+      </div>
+
+    </div>
+
+    <!-- PWA Mobile Install Info Card -->
+    <div class="pwa-install-badge mt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-3 text-center sm:text-start">
+        <div class="w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center flex-shrink-0 text-xl">
+          <i class="fas fa-mobile-screen-button"></i>
+        </div>
+        <div>
+          <h4 class="font-bold text-sm text-white">هل ترغب في استخدام هذا التطبيق مباشرة من هاتفك المحمول؟</h4>
+          <p class="text-xs text-gray-400 mt-0.5">يمكنك تثبيت هذا التطبيق الآن كـ Web App على هاتفك (Android و iOS) مع استمرار تشغيل الإعلانات والمميزات كاملة.</p>
+        </div>
+      </div>
+      <button onclick="promptPWAInstall()" class="btn-primary text-xs py-2.5 px-5 font-bold whitespace-nowrap">
+        <i class="fas fa-download"></i> تثبيت التطبيق الآن
+      </button>
+    </div>
+
+  </main>
+
+  <!-- BOTTOM STICKY AD BANNER -->
+  <aside id="bottomAdContainer" class="ad-container-bottom" aria-label="إعلان ممول"></aside>
+
+  <script src="/js/i18n.js"></script>
+  <script src="/js/runner.js"></script>
+  <script>
+    // Register Service Worker for Mobile PWA
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js').catch(() => {});
+    }
+  </script>
+</body>
+</html>

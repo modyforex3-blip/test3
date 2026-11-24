@@ -165,13 +165,16 @@ function renderApps() {
           </div>
 
           <div class="pt-3 border-t border-white/10 flex items-center gap-2">
-            <a href="/app.html?id=${app.id}" class="btn-primary flex-1 text-center text-sm py-2.5">
+            <a href="/app.html?id=${app.id}" class="btn-primary flex-1 text-center text-xs sm:text-sm py-2.5">
               <span>${window.i18n.t('viewApp')}</span>
               <i class="fas fa-arrow-left text-xs ${isEn ? 'rotate-180' : ''}"></i>
             </a>
+            <a href="/run.html?id=${app.id}" class="btn-gold px-3.5 py-2.5 text-xs font-bold" title="${isEn ? 'Run in Web App' : 'تشغيل التطبيق بالويب'}">
+              <i class="fas fa-play"></i>
+            </a>
             ${app.downloadUrl ? `
               <a href="${app.downloadUrl}" target="_blank" rel="noopener noreferrer" class="btn-secondary px-3 py-2.5" title="${window.i18n.t('directOpen')}">
-                <i class="fas fa-external-link-alt text-sm"></i>
+                <i class="fas fa-external-link-alt text-xs"></i>
               </a>
             ` : ''}
           </div>

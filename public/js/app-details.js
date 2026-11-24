@@ -113,6 +113,11 @@ function renderAppDetails() {
     appActionBtn.href = app.downloadUrl || '#';
   }
 
+  const appRunWebBtn = document.getElementById('appRunWebBtn');
+  if (appRunWebBtn) {
+    appRunWebBtn.href = `/run.html?id=${app.id}`;
+  }
+
   if (appFeaturesList) {
     const features = isEn ? (app.featuresEn || app.featuresAr || []) : (app.featuresAr || app.featuresEn || []);
     appFeaturesList.innerHTML = features.map(f => `

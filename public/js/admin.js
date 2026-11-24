@@ -295,6 +295,7 @@ function openEditAppModal(id) {
   document.getElementById('appRatingInput').value = app.rating || 4.8;
   document.getElementById('appDownloadsCount').value = app.downloadsCount || '10K+';
   document.getElementById('appDownloadUrl').value = app.downloadUrl || '';
+  document.getElementById('appWebAppUrl').value = app.webAppUrl || '';
   document.getElementById('appIconUrl').value = app.icon || '';
   document.getElementById('appFeatured').checked = !!app.featured;
   document.getElementById('appShortDescAr').value = app.shortDescAr || '';

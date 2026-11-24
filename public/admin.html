@@ -351,10 +351,14 @@
           </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div>
-            <label class="block text-xs font-bold text-gray-300 mb-1">رابط تحميل / فتح التطبيق</label>
-            <input type="url" name="downloadUrl" id="appDownloadUrl" placeholder="https://example.com/app" class="w-full py-2 px-3 rounded-xl bg-slate-900 border border-white/10 text-sm">
+            <label class="block text-xs font-bold text-gray-300 mb-1">رابط تحميل التطبيق المباشر</label>
+            <input type="url" name="downloadUrl" id="appDownloadUrl" placeholder="https://example.com/download" class="w-full py-2 px-3 rounded-xl bg-slate-900 border border-white/10 text-sm">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-amber-400 mb-1">رابط تشغيل التطبيق بالويب (اختياري)</label>
+            <input type="url" name="webAppUrl" id="appWebAppUrl" placeholder="https://..." class="w-full py-2 px-3 rounded-xl bg-slate-900 border border-white/10 text-sm">
           </div>
           <div>
             <label class="block text-xs font-bold text-gray-300 mb-1">رابط صورة/أيقونة التطبيق (URL)</label>
