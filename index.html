@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>تحدّي قوة الذاكرة – مسابقة الصور والأرقام والبازر</title>
+<style>
+:root {
+  --bg-gradient: radial-gradient(circle at 40% 20%, #16243f 0%, #060b16 90%);
+  --panel-bg: linear-gradient(160deg, rgba(20, 32, 56, 0.98), rgba(9, 16, 30, 0.98));
+  --gold: #ffcf47;
+  --gold-glow: #e5a928;
+  --gold-dark: #8c600e;
+  --text-main: #ffffff;
+  --text-muted: #9fb4d8;
+  --cyan: #4bf0ff;
+  --cyan-dark: #0f8694;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+html, body { width: 100vw; height: 100vh; overflow: hidden; background: var(--bg-gradient); color: var(--text-main); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; direction: rtl; }
+#app { display: flex; flex-direction: row; width: 100vw; height: 100vh; padding: 10px 14px; gap: 14px; }
+.sidebar-panel { flex: 0 0 33.33%; width: 33.33%; height: 100%; display: flex; flex-direction: column; gap: 10px; z-index: 10; }
+.buzzer-box { flex: 2; height: 67%; background: var(--panel-bg); border: 1.5px solid #2e4368; border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 8px 24px rgba(0,0,0,0.5); }
+.buzzer-header { height: 3.8vh; min-height: 28px; background: rgba(14, 23, 41, 0.95); border-bottom: 1px solid #2e4368; display: flex; align-items: center; justify-content: space-between; padding: 0 12px; flex-shrink: 0; }
+.buzzer-title { color: #ffdc83; font-size: clamp(0.75rem, 1.4vh, 0.9rem); font-weight: 700; display: flex; align-items: center; gap: 6px; }
+.buzzer-controls { display: flex; align-items: center; gap: 8px; }
+.buzzer-btn { background: transparent; border: none; color: var(--text-muted); cursor: pointer; font-size: 0.72rem; text-decoration: underline; }
+.buzzer-btn:hover { color: var(--cyan); }
+.buzzer-frame-wrap { flex: 1; width: 100%; height: 100%; background: #ffffff; position: relative; overflow: auto; -webkit-overflow-scrolling: touch; }
+.buzzer-iframe { width: 100%; height: 100%; min-height: 100%; border: none; display: block; background: #ffffff; }
+.question-control-panel { flex: 1; height: 33%; background: var(--panel-bg); border: 1.5px solid #2e4368; border-radius: 16px; padding: 1vh 14px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 8px 24px rgba(0,0,0,0.5); overflow: hidden; }
+.q-badge-row { display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
+.q-counter-tag { background: #1d2d49; border: 1px solid #3c547f; color: #aed0ff; padding: 2px 10px; border-radius: 14px; font-size: clamp(0.72rem, 1.3vh, 0.85rem); font-weight: 800; }
+.q-mode-tag { background: #2a203f; border: 1px solid #6b4aa3; color: #e0baff; padding: 2px 10px; border-radius: 14px; font-size: clamp(0.68rem, 1.2vh, 0.78rem); font-weight: 700; }
+.q-label { font-size: clamp(0.85rem, 1.6vh, 1.05rem); color: #ffdc83; font-weight: 800; flex-shrink: 0; min-height: 2.2vh; display: flex; align-items: center; }
+.target-display-area { position: relative; flex: 1; width: 100%; display: flex; align-items: center; justify-content: center; background: rgba(14, 23, 41, 0.7); border: 1.5px dashed rgba(255, 207, 71, 0.45); border-radius: 12px; padding: 0.3vh 6px; overflow: hidden; margin: 2px 0; }
+.target-highlight-name { color: var(--gold); font-size: clamp(1.3rem, 2.8vh, 2.1rem); font-weight: 900; line-height: 1.15; text-align: center; text-shadow: 0 0 16px rgba(255, 207, 71, 0.65), 0 2px 4px rgba(0,0,0,0.8); word-break: break-word; transition: opacity 0.3s ease; }
+.countdown-container { display: none; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; }
+.countdown-number { font-size: clamp(2rem, 4.2vh, 3.2rem); font-weight: 900; color: var(--cyan); text-shadow: 0 0 16px rgba(75, 240, 255, 0.8); animation: countdownPulse 1s ease-in-out infinite; }
+.countdown-subtext { font-size: clamp(0.68rem, 1.2vh, 0.85rem); color: #dbe7fc; font-weight: 700; margin-top: -3px; }
+@keyframes countdownPulse { 0% { transform: scale(1.4); opacity: 0; } 40% { transform: scale(1); opacity: 1; } 80% { transform: scale(0.9); opacity: 1; } 100% { transform: scale(0.6); opacity: 0; } }
+.answer-status-badge { font-size: clamp(0.85rem, 1.6vh, 1.05rem); font-weight: 800; color: #ffffff; min-height: 2.2vh; display: flex; align-items: center; justify-content: center; text-align: center; flex-shrink: 0; }
+.answer-status-badge span { color: #55ff88; font-size: 1.2em; margin-right: 4px; text-shadow: 0 0 12px rgba(85,255,136,0.7); }
+.buttons-section { display: flex; flex-direction: column; gap: 0.5vh; width: 100%; flex-shrink: 0; }
+.action-btn { width: 100%; border: none; outline: none; border-radius: 10px; padding: 0.9vh 12px; font-size: clamp(0.88rem, 1.7vh, 1.1rem); font-weight: 800; cursor: pointer; background: linear-gradient(135deg, #ffe088, #d99c1a); color: #271600; box-shadow: 0 2.5px 0 var(--gold-dark), 0 3px 10px rgba(0,0,0,0.3); transition: all 0.15s ease; text-align: center; }
+.action-btn:hover { transform: translateY(-1.5px); filter: brightness(1.08); }
+.action-btn:active { transform: translateY(1.5px); box-shadow: 0 1px 0 var(--gold-dark); }
+.action-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; box-shadow: none; }
+.extend-btn { width: 100%; border: none; outline: none; border-radius: 8px; padding: 0.65vh 8px; font-size: clamp(0.72rem, 1.3vh, 0.88rem); font-weight: 800; cursor: pointer; background: linear-gradient(135deg, #7af2ff, #1ca6b8); color: #04252b; box-shadow: 0 2px 0 var(--cyan-dark); transition: all 0.15s ease; text-align: center; }
+.extend-btn:hover { transform: translateY(-1px); filter: brightness(1.08); }
+.extend-btn:active { transform: translateY(1px); }
+.extend-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+.panel-footer { border-top: 1px solid #233452; padding-top: 0.5vh; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
+.sub-link { font-size: 0.68rem; color: var(--text-muted); cursor: pointer; text-decoration: underline; }
+.sub-link:hover { color: #fff; }
+#filePicker { display: none; }
+.grid-container-area { flex: 1; height: 100%; display: flex; align-items: center; justify-content: center; min-width: 0; }
+.cards-grid { display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(3, 1fr); gap: min(1.5vh, 13px); width: 100%; height: 100%; max-height: 97vh; }
+.card { position: relative; width: 100%; height: 100%; perspective: 1000px; cursor: pointer; }
+.card-inner { position: absolute; inset: 0; transform-style: preserve-3d; transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 14px; box-shadow: 0 6px 18px rgba(0,0,0,0.55); }
+.card.is-flipped .card-inner { transform: rotateY(180deg); }
+.card-face, .card-back { position: absolute; inset: 0; border-radius: 14px; overflow: hidden; backface-visibility: hidden; background-size: 400% 300%; background-repeat: no-repeat; border: 3px solid #48638e; background-color: #141c2c; }
+.card-face { transform: rotateY(0deg); }
+.card-back { transform: rotateY(180deg); border-color: #c9a74b; }
+.card.highlight .card-face { border-color: #55ff88; box-shadow: 0 0 28px rgba(85, 255, 136, 0.95); animation: pulse-card 1s infinite alternate; z-index: 10; }
+@keyframes pulse-card { from { transform: scale(1); } to { transform: scale(1.035); } }
+@media (max-width: 860px) { #app { flex-direction: column; overflow-y: auto; } .sidebar-panel, .grid-container-area { width: 100%; flex: none; height: auto; } .buzzer-box { height: 45vh; } .question-control-panel { height: auto; } .cards-grid { height: 60vh; } }
+</style>
+</head>
+<body>
+<div id="app">
+  <aside class="sidebar-panel">
+    <div class="buzzer-box">
+      <div class="buzzer-header"><div class="buzzer-title"><span>🔔</span><span>شاشة البازر المباشرة</span></div><div class="buzzer-controls"><button id="changeUrlBtn" class="buzzer-btn" title="تغيير الرابط">🔗 تغيير الرابط</button><button id="reloadBuzzerBtn" class="buzzer-btn" title="تحديث الصفحة">🔄 تحديث</button></div></div>
+      <div class="buzzer-frame-wrap"><iframe id="buzzerFrame" class="buzzer-iframe" src="https://buzzerbeater.app/" allow="autoplay; microphone; camera"></iframe></div>
+    </div>
+    <div class="question-control-panel">
+      <div class="q-badge-row"><div id="qCounterBadge" class="q-counter-tag">المرحلة الأولى</div><div id="qModeBadge" class="q-mode-tag">مسابقة الـ 6 صور</div></div>
+      <div id="qLabel" class="q-label">استعد للتحدي:</div>
+      <div class="target-display-area"><div id="targetName" class="target-highlight-name">احفظ مواقع الصور</div><div id="countdownBox" class="countdown-container"><div id="countdownNumber" class="countdown-number">3</div><div class="countdown-subtext">استعد للسؤال...</div></div></div>
+      <div id="answerStatus" class="answer-status-badge"></div>
+      <div class="buttons-section"><button id="mainActionBtn" class="action-btn">بدء المسابقة</button><button id="extendBtn" class="extend-btn">🌟 إكمال التحدي لجميع الـ 12 صورة</button></div>
+      <div class="panel-footer"><span id="resetBtn" class="sub-link">إعادة المسابقة</span><span id="uploadBtn" class="sub-link">📁 استيراد الصور</span><input type="file" id="filePicker" multiple accept="image/*"></div>
+    </div>
+  </aside>
+  <main class="grid-container-area"><div id="cardsGrid" class="cards-grid"></div></main>
+</div>
+<script>
+const defaultFrontSrc = 'Gemini_Generated_Image_xoy06qxoy06qxoy0.jpg';
+const defaultBackSrc = 'Gemini_Generated_Image_gxrjkmgxrjkmgxrj.jpg';
+let frontImgUrl = localStorage.getItem('memory_front_img') || defaultFrontSrc;
+let backImgUrl = localStorage.getItem('memory_back_img') || defaultBackSrc;
+const defaultBuzzerUrl = "https://buzzerbeater.app/";
+let currentBuzzerUrl = localStorage.getItem('memory_buzzer_url') || defaultBuzzerUrl;
+const buzzerFrame = document.getElementById("buzzerFrame");
+const changeUrlBtn = document.getElementById("changeUrlBtn");
+const reloadBuzzerBtn = document.getElementById("reloadBuzzerBtn");
+buzzerFrame.src = currentBuzzerUrl;
+changeUrlBtn.addEventListener("click", () => { const newUrl = prompt("أدخل رابط صفحة البازر (HTML URL):", currentBuzzerUrl); if (newUrl && newUrl.trim() !== "") { currentBuzzerUrl = newUrl.trim(); localStorage.setItem('memory_buzzer_url', currentBuzzerUrl); buzzerFrame.src = currentBuzzerUrl; } });
+reloadBuzzerBtn.addEventListener("click", () => { buzzerFrame.src = currentBuzzerUrl; });
+const ordinalQuestions = ["السؤال الأول","السؤال الثاني","السؤال الثالث","السؤال الرابع","السؤال الخامس","السؤال السادس","السؤال السابع","السؤال الثامن","السؤال التاسع","السؤال العاشر","السؤال الحادي عشر","السؤال الثاني عشر"];
+const cardsData = [
+  { id: 1, name: "الأهرامات", frontX: 100, frontY: 0, backX: 100, backY: 0, row: 0, col: 0 },
+  { id: 2, name: "أبراج الكويت", frontX: 66.666, frontY: 0, backX: 66.666, backY: 0, row: 0, col: 1 },
+  { id: 3, name: "الجمل العربي", frontX: 33.333, frontY: 0, backX: 33.333, backY: 0, row: 0, col: 2 },
+  { id: 4, name: "اللاعب ميسي", frontX: 0, frontY: 0, backX: 0, backY: 0, row: 0, col: 3 },
+  { id: 5, name: "الشجرة الخضراء", frontX: 100, frontY: 50, backX: 66.666, backY: 50, row: 1, col: 0 },
+  { id: 6, name: "قرص الشمس", frontX: 66.666, frontY: 50, backX: 100, backY: 50, row: 1, col: 1 },
+  { id: 7, name: "مبنى المدرسة", frontX: 33.333, frontY: 50, backX: 33.333, backY: 50, row: 1, col: 2 },
+  { id: 8, name: "مطعم فريج صويلح", frontX: 0, frontY: 50, backX: 0, backY: 50, row: 1, col: 3 },
+  { id: 9, name: "علم الكويت", frontX: 100, frontY: 100, backX: 100, backY: 100, row: 2, col: 0 },
+  { id: 10, name: "رونالدو", frontX: 66.666, frontY: 100, backX: 66.666, backY: 100, row: 2, col: 1 },
+  { id: 11, name: "الخلية الحيوانية", frontX: 33.333, frontY: 100, backX: 33.333, backY: 100, row: 2, col: 2 },
+  { id: 12, name: "المجهر الضوئي", frontX: 0, frontY: 100, backX: 0, backY: 100, row: 2, col: 3 }
+];
+const initialSixIndices = [8, 11, 0, 7, 10, 9];
+const allTwelveIndices = [0,1,2,3,4,5,6,7,8,9,10,11];
+function areNeighbors(idxA, idxB) { const cA = cardsData[idxA]; const cB = cardsData[idxB]; return Math.abs(cA.row-cB.row)<=1 && Math.abs(cA.col-cB.col)<=1; }
+function generateRandomSequence(indicesPool, prevIndexToAvoid = null) {
+  for (let attempt=0; attempt<800; attempt++) {
+    const shuffled=[...indicesPool].sort(()=>Math.random()-0.5); let valid=true;
+    if (prevIndexToAvoid!==null && areNeighbors(prevIndexToAvoid,shuffled[0])) valid=false;
+    if(valid){for(let i=0;i<shuffled.length-1;i++){if(areNeighbors(shuffled[i],shuffled[i+1])){valid=false;break;}}}
+    if(valid)return shuffled;
+  }
+  if(indicesPool.length===6)return [8,7,0,10,11,9];
+  return [...indicesPool].sort(()=>Math.random()-0.5);
+}
+let questionsSequence=[]; let currentPhase="INIT"; let qCounter=0; let lastRevealedCardIndex=null; let currentMaxQuestions=6; let countdownTimer=null;
+const gridEl=document.getElementById("cardsGrid"); const qCounterBadge=document.getElementById("qCounterBadge"); const qModeBadge=document.getElementById("qModeBadge"); const qLabel=document.getElementById("qLabel"); const targetNameEl=document.getElementById("targetName"); const countdownBox=document.getElementById("countdownBox"); const countdownNumber=document.getElementById("countdownNumber"); const answerStatusEl=document.getElementById("answerStatus"); const actionBtn=document.getElementById("mainActionBtn"); const extendBtn=document.getElementById("extendBtn"); const resetBtn=document.getElementById("resetBtn"); const uploadBtn=document.getElementById("uploadBtn"); const filePicker=document.getElementById("filePicker");
+function buildCards(){ gridEl.innerHTML=""; cardsData.forEach((item,index)=>{ const card=document.createElement("div"); card.className="card"; card.id=`card-${index}`; card.innerHTML=`<div class="card-inner"><div class="card-face" style="background-image: url('${frontImgUrl}'); background-position: ${item.frontX}% ${item.frontY}%;"></div><div class="card-back" style="background-image: url('${backImgUrl}'); background-position: ${item.backX}% ${item.backY}%;"></div></div>`; gridEl.appendChild(card); }); }
+function flipAllToBack(){cardsData.forEach((_,i)=>{const card=document.getElementById(`card-${i}`);card.classList.add("is-flipped");card.classList.remove("highlight");});}
+function flipAllToFront(){cardsData.forEach((_,i)=>{const card=document.getElementById(`card-${i}`);card.classList.remove("is-flipped");card.classList.remove("highlight");});}
+function revealAnswerCard(cardIdx){const card=document.getElementById(`card-${cardIdx}`);card.classList.remove("is-flipped");card.classList.add("highlight");}
+function hidePreviousAnswer(cardIdx){if(cardIdx!==null){const card=document.getElementById(`card-${cardIdx}`);if(card){card.classList.add("is-flipped");card.classList.remove("highlight");}}}
+function startCountdownAndPresentQuestion(idx){if(countdownTimer)clearInterval(countdownTimer);targetNameEl.style.display="none";countdownBox.style.display="flex";actionBtn.disabled=true;extendBtn.disabled=true;const questionTitle=ordinalQuestions[idx]||`السؤال (${idx+1})`;qCounterBadge.textContent=`${questionTitle} (${idx+1}/${currentMaxQuestions})`;qLabel.textContent=`استعد لـ ${questionTitle}:`;answerStatusEl.textContent="العداد التنازلي جارٍ...";actionBtn.textContent="جاري التحضير...";let count=3;countdownNumber.textContent=count;countdownNumber.style.animation='none';void countdownNumber.offsetWidth;countdownNumber.style.animation='countdownPulse 1s ease-in-out infinite';countdownTimer=setInterval(()=>{count--;if(count>0){countdownNumber.textContent=count;}else{clearInterval(countdownTimer);countdownTimer=null;countdownBox.style.display="none";targetNameEl.style.display="flex";const targetCardIdx=questionsSequence[idx];const targetItem=cardsData[targetCardIdx];qLabel.textContent=`${questionTitle} : أين توجد صورة`;targetNameEl.textContent=targetItem.name;answerStatusEl.textContent="ما هو رقم الكارت؟ 🤔";actionBtn.disabled=false;extendBtn.disabled=false;actionBtn.textContent="إظهار الإجابة";currentPhase="REVEAL";}},1000);}
+actionBtn.addEventListener("click",()=>{if(currentPhase=== "INIT"){currentMaxQuestions=6;qModeBadge.textContent="مسابقة الـ 6 صور";questionsSequence=generateRandomSequence(initialSixIndices);flipAllToBack();qCounter=0;startCountdownAndPresentQuestion(qCounter);}else if(currentPhase=== "PROMPT_QUESTION"){if(lastRevealedCardIndex!==null){hidePreviousAnswer(lastRevealedCardIndex);lastRevealedCardIndex=null;}startCountdownAndPresentQuestion(qCounter);}else if(currentPhase=== "REVEAL"){const targetCardIdx=questionsSequence[qCounter];const targetItem=cardsData[targetCardIdx];revealAnswerCard(targetCardIdx);lastRevealedCardIndex=targetCardIdx;const questionTitle=ordinalQuestions[qCounter]||`السؤال (${qCounter+1})`;answerStatusEl.innerHTML=`إجابة ${questionTitle} هي الكارت: <span>(${targetItem.id})</span> 🎉`;qCounter++;if(qCounter<questionsSequence.length){const nextTitle=ordinalQuestions[qCounter]||`السؤال (${qCounter+1})`;actionBtn.textContent=`انتقل إلى ${nextTitle}`;currentPhase="PROMPT_QUESTION";}else{actionBtn.textContent="إعادة المسابقة";targetNameEl.textContent="اكتمل التحدي بنجاح 🌟";qCounterBadge.textContent=`اكتملت الـ (${currentMaxQuestions}) أسئلة`;qLabel.textContent="أحسنت التحدي!";currentPhase="DONE";}}else if(currentPhase=== "DONE"){resetGame();}});
+extendBtn.addEventListener("click",()=>{if(countdownTimer){clearInterval(countdownTimer);countdownTimer=null;}if(lastRevealedCardIndex!==null){hidePreviousAnswer(lastRevealedCardIndex);lastRevealedCardIndex=null;}currentMaxQuestions=12;qModeBadge.textContent="التحدي الكامل (12 صورة)";questionsSequence=generateRandomSequence(allTwelveIndices,lastRevealedCardIndex);flipAllToBack();qCounter=0;startCountdownAndPresentQuestion(qCounter);});
+function resetGame(){if(countdownTimer){clearInterval(countdownTimer);countdownTimer=null;}currentPhase="INIT";qCounter=0;currentMaxQuestions=6;lastRevealedCardIndex=null;flipAllToFront();actionBtn.disabled=false;extendBtn.disabled=false;countdownBox.style.display="none";targetNameEl.style.display="flex";qModeBadge.textContent="مسابقة الـ 6 صور";qCounterBadge.textContent="المرحلة الأولى";qLabel.textContent="استعد للتحدي:";targetNameEl.textContent="احفظ مواقع الصور";answerStatusEl.textContent="";actionBtn.textContent="بدء المسابقة";}
+resetBtn.addEventListener("click",resetGame);
+uploadBtn.addEventListener("click",()=>filePicker.click());
+filePicker.addEventListener("change",(e)=>{const files=Array.from(e.target.files);if(!files.length)return;files.forEach(file=>{const reader=new FileReader();reader.onload=(event)=>{const dataUrl=event.target.result;if(file.name.includes("xoy0")||files.indexOf(file)===0){frontImgUrl=dataUrl;localStorage.setItem('memory_front_img',dataUrl);}else{backImgUrl=dataUrl;localStorage.setItem('memory_back_img',dataUrl);}buildCards();resetGame();};reader.readAsDataURL(file);});});
+buildCards();
+</script>
+</body>
+</html>
