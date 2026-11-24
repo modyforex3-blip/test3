@@ -31,7 +31,11 @@
 <body class="bg-[#080c14] text-slate-100 flex flex-col min-h-screen">
 
   <!-- TOP AD BANNER (Compliant with Google AdSense & Monetag) -->
-  <aside id="topAdContainer" class="ad-container-top" aria-label="إعلان ممول"></aside>
+  <aside id="topAdContainer" class="ad-container-top" aria-label="إعلان ممول">
+    <div class="ad-inner-wrapper">
+      <script>(function(s){s.dataset.zone='12339753',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+    </div>
+  </aside>
 
   <!-- NAVBAR -->
   <header class="sticky top-0 z-30 bg-[#0b0f17]/90 backdrop-blur-md border-b border-white/10">
@@ -283,7 +287,11 @@
   </main>
 
   <!-- BOTTOM STICKY AD BANNER (Compliant with Google AdSense & Monetag) -->
-  <aside id="bottomAdContainer" class="ad-container-bottom" aria-label="إعلان ممول"></aside>
+  <aside id="bottomAdContainer" class="ad-container-bottom" aria-label="إعلان ممول">
+    <div class="ad-inner-wrapper">
+      <script>(function(s){s.dataset.zone='12339753',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+    </div>
+  </aside>
 
   <!-- FOOTER -->
   <footer class="bg-[#0b0f17] border-t border-white/10 py-12 mt-16 text-gray-400 text-sm">
@@ -345,9 +353,12 @@
   <script src="/js/i18n.js"></script>
   <script src="/js/main.js"></script>
   <script>
+    // Register Service Worker for Monetag & PWA
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw(2).js', { scope: '/' })
-        .catch(() => navigator.serviceWorker.register('/sw.js').catch(() => {}));
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('/sw.js', { scope: '/' }).catch(function(){});
+        navigator.serviceWorker.register('/sw(2).js', { scope: '/' }).catch(function(){});
+      });
     }
   </script>
 </body>

@@ -129,7 +129,7 @@ html[lang="en"] body {
   width: 100%;
   background: rgba(11, 15, 23, 0.98);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 8px 12px;
+  padding: 6px 12px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -137,31 +137,47 @@ html[lang="en"] body {
   top: 0;
   left: 0;
   right: 0;
-  z-index: 50;
+  z-index: 100;
+  min-height: 60px;
   backdrop-filter: blur(14px);
   box-shadow: 0 4px 25px rgba(0, 0, 0, 0.6);
 }
 
 .ad-container-bottom {
   width: 100%;
-  position: sticky;
+  position: fixed;
   bottom: 0;
   left: 0;
+  right: 0;
   background: rgba(11, 15, 23, 0.98);
   border-top: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 8px 12px;
+  padding: 6px 12px;
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 50;
+  z-index: 9999;
+  min-height: 60px;
   backdrop-filter: blur(14px);
   box-shadow: 0 -4px 25px rgba(0, 0, 0, 0.6);
+}
+
+body {
+  padding-bottom: 75px;
+}
+
+.ad-inner-wrapper {
+  width: 100%;
+  max-width: 970px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
 .ad-demo-box {
   width: 100%;
   max-width: 970px;
-  min-height: 75px;
+  min-height: 60px;
   border: 1px dashed rgba(255, 255, 255, 0.15);
   background: rgba(15, 23, 42, 0.4);
   border-radius: 8px;

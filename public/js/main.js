@@ -48,15 +48,28 @@ function applyLanguageDirection() {
 function executeAdCode(container, code, fallback) {
   if (!container) return;
   const content = (code && code.trim()) ? code : fallback;
-  container.innerHTML = content || '';
+  if (!content) return;
 
-  // Script tags inserted via innerHTML don't run; recreate them to trigger execution
-  const scripts = container.querySelectorAll('script');
+  // If container already has rendered code matching this content, keep it alive
+  if (container.dataset.renderedCode === content) return;
+
+  // If container already has a Monetag script loaded from HTML and content contains the same zone, preserve it!
+  const existingScript = container.querySelector('script');
+  if (existingScript && (content.includes('nap5k.com') || content.includes('12339753'))) {
+    container.dataset.renderedCode = content;
+    return;
+  }
+
+  container.dataset.renderedCode = content;
+  container.innerHTML = content;
+
+  // Execute newly inserted script tags
+  const scripts = Array.from(container.querySelectorAll('script'));
   scripts.forEach(oldScript => {
     const newScript = document.createElement('script');
     Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
-    if (oldScript.innerHTML) {
-      newScript.text = oldScript.innerHTML;
+    if (oldScript.textContent) {
+      newScript.textContent = oldScript.textContent;
     }
     oldScript.parentNode.replaceChild(newScript, oldScript);
   });

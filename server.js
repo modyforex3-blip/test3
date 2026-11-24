@@ -430,29 +430,28 @@ app.get('/admin', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'admin.html'));
 });
 
-// Monetag Service Worker Verification & Adaptive Ads Routes
-app.get(['/sw(2).js', '/sw%282%29.js', '/sw-2.js'], (req, res) => {
-  res.set('Content-Type', 'application/javascript; charset=UTF-8');
-  res.set('Service-Worker-Allowed', '/');
-  const rootSw2 = path.join(__dirname, 'sw(2).js');
-  if (fs.existsSync(rootSw2)) {
-    return res.sendFile(rootSw2);
+// Monetag Service Worker Verification & Adaptive Ads Routes (Bulletproof handler for literal parentheses in URL)
+app.use((req, res, next) => {
+  const cleanPath = req.url.split('?')[0];
+  if (cleanPath === '/sw(2).js' || cleanPath === '/sw%282%29.js' || cleanPath === '/sw-2.js') {
+    res.set('Content-Type', 'application/javascript; charset=UTF-8');
+    res.set('Service-Worker-Allowed', '/');
+    const rootSw2 = path.join(__dirname, 'sw(2).js');
+    if (fs.existsSync(rootSw2)) return res.sendFile(rootSw2);
+    const pubSw2 = path.join(__dirname, 'public', 'sw(2).js');
+    if (fs.existsSync(pubSw2)) return res.sendFile(pubSw2);
+    return res.status(404).send('// Service worker sw(2).js not found');
   }
-  const pubSw2 = path.join(__dirname, 'public', 'sw(2).js');
-  if (fs.existsSync(pubSw2)) {
-    return res.sendFile(pubSw2);
-  }
-  res.status(404).send('// Service worker not found');
-});
 
-app.get('/sw.js', (req, res) => {
-  res.set('Content-Type', 'application/javascript; charset=UTF-8');
-  res.set('Service-Worker-Allowed', '/');
-  const rootSw = path.join(__dirname, 'sw.js');
-  if (fs.existsSync(rootSw)) {
-    return res.sendFile(rootSw);
+  if (cleanPath === '/sw.js') {
+    res.set('Content-Type', 'application/javascript; charset=UTF-8');
+    res.set('Service-Worker-Allowed', '/');
+    const rootSw = path.join(__dirname, 'sw.js');
+    if (fs.existsSync(rootSw)) return res.sendFile(rootSw);
+    return res.sendFile(path.join(__dirname, 'public', 'sw.js'));
   }
-  return res.sendFile(path.join(__dirname, 'public', 'sw.js'));
+
+  next();
 });
 
 // Health check endpoint for Render & Uptime monitoring

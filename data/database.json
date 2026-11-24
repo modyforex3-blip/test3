@@ -16,7 +16,7 @@
     "enableInFeedAds": true,
     "enableAdaptiveAds": true,
     "topAdCode": "<script>(function(s){s.dataset.zone='12339753',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>",
-    "bottomAdCode": "<!-- Monetag / AdSense Bottom Sticky Banner -->\n<div class=\"ad-demo-box\"><span class=\"ad-badge\">إعلان معتمد / Sponsored by Monetag & AdSense</span><div class=\"ad-content-inner\">مساحة إعلانية سفلية ثابتة متوافقة مع تجربة المستخدم وسرعة التصفح</div></div>",
+    "bottomAdCode": "<script>(function(s){s.dataset.zone='12339753',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>",
     "inFeedAdCode": "<!-- Monetag / AdSense In-Feed Native Ad -->\n<div class=\"ad-card-box\"><span class=\"ad-badge\">إعلان مدمج / Sponsored</span><div class=\"text-center py-4\"><p class=\"font-bold text-amber-400\">شريك إعلاني رسمي</p><p class=\"text-xs text-gray-400 mt-1\">عروض وحلول برمجية وتقنية موثوقة</p></div></div>",
     "adaptiveAdCode": "<script src=\"https://quge5.com/88/tag.min.js\" data-zone=\"314974\" async data-cfasync=\"false\"></script>",
     "monetag": {
