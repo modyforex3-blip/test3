@@ -1,0 +1,21 @@
+{
+  "name": "مليونير - Millionaire OS",
+  "short_name": "مليونير",
+  "description": "نظام تشغيل وإدارة الثروة ومحاكي الاستثمار الشامل بالذكاء الاصطناعي",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#070D18",
+  "theme_color": "#0F172A",
+  "orientation": "portrait",
+  "dir": "rtl",
+  "lang": "ar",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

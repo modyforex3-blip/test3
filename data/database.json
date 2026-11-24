@@ -49,6 +49,43 @@
   },
   "apps": [
     {
+      "id": "app-millionaire-os",
+      "nameAr": "نظام المليونير - Millionaire OS (تطبيق الويب PWA و APK)",
+      "nameEn": "Millionaire OS - Wealth & AI Tycoon Simulator (PWA)",
+      "category": "finance",
+      "icon": "/apps/millionaire/icon.svg",
+      "shortDescAr": "نظام تشغيل الثروة ومحاكي الاستثمار الشامل بالذكاء الاصطناعي، صفقات P2P، خريطة الفرص، وحاسبة الزكاة والضرائب.",
+      "shortDescEn": "Comprehensive AI wealth management system, investment simulator, P2P deals marketplace, regional opportunity map, and smart financial management.",
+      "fullDescAr": "نظام المليونير (Millionaire OS) هو منصة وتطبيق ويب تقدمي (PWA) فائق التطور يجمع بين إدارة المحافظ الاستثمارية، محاكاة حركة الأسواق الحقيقية بدول الخليج والمنطقة، شبكة صفقات P2P الذكية مع تفاوض بالذكاء الاصطناعي، خريطة الفرص التفاعلية، حاسبة الزكاة الذكية وربط الأسعار أوتوماتيكياً، وبانرات إعلانات متوافقة مع Google AdSense و Monetag، بالإضافة إلى إمكانية التثبيت المباشر على الهاتف أو تحميل ملف الـ APK الأصلي.",
+      "fullDescEn": "Millionaire OS is an advanced Progressive Web App (PWA) combining investment portfolio management, real-world market simulation for GCC & MENA, AI-negotiated P2P deals, interactive opportunity maps, smart Zakat/Tax calculations, AdSense & Monetag monetization, and direct installation on mobile devices.",
+      "featuresAr": [
+        "تطبيق ويب تقدمي (PWA) قابل للتثبيت الفوري على الهاتف والكمبيوتر بدون متجر",
+        "محاكي استثمار واقعي شامل للأسهم، العقارات، والمشاريع التجارية",
+        "خريطة تفاعلية للفرص الاستثمارية الحقيقية حسب الدولة (السعودية، الإمارات، مصر، الكويت، قطر، عمان)",
+        "سوق صفقات P2P مباشر مع نظام تفاوض تفاعلي بالذكاء الاصطناعي",
+        "حاسبة الزكاة الشرعية التلقائية وحساب الحول وجلب أسعار الذهب لحظياً",
+        "ميزانية ذكية بالذكاء الاصطناعي مع تقارير مالية تفصيلية",
+        "بانرات إعلانية معتمدة متوافقة 100% مع Google AdSense و Monetag",
+        "تنزيل وتثبيت مباشر لحزمة أندرويد الأصلية (.APK و .AAB)"
+      ],
+      "featuresEn": [
+        "Installable Progressive Web App (PWA) for Android, iOS & Desktop",
+        "Comprehensive real-world investment and market tycoon simulator",
+        "Interactive investment opportunity map tailored by GCC & MENA countries",
+        "Live P2P deals marketplace with interactive AI negotiations",
+        "Automated smart Zakat calculator with gold price sync and Hawl alerts",
+        "Smart AI budgeting suite with in-depth financial reports",
+        "Fully monetized with Google AdSense and Monetag ad networks",
+        "Direct Android APK download and Google Play bundle access"
+      ],
+      "webAppUrl": "/apps/millionaire/",
+      "downloadUrl": "/apps/millionaire/downloads/millionaire-os.apk",
+      "rating": 4.95,
+      "featured": true,
+      "downloadsCount": "150K+",
+      "createdAt": "2026-11-24T12:00:00Z"
+    },
+    {
       "id": "app-1",
       "nameAr": "مليونير إنفست - رادار التحليل الفني والتعليمي",
       "nameEn": "Millionaire Analytics - Tech Market Radar",

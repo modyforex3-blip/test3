@@ -118,10 +118,20 @@ function initAppRunner() {
   document.getElementById('runnerAppCategory').textContent = app.category;
   document.getElementById('backToDetailsBtn').href = `/app.html?id=${app.id}`;
 
+  const directPwaBtn = document.getElementById('directAppPwaBtn');
+  if (directPwaBtn) {
+    if (app.webAppUrl) {
+      directPwaBtn.href = app.webAppUrl;
+      directPwaBtn.style.display = 'inline-flex';
+    } else {
+      directPwaBtn.style.display = 'none';
+    }
+  }
+
   const viewport = document.getElementById('runnerViewport');
 
   // If app has an embed/external web app url:
-  if (app.webAppUrl && app.webAppUrl.startsWith('http')) {
+  if (app.webAppUrl && (app.webAppUrl.startsWith('http') || app.webAppUrl.startsWith('/'))) {
     viewport.innerHTML = `
       <iframe src="${app.webAppUrl}" class="w-full h-full border-none rounded-b-xl" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     `;

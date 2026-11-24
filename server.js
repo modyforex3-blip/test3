@@ -69,7 +69,19 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser('millionaire-secret-key-2026'));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public'), {
+  setHeaders: (res, filePath) => {
+    if (filePath.endsWith('.apk')) {
+      res.setHeader('Content-Type', 'application/vnd.android.package-archive');
+      res.setHeader('Content-Disposition', 'attachment; filename="millionaire-os.apk"');
+      res.setHeader('X-Content-Type-Options', 'nosniff');
+    } else if (filePath.endsWith('.aab')) {
+      res.setHeader('Content-Type', 'application/octet-stream');
+      res.setHeader('Content-Disposition', 'attachment; filename="millionaire-os.aab"');
+      res.setHeader('X-Content-Type-Options', 'nosniff');
+    }
+  }
+}));
 
 // Simple Auth Middleware
 function requireAdmin(req, res, next) {
