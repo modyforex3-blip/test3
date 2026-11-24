@@ -362,6 +362,17 @@ app.get('/admin', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'admin.html'));
 });
 
+// Monetag Service Worker Verification Route
+app.get('/sw.js', (req, res) => {
+  res.set('Content-Type', 'application/javascript; charset=UTF-8');
+  res.set('Service-Worker-Allowed', '/');
+  const rootSw = path.join(__dirname, 'sw.js');
+  if (fs.existsSync(rootSw)) {
+    return res.sendFile(rootSw);
+  }
+  return res.sendFile(path.join(__dirname, 'public', 'sw.js'));
+});
+
 // Health check endpoint for Render & Uptime monitoring
 app.get('/health', (req, res) => {
   res.status(200).json({
