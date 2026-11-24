@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تفاصيل التطبيق | مليونير</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="bg-[#080c14] text-slate-100 flex flex-col min-h-screen">
+
+  <!-- TOP AD BANNER -->
+  <aside id="topAdContainer" class="ad-container-top" aria-label="إعلان ممول"></aside>
+
+  <!-- NAVBAR -->
+  <header class="sticky top-0 z-30 bg-[#0b0f17]/90 backdrop-blur-md border-b border-white/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+      <a href="/" class="flex items-center gap-3">
+        <div class="w-10 h-10 brand-logo-icon">
+          <img src="/assets/logo.svg" alt="مليونير Logo" class="w-full h-full object-contain">
+        </div>
+        <span class="text-2xl font-black brand-title">مليونير</span>
+      </a>
+
+      <div class="flex items-center gap-4">
+        <div class="flex items-center bg-slate-900 border border-white/10 rounded-full p-1 text-xs">
+          <button onclick="window.i18n.setLanguage('ar')" class="lang-switcher-btn px-2.5 py-1 rounded-full font-bold active-lang text-emerald-400" data-lang="ar">عربي</button>
+          <button onclick="window.i18n.setLanguage('en')" class="lang-switcher-btn px-2.5 py-1 rounded-full font-bold text-gray-400" data-lang="en">EN</button>
+        </div>
+        <a href="/" class="btn-secondary text-xs px-3 py-1.5 flex items-center gap-1.5">
+          <i class="fas fa-arrow-right text-xs"></i>
+          <span data-i18n="backToHome">العودة للرئيسية</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- APP CONTENT -->
+  <main id="appContent" class="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full">
+    
+    <!-- Breadcrumb -->
+    <div class="flex items-center gap-2 text-xs text-gray-400 mb-6">
+      <a href="/" class="hover:text-emerald-400">الرئيسية</a>
+      <span>/</span>
+      <span class="text-gray-200">تفاصيل التطبيق</span>
+    </div>
+
+    <!-- App Overview Card -->
+    <div class="glass-panel p-6 sm:p-8 mb-8 border border-white/10">
+      <div class="flex flex-col md:flex-row items-center md:items-start gap-6 sm:gap-8">
+        
+        <!-- App Icon -->
+        <div class="w-32 h-32 sm:w-40 sm:h-40 rounded-2xl overflow-hidden bg-slate-900 flex-shrink-0 border-2 border-emerald-500/30 shadow-2xl">
+          <img id="appIcon" src="" alt="App Icon" class="w-full h-full object-cover">
+        </div>
+
+        <!-- Info -->
+        <div class="flex-1 text-center md:text-start">
+          <div class="flex flex-wrap items-center justify-center md:justify-start gap-2 mb-2">
+            <span id="appCategory" class="category-pill">تداول</span>
+            <div class="flex items-center gap-1 text-xs text-amber-400 font-bold px-2 py-0.5 rounded-md bg-amber-400/10">
+              <i class="fas fa-star"></i>
+              <span id="appRating">4.9</span>
+            </div>
+            <span id="appDownloads" class="text-xs text-gray-400 bg-white/5 px-2.5 py-0.5 rounded-md">50K+ تحميل</span>
+          </div>
+
+          <h1 id="appTitle" class="text-2xl sm:text-4xl font-extrabold text-white mb-3"></h1>
+          <p id="appShortDesc" class="text-gray-300 text-sm sm:text-base leading-relaxed mb-6"></p>
+
+          <div class="flex flex-wrap items-center justify-center md:justify-start gap-4">
+            <a id="appActionBtn" href="#" target="_blank" rel="noopener noreferrer" class="btn-primary px-8 py-3 text-base shadow-xl">
+              <i class="fas fa-download"></i>
+              <span>الحصول على التطبيق الآن</span>
+            </a>
+            <button onclick="shareCurrentApp()" class="btn-secondary px-5 py-3 text-sm">
+              <i class="fas fa-share-alt"></i>
+              <span data-i18n="shareApp">مشاركة</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Layout Grid: Details vs Ad Sidebar -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      
+      <!-- Main Column: Full Details & Features -->
+      <div class="lg:col-span-2 space-y-8">
+        
+        <!-- Features Section -->
+        <section class="glass-panel p-6 sm:p-8">
+          <h2 class="text-xl font-bold text-white mb-6 flex items-center gap-2">
+            <i class="fas fa-bolt text-amber-400"></i>
+            <span data-i18n="featuresTitle">أهم مميزات التطبيق:</span>
+          </h2>
+          <ul id="appFeaturesList" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <!-- Dynamic features -->
+          </ul>
+        </section>
+
+        <!-- Full Description Section -->
+        <section class="glass-panel p-6 sm:p-8">
+          <h2 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
+            <i class="fas fa-align-right text-emerald-400"></i>
+            <span>نظرة شاملة ودليل الاستخدام</span>
+          </h2>
+          <p id="appFullDesc" class="text-gray-300 leading-relaxed text-sm sm:text-base whitespace-pre-line"></p>
+        </section>
+
+      </div>
+
+      <!-- Sidebar Column: Safe Ad Slot & Safety Info -->
+      <div class="space-y-6">
+        
+        <!-- Safe Sidebar Ad Box (Compliant with Google AdSense & Monetag) -->
+        <div class="glass-panel p-6 border-dashed border-emerald-500/20 text-center">
+          <span class="ad-badge mb-3">إعلان ممول / Sponsored</span>
+          <div class="py-6 bg-slate-900/60 rounded-xl my-2 border border-white/5">
+            <i class="fas fa-award text-3xl text-amber-400 mb-2"></i>
+            <h4 class="font-bold text-sm text-white">فرص استثمارية ذكية</h4>
+            <p class="text-xs text-gray-400 mt-1 px-4">مساحة إعلانية مخصصة للمعلنين والشركاء الرسميين</p>
+          </div>
+          <p class="text-[11px] text-gray-500 mt-2">إعلان متوافق مع معايير الأمان وتجربة المستخدم</p>
+        </div>
+
+        <!-- Safety Guarantee -->
+        <div class="glass-panel p-6 border border-emerald-500/20">
+          <h3 class="font-bold text-white text-sm mb-3 flex items-center gap-2">
+            <i class="fas fa-shield-check text-emerald-400"></i>
+            <span>فحص الأمان والموثوقية</span>
+          </h3>
+          <p class="text-xs text-gray-400 leading-relaxed">
+            تم فحص روابط التطبيق وتأكيد خلوها من أي برمجيات ضارة لضمان أمان جهازك وبياناتك الشخصية بنسبة 100%.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Related Apps Section -->
+    <section class="mt-14 pt-8 border-t border-white/10">
+      <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-2">
+        <i class="fas fa-th-large text-emerald-400"></i>
+        <span data-i18n="relatedApps">تطبيقات ذات صلة</span>
+      </h3>
+      <div id="relatedAppsGrid" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <!-- Injected via app-details.js -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- BOTTOM STICKY AD BANNER -->
+  <aside id="bottomAdContainer" class="ad-container-bottom" aria-label="إعلان ممول"></aside>
+
+  <!-- FOOTER -->
+  <footer class="bg-[#0b0f17] border-t border-white/10 py-8 text-center text-xs text-gray-500">
+    <p data-i18n="footerRights">جميع الحقوق محفوظة © 2026 منصة مليونير (Millionaire).</p>
+  </footer>
+
+  <script src="/js/i18n.js"></script>
+  <script src="/js/app-details.js"></script>
+</body>
+</html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>مليونير | Millionaire - منصة وبوابة التطبيقات والأدوات الرقمية</title>
+  
+  <!-- Meta tags for SEO & Monetization -->
+  <meta name="description" content="منصة وتطبيقات مليونير: دليلك الشامل لأحدث برامج وأدوات التداول، الذكاء الاصطناعي، والإنتاجية مع روابط مباشرة ومميزات تفصيلية.">
+  <meta name="keywords" content="مليونير, تطبيقات, أدوات ذكاء اصطناعي, تداول, استثمار, برامج, apps, millionaire">
+  
+  <!-- Tailwind CSS & FontAwesome -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="bg-[#080c14] text-slate-100 flex flex-col min-h-screen">
+
+  <!-- TOP AD BANNER (Compliant with Google AdSense & Monetag) -->
+  <aside id="topAdContainer" class="ad-container-top" aria-label="إعلان ممول"></aside>
+
+  <!-- NAVBAR -->
+  <header class="sticky top-0 z-30 bg-[#0b0f17]/90 backdrop-blur-md border-b border-white/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+      
+      <!-- Brand Logo & Name -->
+      <a href="/" class="flex items-center gap-3 group">
+        <div class="w-12 h-12 flex-shrink-0 brand-logo-icon">
+          <img src="/assets/logo.svg" alt="مليونير Logo" class="w-full h-full object-contain">
+        </div>
+        <div class="flex flex-col">
+          <span class="text-2xl sm:text-3xl font-black brand-title tracking-tight flex items-center gap-2">
+            <span>مليونير</span>
+            <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">PRO</span>
+          </span>
+          <span class="text-[10px] text-amber-400 font-medium tracking-widest uppercase">MILLIONAIRE PORTAL</span>
+        </div>
+      </a>
+
+      <!-- Desktop Navigation Links -->
+      <nav class="hidden md:flex items-center gap-6 text-sm font-semibold text-gray-300">
+        <a href="/" class="hover:text-emerald-400 transition-colors flex items-center gap-1.5 active text-emerald-400">
+          <i class="fas fa-home text-xs"></i>
+          <span data-i18n="home">الرئيسية</span>
+        </a>
+        <a href="#appsSection" class="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
+          <i class="fas fa-th-large text-xs"></i>
+          <span data-i18n="allApps">كافة التطبيقات</span>
+        </a>
+        <a href="/contact" class="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
+          <i class="fas fa-envelope text-xs"></i>
+          <span data-i18n="contactUs">اتصل بنا</span>
+        </a>
+        <a href="/privacy" class="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
+          <i class="fas fa-shield-alt text-xs"></i>
+          <span data-i18n="privacyPolicy">سياسة الخصوصية</span>
+        </a>
+      </nav>
+
+      <!-- Action Buttons & Language Switcher -->
+      <div class="flex items-center gap-3">
+        <!-- Language Switcher Pill -->
+        <div class="flex items-center bg-slate-900 border border-white/10 rounded-full p-1 text-xs">
+          <button id="langArBtn" class="lang-switcher-btn px-2.5 py-1 rounded-full font-bold active-lang text-emerald-400" data-lang="ar">عربي</button>
+          <button id="langEnBtn" class="lang-switcher-btn px-2.5 py-1 rounded-full font-bold text-gray-400" data-lang="en">EN</button>
+        </div>
+
+        <!-- Admin Quick Access -->
+        <a href="/admin" class="btn-secondary text-xs px-3 py-1.5 hidden sm:inline-flex items-center gap-1.5" title="لوحة الإدارة">
+          <i class="fas fa-user-shield text-amber-400"></i>
+          <span data-i18n="adminPanel">لوحة الإدارة</span>
+        </a>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section class="relative py-12 md:py-20 overflow-hidden border-b border-white/5">
+    <div class="absolute inset-0 bg-gradient-to-b from-emerald-500/5 via-transparent to-transparent pointer-events-none"></div>
+    <div class="max-w-5xl mx-auto px-4 text-center relative z-10">
+      
+      <!-- Top Tag -->
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-bold mb-6 animate-pulse">
+        <i class="fas fa-gem text-amber-400"></i>
+        <span>المنصة الرائدة لأقوى الحلول والتطبيقات الرقمية</span>
+      </div>
+
+      <!-- Main Headline with Distinctive Millionaire Typography -->
+      <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6">
+        <span>عالم التطبيقات مع</span>
+        <span class="brand-title inline-block mx-2">« مليونير »</span>
+      </h1>
+
+      <p class="text-base sm:text-xl text-gray-300 max-w-3xl mx-auto mb-10 leading-relaxed" data-i18n="tagline">
+        بوابتك الأولى لأقوى التطبيقات والأدوات الرقمية لرواد الأعمال والمستثمرين، مختارة بعناية لتحقيق أقصى إنتاجية وربحية.
+      </p>
+
+      <!-- SEARCH BOX -->
+      <div class="max-w-2xl mx-auto relative mb-6">
+        <div class="relative flex items-center">
+          <input type="text" id="searchInput" 
+                 placeholder="ابحث عن تطبيق، أداة، أو منصة..." 
+                 data-i18n-placeholder="searchPlaceholder"
+                 class="w-full py-4 pr-12 pl-32 rounded-2xl bg-slate-900/90 border border-white/15 text-white placeholder-gray-400 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 text-base shadow-2xl transition-all">
+          <div class="absolute right-4 text-gray-400 pointer-events-none">
+            <i class="fas fa-search text-lg"></i>
+          </div>
+          <button onclick="renderApps()" class="absolute left-2 btn-primary text-xs py-2 px-5">
+            <span data-i18n="searchBtn">بحث</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Category Pills -->
+      <div class="flex flex-wrap items-center justify-center gap-2 pt-2">
+        <button class="filter-btn active" data-category="all" data-i18n="filterAll">الكل</button>
+        <button class="filter-btn" data-category="finance" data-i18n="filterFinance">تداول واستثمار</button>
+        <button class="filter-btn" data-category="crypto" data-i18n="filterCrypto">عملات وبلوكتشين</button>
+        <button class="filter-btn" data-category="ai" data-i18n="filterAi">ذكاء اصطناعي</button>
+        <button class="filter-btn" data-category="tools" data-i18n="filterTools">أدوات وإنتاجية</button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- APPS SECTION (GRID LAYOUT) -->
+  <main id="appsSection" class="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
+    
+    <div class="flex items-center justify-between mb-8 pb-4 border-b border-white/10">
+      <div>
+        <h2 class="text-2xl font-black text-white flex items-center gap-3">
+          <i class="fas fa-layer-group text-emerald-400"></i>
+          <span data-i18n="latestApps">أحدث التطبيقات والأدوات</span>
+        </h2>
+        <p class="text-xs text-gray-400 mt-1">تصفح البرامج المميزة واضغط على أي تطبيق للتعرف على كامل مميزاته وتجربته</p>
+      </div>
+    </div>
+
+    <!-- The Apps Grid Container -->
+    <div id="appsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+      <!-- Dynamically injected via main.js -->
+    </div>
+
+  </main>
+
+  <!-- BOTTOM STICKY AD BANNER (Compliant with Google AdSense & Monetag) -->
+  <aside id="bottomAdContainer" class="ad-container-bottom" aria-label="إعلان ممول"></aside>
+
+  <!-- FOOTER -->
+  <footer class="bg-[#0b0f17] border-t border-white/10 py-12 mt-16 text-gray-400 text-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8 pb-8 border-b border-white/10">
+        
+        <!-- Col 1: Brand -->
+        <div class="space-y-4">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 brand-logo-icon">
+              <img src="/assets/logo.svg" alt="مليونير Logo" class="w-full h-full object-contain">
+            </div>
+            <span class="text-2xl font-black brand-title">مليونير</span>
+          </div>
+          <p class="text-xs leading-relaxed text-gray-400" data-i18n="footerDisclaimer">
+            منصة مستقلة لعرض ومراجعة أفضل التطبيقات والأدوات الرقمية للارتقاء بأعمالك واستثماراتك.
+          </p>
+        </div>
+
+        <!-- Col 2: Quick Links -->
+        <div>
+          <h4 class="font-bold text-white mb-4 text-sm flex items-center gap-2">
+            <i class="fas fa-link text-emerald-400"></i>
+            <span>روابط سريعة</span>
+          </h4>
+          <ul class="space-y-2 text-xs">
+            <li><a href="/" class="hover:text-emerald-400 transition-colors" data-i18n="home">الرئيسية</a></li>
+            <li><a href="/contact" class="hover:text-emerald-400 transition-colors" data-i18n="contactUs">اتصل بنا</a></li>
+            <li><a href="/privacy" class="hover:text-emerald-400 transition-colors" data-i18n="privacyPolicy">سياسة الخصوصية</a></li>
+            <li><a href="/admin" class="hover:text-emerald-400 transition-colors" data-i18n="adminPanel">لوحة تحكم المدير</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 3: Safe Monetization Note -->
+        <div>
+          <h4 class="font-bold text-white mb-4 text-sm flex items-center gap-2">
+            <i class="fas fa-check-shield text-amber-400"></i>
+            <span>الامتثال الإعلاني</span>
+          </h4>
+          <p class="text-xs text-gray-400 leading-relaxed mb-3">
+            يلتزم موقع مليونير بكافة المعايير الإرشادية لشركاء الإعلانات (Google AdSense و Monetag) دون إزعاج للزائر أو التغطية على المحتوى، وبما يوفر بيئة آمنة وعالية الموثوقية.
+          </p>
+        </div>
+
+      </div>
+
+      <div class="flex flex-col sm:flex-row items-center justify-between text-xs text-gray-500 gap-4">
+        <p data-i18n="footerRights">جميع الحقوق محفوظة © 2026 منصة مليونير (Millionaire).</p>
+        <div class="flex items-center gap-4">
+          <a href="/privacy" class="hover:text-emerald-400">Privacy Policy</a>
+          <span>•</span>
+          <a href="/contact" class="hover:text-emerald-400">Support</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="/js/i18n.js"></script>
+  <script src="/js/main.js"></script>
+</body>
+</html>

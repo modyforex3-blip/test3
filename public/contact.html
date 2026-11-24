@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>اتصل بنا | مليونير</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="bg-[#080c14] text-slate-100 flex flex-col min-h-screen">
+
+  <!-- TOP AD BANNER -->
+  <aside id="topAdContainer" class="ad-container-top" aria-label="إعلان ممول"></aside>
+
+  <!-- NAVBAR -->
+  <header class="sticky top-0 z-30 bg-[#0b0f17]/90 backdrop-blur-md border-b border-white/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+      <a href="/" class="flex items-center gap-3">
+        <div class="w-10 h-10 brand-logo-icon">
+          <img src="/assets/logo.svg" alt="مليونير Logo" class="w-full h-full object-contain">
+        </div>
+        <span class="text-2xl font-black brand-title">مليونير</span>
+      </a>
+
+      <div class="flex items-center gap-4">
+        <div class="flex items-center bg-slate-900 border border-white/10 rounded-full p-1 text-xs">
+          <button onclick="window.i18n.setLanguage('ar')" class="lang-switcher-btn px-2.5 py-1 rounded-full font-bold active-lang text-emerald-400" data-lang="ar">عربي</button>
+          <button onclick="window.i18n.setLanguage('en')" class="lang-switcher-btn px-2.5 py-1 rounded-full font-bold text-gray-400" data-lang="en">EN</button>
+        </div>
+        <a href="/" class="btn-secondary text-xs px-3 py-1.5 flex items-center gap-1.5">
+          <i class="fas fa-arrow-right text-xs"></i>
+          <span data-i18n="backToHome">العودة للرئيسية</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTACT SECTION -->
+  <main class="flex-1 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
+    
+    <div class="text-center max-w-2xl mx-auto mb-12">
+      <h1 class="text-3xl sm:text-5xl font-extrabold text-white mb-4" data-i18n="contactTitle">
+        تواصل مع فريق إدارة مليونير
+      </h1>
+      <p class="text-gray-400 text-sm sm:text-base leading-relaxed" data-i18n="contactDesc">
+        نسعد باستفساراتكم، مقترحاتكم، وطلبات إضافة التطبيقات والإعلانات التجارية.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      
+      <!-- Contact Info Cards -->
+      <div class="space-y-4">
+        <div class="glass-panel p-6 border-l-4 border-emerald-500">
+          <i class="fas fa-envelope-open-text text-2xl text-emerald-400 mb-3"></i>
+          <h3 class="font-bold text-white text-base mb-1">البريد الإلكتروني</h3>
+          <p class="text-xs text-gray-400">للاستفسارات والتعاون التجاري</p>
+          <a href="mailto:contact@millionaire-portal.com" class="text-emerald-400 text-xs font-semibold mt-2 inline-block hover:underline">contact@millionaire-portal.com</a>
+        </div>
+
+        <div class="glass-panel p-6 border-l-4 border-amber-500">
+          <i class="fab fa-telegram text-2xl text-amber-400 mb-3"></i>
+          <h3 class="font-bold text-white text-base mb-1">قناة تليجرام الرسمية</h3>
+          <p class="text-xs text-gray-400">تابع أحدث التطبيقات لحظة بلحظة</p>
+          <a href="https://t.me" target="_blank" class="text-amber-400 text-xs font-semibold mt-2 inline-block hover:underline">@millionaire_official</a>
+        </div>
+
+        <div class="glass-panel p-6 border-l-4 border-blue-500">
+          <i class="fas fa-ad text-2xl text-blue-400 mb-3"></i>
+          <h3 class="font-bold text-white text-base mb-1">الرعاية والإعلانات</h3>
+          <p class="text-xs text-gray-400">مساحات مخصصة لشبكات الإعلانات والمعلنين</p>
+          <span class="text-xs text-gray-300 font-semibold mt-2 block">متوافق مع AdSense & Monetag</span>
+        </div>
+      </div>
+
+      <!-- Contact Form -->
+      <div class="md:col-span-2 glass-panel p-8">
+        <form id="contactForm" class="space-y-5">
+          <div id="formAlert" class="hidden p-4 rounded-xl text-sm font-semibold"></div>
+
+          <div>
+            <label class="block text-xs font-bold text-gray-300 mb-2" data-i18n="fullName">الاسم الكامل *</label>
+            <input type="text" id="nameInput" required
+                   class="w-full py-3 px-4 rounded-xl bg-slate-900 border border-white/10 text-white focus:outline-none focus:border-emerald-500 text-sm">
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-gray-300 mb-2" data-i18n="emailAddress">البريد الإلكتروني *</label>
+            <input type="email" id="emailInput" required
+                   class="w-full py-3 px-4 rounded-xl bg-slate-900 border border-white/10 text-white focus:outline-none focus:border-emerald-500 text-sm">
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-gray-300 mb-2" data-i18n="subject">موضوع الرسالة</label>
+            <input type="text" id="subjectInput"
+                   class="w-full py-3 px-4 rounded-xl bg-slate-900 border border-white/10 text-white focus:outline-none focus:border-emerald-500 text-sm">
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-gray-300 mb-2" data-i18n="messageBody">نص الرسالة أو الاستفسار *</label>
+            <textarea id="messageInput" rows="5" required
+                      class="w-full py-3 px-4 rounded-xl bg-slate-900 border border-white/10 text-white focus:outline-none focus:border-emerald-500 text-sm resize-none"></textarea>
+          </div>
+
+          <button type="submit" id="submitBtn" class="btn-primary w-full py-3.5 text-base font-bold shadow-xl">
+            <i class="fas fa-paper-plane"></i>
+            <span data-i18n="sendMsgBtn">إرسال الرسالة الآن</span>
+          </button>
+        </form>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- BOTTOM STICKY AD BANNER -->
+  <aside id="bottomAdContainer" class="ad-container-bottom" aria-label="إعلان ممول"></aside>
+
+  <!-- FOOTER -->
+  <footer class="bg-[#0b0f17] border-t border-white/10 py-8 text-center text-xs text-gray-500">
+    <p data-i18n="footerRights">جميع الحقوق محفوظة © 2026 منصة مليونير (Millionaire).</p>
+  </footer>
+
+  <script src="/js/i18n.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Load public settings for ads
+      try {
+        const res = await fetch('/api/public-data');
+        const data = await res.json();
+        if (data.settings) {
+          const topAd = document.getElementById('topAdContainer');
+          const botAd = document.getElementById('bottomAdContainer');
+          if (topAd && data.settings.enableTopBanner) {
+            topAd.style.display = 'flex';
+            topAd.innerHTML = data.settings.topAdCode || '<div class="ad-demo-box"><span class="ad-badge">إعلان ممول</span><div class="ad-content-inner">مساحة إعلانية علوية</div></div>';
+          }
+          if (botAd && data.settings.enableBottomBanner) {
+            botAd.style.display = 'flex';
+            botAd.innerHTML = data.settings.bottomAdCode || '<div class="ad-demo-box"><span class="ad-badge">إعلان ممول</span><div class="ad-content-inner">مساحة إعلانية سفلية</div></div>';
+          }
+        }
+      } catch(e){}
+
+      // Form submission
+      const form = document.getElementById('contactForm');
+      const alertBox = document.getElementById('formAlert');
+      const submitBtn = document.getElementById('submitBtn');
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${window.i18n.t('msgSending')}`;
+
+        try {
+          const res = await fetch('/api/contact', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              name: document.getElementById('nameInput').value,
+              email: document.getElementById('emailInput').value,
+              subject: document.getElementById('subjectInput').value,
+              message: document.getElementById('messageInput').value
+            })
+          });
+
+          const data = await res.json();
+          if (data.success) {
+            alertBox.className = 'p-4 rounded-xl text-sm font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30';
+            alertBox.textContent = window.i18n.t('msgSuccess');
+            alertBox.classList.remove('hidden');
+            form.reset();
+          } else {
+            alertBox.className = 'p-4 rounded-xl text-sm font-semibold bg-rose-500/20 text-rose-300 border border-rose-500/30';
+            alertBox.textContent = data.message || 'حدث خطأ أثناء الإرسال';
+            alertBox.classList.remove('hidden');
+          }
+        } catch (err) {
+          alertBox.className = 'p-4 rounded-xl text-sm font-semibold bg-rose-500/20 text-rose-300 border border-rose-500/30';
+          alertBox.textContent = 'تعذر الاتصال بالخادم، يرجى المحاولة لاحقاً';
+          alertBox.classList.remove('hidden');
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = `<i class="fas fa-paper-plane"></i> ${window.i18n.t('sendMsgBtn')}`;
+        }
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>لوحة إدارة منصة مليونير | Millionaire Admin</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="bg-[#080c14] text-slate-100 min-h-screen flex flex-col">
+
+  <!-- ================= LOGIN SECTION ================= -->
+  <section id="loginSection" class="flex-1 flex items-center justify-center p-4">
+    <div class="glass-panel p-8 sm:p-10 w-full max-w-md border border-white/10 shadow-2xl relative overflow-hidden">
+      <div class="text-center mb-8">
+        <div class="w-16 h-16 mx-auto mb-4 brand-logo-icon">
+          <img src="/assets/logo.svg" alt="مليونير Logo" class="w-full h-full object-contain">
+        </div>
+        <h1 class="text-2xl font-black brand-title">لوحة إدارة مليونير</h1>
+        <p class="text-xs text-gray-400 mt-1">الرجاء إدخال كلمة المرور للوصول إلى لوحة التحكم</p>
+      </div>
+
+      <form id="loginForm" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-gray-300 mb-2">كلمة مرور المدير</label>
+          <div class="relative">
+            <input type="password" id="adminPasswordInput" required placeholder="••••••••••••"
+                   class="w-full py-3 pr-10 pl-4 rounded-xl bg-slate-900 border border-white/10 text-white focus:outline-none focus:border-emerald-500 text-sm">
+            <div class="absolute right-3.5 top-3.5 text-gray-400">
+              <i class="fas fa-lock"></i>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-primary w-full py-3 font-bold text-sm shadow-xl">
+          <i class="fas fa-sign-in-alt"></i>
+          <span>تسجيل الدخول</span>
+        </button>
+
+        <div class="p-3 bg-emerald-500/10 rounded-xl border border-emerald-500/20 text-[11px] text-gray-300 text-center">
+          <span class="text-emerald-400 font-bold">كلمة المرور الافتراضية:</span>
+          <code class="bg-black/40 px-2 py-0.5 rounded font-mono text-amber-300 mr-1">admin123millionaire</code>
+          <p class="text-[10px] text-gray-400 mt-1">(يمكنك تغييرها بسهولة من الإعدادات بالداخل)</p>
+        </div>
+
+        <div class="text-center pt-2">
+          <a href="/" class="text-xs text-gray-400 hover:text-emerald-400 transition-colors">
+            <i class="fas fa-arrow-right text-[10px]"></i> العودة للرئيسية
+          </a>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- ================= ADMIN DASHBOARD ================= -->
+  <section id="adminDashboard" class="hidden flex-1 flex flex-col min-h-screen">
+    
+    <!-- Top Nav -->
+    <header class="bg-[#0b0f17] border-b border-white/10 px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 brand-logo-icon">
+          <img src="/assets/logo.svg" alt="مليونير Logo" class="w-full h-full object-contain">
+        </div>
+        <span class="text-lg font-black brand-title">لوحة مدير موقع مليونير</span>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <a href="/" target="_blank" class="btn-secondary text-xs px-3 py-1.5 flex items-center gap-1.5">
+          <i class="fas fa-external-link-alt text-[10px]"></i>
+          <span>معاينة الموقع الحي</span>
+        </a>
+        <button id="logoutBtn" class="p-2 text-rose-400 hover:text-rose-300 text-sm" title="تسجيل الخروج">
+          <i class="fas fa-power-off"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Container with Sidebar + Content -->
+    <div class="flex-1 flex flex-col md:flex-row">
+      
+      <!-- Admin Sidebar Navigation -->
+      <aside class="w-full md:w-64 bg-[#0b0f17]/80 border-l border-white/10 p-4 space-y-1">
+        <button onclick="switchAdminTab('tabApps')" id="btn-tabApps" class="admin-nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold text-gray-300 hover:bg-white/5 transition-all bg-emerald-500/20 text-emerald-400">
+          <i class="fas fa-th-large text-emerald-400 text-sm"></i>
+          <span>إدارة التطبيقات</span>
+        </button>
+        <button onclick="switchAdminTab('tabAds')" id="btn-tabAds" class="admin-nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold text-gray-300 hover:bg-white/5 transition-all">
+          <i class="fas fa-ad text-amber-400 text-sm"></i>
+          <span>إدارة الإعلانات (AdSense / Monetag)</span>
+        </button>
+        <button onclick="switchAdminTab('tabSettings')" id="btn-tabSettings" class="admin-nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold text-gray-300 hover:bg-white/5 transition-all">
+          <i class="fas fa-sliders-h text-blue-400 text-sm"></i>
+          <span>تخصيص الواجهة والعرض</span>
+        </button>
+        <button onclick="switchAdminTab('tabMessages')" id="btn-tabMessages" class="admin-nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold text-gray-300 hover:bg-white/5 transition-all">
+          <i class="fas fa-inbox text-purple-400 text-sm"></i>
+          <span>صندوق الرسائل الواردة</span>
+        </button>
+      </aside>
+
+      <!-- Main Dashboard Panel -->
+      <main class="flex-1 p-6 sm:p-8 max-w-6xl mx-auto w-full space-y-8">
+        
+        <!-- Stats Row -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="glass-panel p-5 border-l-4 border-emerald-500">
+            <span class="text-xs text-gray-400 font-semibold">إجمالي التطبيقات</span>
+            <div id="statTotalApps" class="text-3xl font-black text-white mt-1">0</div>
+          </div>
+          <div class="glass-panel p-5 border-l-4 border-amber-500">
+            <span class="text-xs text-gray-400 font-semibold">التطبيقات المميزة</span>
+            <div id="statFeaturedApps" class="text-3xl font-black text-amber-400 mt-1">0</div>
+          </div>
+          <div class="glass-panel p-5 border-l-4 border-blue-500">
+            <span class="text-xs text-gray-400 font-semibold">المساحات الإعلانية المفعلة</span>
+            <div id="statActiveAds" class="text-3xl font-black text-blue-400 mt-1">0 / 3</div>
+          </div>
+          <div class="glass-panel p-5 border-l-4 border-purple-500">
+            <span class="text-xs text-gray-400 font-semibold">رسائل واستفسارات الزوار</span>
+            <div id="statMessages" class="text-3xl font-black text-purple-400 mt-1">0</div>
+          </div>
+        </div>
+
+        <!-- TAB 1: APPS MANAGEMENT -->
+        <div id="tabApps" class="admin-tab-content space-y-6">
+          <div class="flex items-center justify-between pb-4 border-b border-white/10">
+            <div>
+              <h2 class="text-xl font-bold text-white">إدارة التطبيقات والبرامج</h2>
+              <p class="text-xs text-gray-400 mt-1">رفع وتعديل وحذف التطبيقات المعروضة في الصفحة الرئيسية</p>
+            </div>
+            <button onclick="openAddAppModal()" class="btn-primary text-xs py-2.5 px-4 font-bold flex items-center gap-2">
+              <i class="fas fa-plus"></i>
+              <span>إضافة تطبيق جديد</span>
+            </button>
+          </div>
+
+          <!-- Apps Table -->
+          <div class="glass-panel overflow-hidden border border-white/10">
+            <div class="overflow-x-auto">
+              <table class="w-full text-right text-sm">
+                <thead class="bg-slate-900/80 text-xs font-bold text-gray-400 border-b border-white/10">
+                  <tr>
+                    <th class="py-3 px-4">التطبيق</th>
+                    <th class="py-3 px-4">التصنيف</th>
+                    <th class="py-3 px-4">التقييم</th>
+                    <th class="py-3 px-4">الحالة</th>
+                    <th class="py-3 px-4">التحميلات</th>
+                    <th class="py-3 px-4 text-left">إجراءات</th>
+                  </tr>
+                </thead>
+                <tbody id="appsTableBody">
+                  <!-- Populated via admin.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 2: ADS MANAGEMENT (Google AdSense & Monetag) -->
+        <div id="tabAds" class="admin-tab-content hidden space-y-6">
+          <div class="pb-4 border-b border-white/10">
+            <h2 class="text-xl font-bold text-white flex items-center gap-2">
+              <i class="fas fa-ad text-amber-400"></i>
+              <span>إدارة وتخصيص الإعلانات (Google AdSense & Monetag)</span>
+            </h2>
+            <p class="text-xs text-gray-400 mt-1">
+              التحكم في البانر الإعلاني الثابت العلوي والسفلي والإعلانات المدمجة في شبكة التطبيقات بما لا يخالف سياسات المشاهدة
+            </p>
+          </div>
+
+          <form id="adsForm" class="space-y-6">
+            <!-- Toggles Card -->
+            <div class="glass-panel p-6 border border-white/10 space-y-4">
+              <h3 class="font-bold text-white text-sm mb-2">تفعيل وتعطيل المساحات الإعلانية:</h3>
+              
+              <div class="flex items-center justify-between p-3 bg-slate-900/60 rounded-xl border border-white/5">
+                <div>
+                  <div class="font-bold text-sm text-white">البانر العلوي الثابت (Top Fixed Banner)</div>
+                  <div class="text-xs text-gray-400">يظهر أعلى الصفحة الرئيسية وكافة الصفحات بمقاس قياسي 728x90</div>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" id="enableTopBanner" class="sr-only peer">
+                  <div class="w-11 h-6 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
+                </label>
+              </div>
+
+              <div class="flex items-center justify-between p-3 bg-slate-900/60 rounded-xl border border-white/5">
+                <div>
+                  <div class="font-bold text-sm text-white">البانر السفلي الثابت (Bottom Sticky Banner)</div>
+                  <div class="text-xs text-gray-400">بانر ثابت أسفل الشاشة يحقق أعلى نسبة مشاهدة دون حجب المحتوى</div>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" id="enableBottomBanner" class="sr-only peer">
+                  <div class="w-11 h-6 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
+                </label>
+              </div>
+
+              <div class="flex items-center justify-between p-3 bg-slate-900/60 rounded-xl border border-white/5">
+                <div>
+                  <div class="font-bold text-sm text-white">الإعلانات المدمجة بين بطاقات التطبيقات (In-Feed Native Ads)</div>
+                  <div class="text-xs text-gray-400">تظهر تلقائياً بين بطاقات التطبيقات في الصفحة الرئيسية بشكل جذاب ومتناسق</div>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" id="enableInFeedAds" class="sr-only peer">
+                  <div class="w-11 h-6 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
+                </label>
+              </div>
+            </div>
+
+            <!-- Ad Codes Card -->
+            <div class="glass-panel p-6 border border-white/10 space-y-4">
+              <h3 class="font-bold text-white text-sm mb-2">أكواد إعلانات AdSense / Monetag المخصصة:</h3>
+              
+              <div>
+                <label class="block text-xs font-bold text-gray-300 mb-1">كود البانر العلوي (HTML / AdSense Code)</label>
+                <textarea id="topAdCode" rows="3" class="w-full font-mono text-xs p-3 rounded-xl bg-slate-900 border border-white/10 text-emerald-300"></textarea>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-gray-300 mb-1">كود البانر السفلي (HTML / AdSense Code)</label>
+                <textarea id="bottomAdCode" rows="3" class="w-full font-mono text-xs p-3 rounded-xl bg-slate-900 border border-white/10 text-emerald-300"></textarea>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-gray-300 mb-1">كود الإعلان المدمج (In-Feed Ad Code)</label>
+                <textarea id="inFeedAdCode" rows="3" class="w-full font-mono text-xs p-3 rounded-xl bg-slate-900 border border-white/10 text-emerald-300"></textarea>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-gray-300 mb-1">كود ترويسة الموقع (AdSense Verification & Auto-Ads / Monetag Head Script)</label>
+                <textarea id="headerScript" rows="2" placeholder="ضع هنا كود التحقق <script async src='https://pagead2.googlesyndication.com/...'></script>" class="w-full font-mono text-xs p-3 rounded-xl bg-slate-900 border border-white/10 text-amber-300"></textarea>
+              </div>
+            </div>
+
+            <button type="submit" class="btn-primary py-3 px-8 text-sm font-bold shadow-xl">
+              <i class="fas fa-save"></i>
+              <span>حفظ إعدادات وأكواد الإعلانات</span>
+            </button>
+          </form>
+        </div>
+
+        <!-- TAB 3: SITE & HOMEPAGE SETTINGS -->
+        <div id="tabSettings" class="admin-tab-content hidden space-y-6">
+          <div class="pb-4 border-b border-white/10">
+            <h2 class="text-xl font-bold text-white">تخصيص الواجهة والعرض للصفحة الرئيسية</h2>
+            <p class="text-xs text-gray-400 mt-1">التحكم في عنوان وشعار الموقع وطريقة عرض شبكة التطبيقات وكلمة المرور</p>
+          </div>
+
+          <form id="settingsForm" class="glass-panel p-6 border border-white/10 space-y-5">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-bold text-gray-300 mb-2">اسم الموقع بالعربية</label>
+                <input type="text" id="siteNameAr" class="w-full py-2.5 px-3 rounded-xl bg-slate-900 border border-white/10 text-sm">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-gray-300 mb-2">اسم الموقع بالإنجليزية</label>
+                <input type="text" id="siteNameEn" class="w-full py-2.5 px-3 rounded-xl bg-slate-900 border border-white/10 text-sm">
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-bold text-gray-300 mb-2">شعار الموقع (Tagline) بالعربية</label>
+                <input type="text" id="taglineAr" class="w-full py-2.5 px-3 rounded-xl bg-slate-900 border border-white/10 text-sm">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-gray-300 mb-2">شعار الموقع (Tagline) بالإنجليزية</label>
+                <input type="text" id="taglineEn" class="w-full py-2.5 px-3 rounded-xl bg-slate-900 border border-white/10 text-sm">
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 border-t border-white/5 pt-4">
+              <div>
+                <label class="block text-xs font-bold text-gray-300 mb-2">طريقة العرض (عدد أعمدة شبكة التطبيقات)</label>
+                <select id="gridColumns" class="w-full py-2.5 px-3 rounded-xl bg-slate-900 border border-white/10 text-sm text-white">
+                  <option value="2">عمودين (كبير ومفصل)</option>
+                  <option value="3" selected>3 أعمدة (متوازن ومثالي)</option>
+                  <option value="4">4 أعمدة (مضغوط وشامل)</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-amber-400 mb-2">تغيير كلمة مرور المدير (اختياري)</label>
+                <input type="password" id="newAdminPassword" placeholder="اترك فارغاً لعدم التغيير" class="w-full py-2.5 px-3 rounded-xl bg-slate-900 border border-white/10 text-sm">
+              </div>
+            </div>
+
+            <button type="submit" class="btn-primary py-3 px-8 text-sm font-bold shadow-xl mt-4">
+              <i class="fas fa-check"></i>
+              <span>حفظ الإعدادات</span>
+            </button>
+          </form>
+        </div>
+
+        <!-- TAB 4: MESSAGES INBOX -->
+        <div id="tabMessages" class="admin-tab-content hidden space-y-6">
+          <div class="pb-4 border-b border-white/10">
+            <h2 class="text-xl font-bold text-white">صندوق رسائل واستفسارات الزوار</h2>
+            <p class="text-xs text-gray-400 mt-1">الرسائل المرسلة من خلال صفحة "اتصل بنا"</p>
+          </div>
+
+          <div id="messagesContainer" class="space-y-4">
+            <!-- Injected via admin.js -->
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </section>
+
+  <!-- ================= ADD / EDIT APP MODAL ================= -->
+  <div id="appModal" class="modal-overlay">
+    <div class="modal-content p-6 sm:p-8">
+      <div class="flex items-center justify-between pb-4 border-b border-white/10 mb-6">
+        <h3 id="modalTitle" class="text-lg font-bold text-white">إضافة تطبيق جديد</h3>
+        <button onclick="closeAppModal()" class="text-gray-400 hover:text-white"><i class="fas fa-times text-lg"></i></button>
+      </div>
+
+      <form id="appModalForm" class="space-y-4">
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-gray-300 mb-1">اسم التطبيق بالعربية *</label>
+            <input type="text" name="nameAr" id="appNameAr" required class="w-full py-2 px-3 rounded-xl bg-slate-900 border border-white/10 text-sm">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-300 mb-1">اسم التطبيق بالإنجليزية</label>
+            <input type="text" name="nameEn" id="appNameEn" class="w-full py-2 px-3 rounded-xl bg-slate-900 border border-white/10 text-sm">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-gray-300 mb-1">التصنيف</label>
+            <select name="category" id="appCategoryInput" class="w-full py-2 px-3 rounded-xl bg-slate-900 border border-white/10 text-sm text-white">
+              <option value="finance">تداول واستثمار (Finance)</option>
+              <option value="crypto">عملات وبلوكتشين (Crypto)</option>
+              <option value="ai">ذكاء اصطناعي (AI Suite)</option>
+              <option value="tools">أدوات وإنتاجية (Tools)</option>
+              <option value="education">تعليم وأكاديميا (Education)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-300 mb-1">التقييم (1-5)</label>
+            <input type="number" step="0.1" max="5" min="1" name="rating" id="appRatingInput" value="4.9" class="w-full py-2 px-3 rounded-xl bg-slate-900 border border-white/10 text-sm">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-300 mb-1">عدد التحميلات</label>
+            <input type="text" name="downloadsCount" id="appDownloadsCount" value="100K+" class="w-full py-2 px-3 rounded-xl bg-slate-900 border border-white/10 text-sm">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-gray-300 mb-1">رابط تحميل / فتح التطبيق</label>
+            <input type="url" name="downloadUrl" id="appDownloadUrl" placeholder="https://example.com/app" class="w-full py-2 px-3 rounded-xl bg-slate-900 border border-white/10 text-sm">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-300 mb-1">رابط صورة/أيقونة التطبيق (URL)</label>
+            <input type="url" name="iconUrl" id="appIconUrl" placeholder="https://..." class="w-full py-2 px-3 rounded-xl bg-slate-900 border border-white/10 text-sm">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-emerald-400 mb-1">أو ارفع صورة التطبيق من جهازك مباشرة:</label>
+          <input type="file" name="iconFile" accept="image/*" class="w-full text-xs text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-emerald-500/10 file:text-emerald-400 hover:file:bg-emerald-500/20">
+        </div>
+
+        <div class="flex items-center gap-2 pt-1">
+          <input type="checkbox" name="featured" id="appFeatured" class="w-4 h-4 rounded text-emerald-500 focus:ring-emerald-400">
+          <label for="appFeatured" class="text-xs font-bold text-amber-400 cursor-pointer">تمييز التطبيق (عرض شارة «مميز» وتفضيل العرض)</label>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-gray-300 mb-1">وصف قصير (عربي)</label>
+            <textarea name="shortDescAr" id="appShortDescAr" rows="2" class="w-full py-2 px-3 rounded-xl bg-slate-900 border border-white/10 text-sm resize-none"></textarea>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-300 mb-1">وصف قصير (إنجليزي)</label>
+            <textarea name="shortDescEn" id="appShortDescEn" rows="2" class="w-full py-2 px-3 rounded-xl bg-slate-900 border border-white/10 text-sm resize-none"></textarea>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-gray-300 mb-1">مميزات التطبيق (عربي - كل ميزة في سطر)</label>
+            <textarea name="featuresAr" id="appFeaturesAr" rows="3" placeholder="ميزة 1&#10;ميزة 2&#10;ميزة 3" class="w-full py-2 px-3 rounded-xl bg-slate-900 border border-white/10 text-sm"></textarea>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-300 mb-1">مميزات التطبيق (إنجليزي - كل ميزة في سطر)</label>
+            <textarea name="featuresEn" id="appFeaturesEn" rows="3" placeholder="Feature 1&#10;Feature 2&#10;Feature 3" class="w-full py-2 px-3 rounded-xl bg-slate-900 border border-white/10 text-sm"></textarea>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-gray-300 mb-1">الوصف التفصيلي الكامل (عربي)</label>
+          <textarea name="fullDescAr" id="appFullDescAr" rows="3" class="w-full py-2 px-3 rounded-xl bg-slate-900 border border-white/10 text-sm"></textarea>
+        </div>
+
+        <div class="flex items-center justify-end gap-3 pt-4 border-t border-white/10">
+          <button type="button" onclick="closeAppModal()" class="btn-secondary text-xs py-2.5 px-5">إلغاء</button>
+          <button type="submit" class="btn-primary text-xs py-2.5 px-6 font-bold">
+            <i class="fas fa-save"></i>
+            <span>حفظ التطبيق</span>
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <script src="/js/i18n.js"></script>
+  <script src="/js/admin.js"></script>
+</body>
+</html>
