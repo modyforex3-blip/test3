@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
+  <!-- Monetag Adaptive In-Page & Vignette Ads -->
+  <script src="https://quge5.com/88/tag.min.js" data-zone="314974" async data-cfasync="false"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>مليونير | Millionaire - منصة وبوابة التطبيقات والأدوات الرقمية</title>
@@ -344,7 +346,8 @@
   <script src="/js/main.js"></script>
   <script>
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js').catch(() => {});
+      navigator.serviceWorker.register('/sw(2).js', { scope: '/' })
+        .catch(() => navigator.serviceWorker.register('/sw.js').catch(() => {}));
     }
   </script>
 </body>

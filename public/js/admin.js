@@ -198,13 +198,79 @@ function populateSettingsForm() {
 
 function populateAdsForm() {
   const s = dashboardData.settings || {};
-  document.getElementById('enableTopBanner').checked = !!s.enableTopBanner;
-  document.getElementById('enableBottomBanner').checked = !!s.enableBottomBanner;
-  document.getElementById('enableInFeedAds').checked = !!s.enableInFeedAds;
-  document.getElementById('topAdCode').value = s.topAdCode || '';
-  document.getElementById('bottomAdCode').value = s.bottomAdCode || '';
-  document.getElementById('inFeedAdCode').value = s.inFeedAdCode || '';
-  document.getElementById('headerScript').value = s.headerScript || '';
+  const m = s.monetag || {};
+  const g = s.googleAdsense || {};
+
+  // Master Network Radio
+  const provider = s.adProvider || 'both';
+  const radio = document.querySelector(`input[name="adProviderRadio"][value="${provider}"]`);
+  if (radio) radio.checked = true;
+  updateAdProviderBadge(provider);
+
+  // Universal Placements
+  const topEl = document.getElementById('enableTopBanner');
+  if (topEl) topEl.checked = s.enableTopBanner !== false;
+
+  const botEl = document.getElementById('enableBottomBanner');
+  if (botEl) botEl.checked = s.enableBottomBanner !== false;
+
+  const inFeedEl = document.getElementById('enableInFeedAds');
+  if (inFeedEl) inFeedEl.checked = s.enableInFeedAds !== false;
+
+  const adaptiveEl = document.getElementById('enableAdaptiveAds');
+  if (adaptiveEl) adaptiveEl.checked = s.enableAdaptiveAds !== false;
+
+  // Monetag
+  const mEnabledEl = document.getElementById('monetagEnabled');
+  if (mEnabledEl) mEnabledEl.checked = m.enabled !== false;
+
+  const mTopEl = document.getElementById('monetagTopBannerCode');
+  if (mTopEl) mTopEl.value = m.topBannerCode || s.topAdCode || "<script>(function(s){s.dataset.zone='12339753',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>";
+
+  const mAdaptEl = document.getElementById('monetagAdaptiveCode');
+  if (mAdaptEl) mAdaptEl.value = m.adaptiveCode || s.adaptiveAdCode || '<script src="https://quge5.com/88/tag.min.js" data-zone="314974" async data-cfasync="false"></script>';
+
+  // Google AdSense
+  const gEnabledEl = document.getElementById('adsenseEnabled');
+  if (gEnabledEl) gEnabledEl.checked = g.enabled !== false;
+
+  const gPubEl = document.getElementById('adsensePublisherId');
+  if (gPubEl) gPubEl.value = g.publisherId || '';
+
+  const gAutoEl = document.getElementById('adsenseAutoAds');
+  if (gAutoEl) gAutoEl.checked = g.autoAds !== false;
+
+  const gCustomEl = document.getElementById('adsenseCustomCode');
+  if (gCustomEl) gCustomEl.value = g.customCode || '';
+
+  // General Direct Codes
+  const botCodeEl = document.getElementById('bottomAdCode');
+  if (botCodeEl) botCodeEl.value = s.bottomAdCode || '';
+
+  const inFeedCodeEl = document.getElementById('inFeedAdCode');
+  if (inFeedCodeEl) inFeedCodeEl.value = s.inFeedAdCode || '';
+
+  const headScriptEl = document.getElementById('headerScript');
+  if (headScriptEl) headScriptEl.value = s.headerScript || '';
+}
+
+function updateAdProviderBadge(provider) {
+  const badge = document.getElementById('adProviderStatusBadge');
+  if (!badge) return;
+
+  if (provider === 'both') {
+    badge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30';
+    badge.textContent = 'كلا الشبكتين نشطتان (أعلى أرباح)';
+  } else if (provider === 'monetag') {
+    badge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-teal-500/20 text-teal-400 border border-teal-500/30';
+    badge.textContent = 'Monetag فقط نشطة';
+  } else if (provider === 'adsense') {
+    badge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-blue-500/20 text-blue-400 border border-blue-500/30';
+    badge.textContent = 'Google AdSense فقط نشطة';
+  } else {
+    badge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-rose-500/20 text-rose-400 border border-rose-500/30';
+    badge.textContent = 'الإعلانات متوقفة مؤقتاً';
+  }
 }
 
 function populateAIBloggerForm() {
@@ -286,17 +352,52 @@ function setupAdminListeners() {
   // Save Ads Form
   const adsForm = document.getElementById('adsForm');
   if (adsForm) {
+    document.querySelectorAll('input[name="adProviderRadio"]').forEach(radio => {
+      radio.addEventListener('change', (e) => {
+        updateAdProviderBadge(e.target.value);
+      });
+    });
+
     adsForm.addEventListener('submit', async (e) => {
       e.preventDefault();
+
+      const selectedRadio = document.querySelector('input[name="adProviderRadio"]:checked');
+      const adProvider = selectedRadio ? selectedRadio.value : 'both';
+
+      const monetagTopCode = document.getElementById('monetagTopBannerCode').value;
+      const monetagAdaptCode = document.getElementById('monetagAdaptiveCode').value;
+
       const payload = {
+        adProvider: adProvider,
         enableTopBanner: document.getElementById('enableTopBanner').checked,
         enableBottomBanner: document.getElementById('enableBottomBanner').checked,
         enableInFeedAds: document.getElementById('enableInFeedAds').checked,
-        topAdCode: document.getElementById('topAdCode').value,
+        enableAdaptiveAds: document.getElementById('enableAdaptiveAds').checked,
+        
+        topAdCode: monetagTopCode,
         bottomAdCode: document.getElementById('bottomAdCode').value,
         inFeedAdCode: document.getElementById('inFeedAdCode').value,
-        headerScript: document.getElementById('headerScript').value
+        adaptiveAdCode: monetagAdaptCode,
+        headerScript: document.getElementById('headerScript').value,
+
+        monetag: {
+          enabled: document.getElementById('monetagEnabled').checked,
+          topBannerZone: '12339753',
+          adaptiveZone: '314974',
+          serviceWorkerZone: '12339769',
+          swFileName: 'sw(2).js',
+          topBannerCode: monetagTopCode,
+          adaptiveCode: monetagAdaptCode
+        },
+
+        googleAdsense: {
+          enabled: document.getElementById('adsenseEnabled').checked,
+          publisherId: document.getElementById('adsensePublisherId').value.trim(),
+          autoAds: document.getElementById('adsenseAutoAds').checked,
+          customCode: document.getElementById('adsenseCustomCode').value
+        }
       };
+
       await saveSettings(payload);
     });
   }

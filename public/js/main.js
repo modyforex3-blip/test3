@@ -45,35 +45,56 @@ function applyLanguageDirection() {
   document.documentElement.lang = isEn ? 'en' : 'ar';
 }
 
+function executeAdCode(container, code, fallback) {
+  if (!container) return;
+  const content = (code && code.trim()) ? code : fallback;
+  container.innerHTML = content || '';
+
+  // Script tags inserted via innerHTML don't run; recreate them to trigger execution
+  const scripts = container.querySelectorAll('script');
+  scripts.forEach(oldScript => {
+    const newScript = document.createElement('script');
+    Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
+    if (oldScript.innerHTML) {
+      newScript.text = oldScript.innerHTML;
+    }
+    oldScript.parentNode.replaceChild(newScript, oldScript);
+  });
+}
+
 function renderAdBanners() {
   const topAdContainer = document.getElementById('topAdContainer');
   const bottomAdContainer = document.getElementById('bottomAdContainer');
 
+  const adsGloballyDisabled = siteSettings.adProvider === 'none';
+
   if (topAdContainer) {
-    if (siteSettings.enableTopBanner) {
+    if (!adsGloballyDisabled && siteSettings.enableTopBanner !== false) {
       topAdContainer.style.display = 'flex';
-      topAdContainer.innerHTML = siteSettings.topAdCode || `
+      executeAdCode(topAdContainer, siteSettings.topAdCode, `
         <div class="ad-demo-box">
           <span class="ad-badge">${window.i18n.t('sponsored')} (AdSense / Monetag)</span>
           <div class="ad-content-inner">مساحة إعلانية علوية استراتيجية متوافقة 100% مع معايير AdSense & Monetag</div>
         </div>
-      `;
+      `);
     } else {
       topAdContainer.style.display = 'none';
+      topAdContainer.innerHTML = '';
     }
   }
 
   if (bottomAdContainer) {
-    if (siteSettings.enableBottomBanner) {
+    if (!adsGloballyDisabled && siteSettings.enableBottomBanner !== false) {
       bottomAdContainer.style.display = 'flex';
-      bottomAdContainer.innerHTML = siteSettings.bottomAdCode || `
+      executeAdCode(bottomAdContainer, siteSettings.bottomAdCode, `
         <div class="ad-demo-box">
           <span class="ad-badge">${window.i18n.t('sponsored')} (AdSense / Monetag)</span>
           <div class="ad-content-inner">مساحة إعلانية سفلية ثابتة - تحقق أعلى عائد ظهور ونقرات مشروعة</div>
         </div>
-      `;
+      `);
     } else {
       bottomAdContainer.style.display = 'none';
+      bottomAdContainer.innerHTML = '';
     }
   }
 }

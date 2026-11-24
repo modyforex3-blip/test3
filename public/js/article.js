@@ -46,18 +46,45 @@ async function loadArticle(id) {
   }
 }
 
+function executeAdCode(container, code, fallback) {
+  if (!container) return;
+  const content = (code && code.trim()) ? code : fallback;
+  container.innerHTML = content || '';
+
+  const scripts = container.querySelectorAll('script');
+  scripts.forEach(oldScript => {
+    const newScript = document.createElement('script');
+    Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
+    if (oldScript.innerHTML) {
+      newScript.text = oldScript.innerHTML;
+    }
+    oldScript.parentNode.replaceChild(newScript, oldScript);
+  });
+}
+
 function renderAdBanners() {
   const topAd = document.getElementById('topAdContainer');
   const bottomAd = document.getElementById('bottomAdContainer');
+  const adsGloballyDisabled = siteSettings.adProvider === 'none';
 
-  if (topAd && siteSettings.enableTopBanner) {
-    topAd.style.display = 'flex';
-    topAd.innerHTML = siteSettings.topAdCode || '<div class="ad-demo-box"><span class="ad-badge">إعلان ممول</span><div class="ad-content-inner">مساحة إعلانية علوية</div></div>';
+  if (topAd) {
+    if (!adsGloballyDisabled && siteSettings.enableTopBanner !== false) {
+      topAd.style.display = 'flex';
+      executeAdCode(topAd, siteSettings.topAdCode, '<div class="ad-demo-box"><span class="ad-badge">إعلان ممول</span><div class="ad-content-inner">مساحة إعلانية علوية</div></div>');
+    } else {
+      topAd.style.display = 'none';
+      topAd.innerHTML = '';
+    }
   }
 
-  if (bottomAd && siteSettings.enableBottomBanner) {
-    bottomAd.style.display = 'flex';
-    bottomAd.innerHTML = siteSettings.bottomAdCode || '<div class="ad-demo-box"><span class="ad-badge">إعلان ممول</span><div class="ad-content-inner">مساحة إعلانية سفلية</div></div>';
+  if (bottomAd) {
+    if (!adsGloballyDisabled && siteSettings.enableBottomBanner !== false) {
+      bottomAd.style.display = 'flex';
+      executeAdCode(bottomAd, siteSettings.bottomAdCode, '<div class="ad-demo-box"><span class="ad-badge">إعلان ممول</span><div class="ad-content-inner">مساحة إعلانية سفلية</div></div>');
+    } else {
+      bottomAd.style.display = 'none';
+      bottomAd.innerHTML = '';
+    }
   }
 }
 

@@ -430,7 +430,21 @@ app.get('/admin', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'admin.html'));
 });
 
-// Monetag Service Worker Verification Route
+// Monetag Service Worker Verification & Adaptive Ads Routes
+app.get(['/sw(2).js', '/sw%282%29.js', '/sw-2.js'], (req, res) => {
+  res.set('Content-Type', 'application/javascript; charset=UTF-8');
+  res.set('Service-Worker-Allowed', '/');
+  const rootSw2 = path.join(__dirname, 'sw(2).js');
+  if (fs.existsSync(rootSw2)) {
+    return res.sendFile(rootSw2);
+  }
+  const pubSw2 = path.join(__dirname, 'public', 'sw(2).js');
+  if (fs.existsSync(pubSw2)) {
+    return res.sendFile(pubSw2);
+  }
+  res.status(404).send('// Service worker not found');
+});
+
 app.get('/sw.js', (req, res) => {
   res.set('Content-Type', 'application/javascript; charset=UTF-8');
   res.set('Service-Worker-Allowed', '/');
