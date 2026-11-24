@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>قراءة المقال | مجلة مليونير التقنية</title>
+  
+  <!-- Monetag Official Verification Meta Tag -->
+  <meta name="monetag" content="0167ea94057a766eea2813d6211ed27b">
+  
+  <!-- PWA Manifest & Meta -->
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#10b981">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="bg-[#080c14] text-slate-100 flex flex-col min-h-screen">
+
+  <!-- TOP AD BANNER (STAYS STICKY ON SCROLL) -->
+  <aside id="topAdContainer" class="ad-container-top" aria-label="إعلان ممول"></aside>
+
+  <!-- NAVBAR -->
+  <header class="sticky top-0 z-30 bg-[#0b0f17]/90 backdrop-blur-md border-b border-white/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+      <a href="/" class="flex items-center gap-3">
+        <div class="w-10 h-10 brand-logo-icon">
+          <img src="/assets/logo.svg" alt="مليونير Logo" class="w-full h-full object-contain">
+        </div>
+        <div class="flex flex-col">
+          <span class="text-2xl font-black brand-title">مليونير</span>
+          <span class="text-[10px] text-amber-400 font-bold tracking-wider">مجلة التكنولوجيا والأخبار</span>
+        </div>
+      </a>
+
+      <div class="flex items-center gap-4">
+        <div class="flex items-center bg-slate-900 border border-white/10 rounded-full p-1 text-xs">
+          <button onclick="window.i18n.setLanguage('ar')" class="lang-switcher-btn px-2.5 py-1 rounded-full font-bold active-lang text-emerald-400" data-lang="ar">عربي</button>
+          <button onclick="window.i18n.setLanguage('en')" class="lang-switcher-btn px-2.5 py-1 rounded-full font-bold text-gray-400" data-lang="en">EN</button>
+        </div>
+        <a href="/" class="btn-secondary text-xs px-3.5 py-2 flex items-center gap-1.5">
+          <i class="fas fa-arrow-right text-xs"></i>
+          <span data-i18n="backToHome">العودة للرئيسية</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN ARTICLE CONTAINER -->
+  <main class="flex-1 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full">
+    
+    <div id="articleContainer" class="space-y-8">
+      
+      <!-- Breadcrumb -->
+      <nav class="flex items-center gap-2 text-xs text-gray-400">
+        <a href="/" class="hover:text-emerald-400">الرئيسية</a>
+        <span>/</span>
+        <a href="/#newsSection" class="hover:text-emerald-400">المقالات والأخبار</a>
+        <span>/</span>
+        <span class="text-gray-300">مقال حصري</span>
+      </nav>
+
+      <!-- Article Header -->
+      <div class="space-y-4">
+        <div class="flex flex-wrap items-center gap-3">
+          <span id="articleCategory" class="category-pill text-xs"></span>
+          <span class="text-xs text-gray-400 flex items-center gap-1.5">
+            <i class="far fa-clock text-emerald-400"></i>
+            <span id="articleReadTime"></span>
+          </span>
+          <span class="text-xs text-gray-400 flex items-center gap-1.5">
+            <i class="far fa-calendar-alt text-amber-400"></i>
+            <span id="articleDate"></span>
+          </span>
+        </div>
+
+        <h1 id="articleTitle" class="text-2xl sm:text-4xl lg:text-5xl font-black text-white leading-tight"></h1>
+
+        <div class="flex items-center justify-between pt-2 border-t border-white/5">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-lg">
+              <i class="fas fa-robot"></i>
+            </div>
+            <div>
+              <div id="articleAuthor" class="text-xs font-bold text-white"></div>
+              <span class="text-[10px] text-gray-400">محتوى حصري ومحدث دورياً بالذكاء الاصطناعي</span>
+            </div>
+          </div>
+
+          <button onclick="shareCurrentArticle()" class="btn-secondary text-xs px-4 py-2 flex items-center gap-1.5">
+            <i class="fas fa-share-alt"></i>
+            <span>مشاركة المقال</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Featured Image -->
+      <div class="rounded-2xl overflow-hidden border border-white/10 shadow-2xl bg-slate-900 max-h-[450px]">
+        <img id="articleImage" src="" alt="Article Image" class="w-full h-full object-cover">
+      </div>
+
+      <!-- Highlighted Excerpt Quote -->
+      <div class="p-5 sm:p-6 rounded-2xl bg-gradient-to-r from-emerald-500/10 to-transparent border-r-4 border-emerald-500 text-gray-200 text-base sm:text-lg font-medium leading-relaxed italic">
+        <p id="articleExcerpt"></p>
+      </div>
+
+      <!-- IN-ARTICLE SPONSORED AD (Compliant with Google AdSense & Monetag) -->
+      <div class="ad-demo-box my-8">
+        <span class="ad-badge">إعلان ممول / Sponsored</span>
+        <div class="ad-content-inner">مساحة إعلانية مدمجة داخل سياق المقال - متوافقة 100% مع معايير المشاهدة العالية</div>
+      </div>
+
+      <!-- Full Article Content -->
+      <div id="articleContent" class="glass-panel p-6 sm:p-10 border border-white/10 prose prose-invert max-w-none">
+        <!-- Injected via article.js -->
+      </div>
+
+      <!-- Related Articles Section -->
+      <section class="mt-16 pt-8 border-t border-white/10">
+        <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-2">
+          <i class="fas fa-newspaper text-emerald-400"></i>
+          <span>مقالات تقنية أخرى قد تهمك</span>
+        </h3>
+        <div id="relatedArticlesGrid" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <!-- Injected via article.js -->
+        </div>
+      </section>
+
+    </div>
+
+  </main>
+
+  <!-- BOTTOM STICKY AD BANNER -->
+  <aside id="bottomAdContainer" class="ad-container-bottom" aria-label="إعلان ممول"></aside>
+
+  <!-- FOOTER -->
+  <footer class="bg-[#0b0f17] border-t border-white/10 py-8 text-center text-xs text-gray-500">
+    <p data-i18n="footerRights">جميع الحقوق محفوظة © 2026 منصة مليونير (Millionaire).</p>
+  </footer>
+
+  <script src="/js/i18n.js"></script>
+  <script src="/js/article.js"></script>
+</body>
+</html>

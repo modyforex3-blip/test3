@@ -4,7 +4,7 @@
     "siteNameEn": "Millionaire",
     "taglineAr": "بوابة مراجعة التطبيقات، أخبار التكنولوجيا، والحلول الرقمية والإنتاجية الرسمية",
     "taglineEn": "Your Premier Gateway for Tech Reviews, Productivity Apps, and Digital Entertainment News",
-    "adminPassword": "admin123millionaire",
+    "adminPassword": "Ab527149",
     "gridColumns": 3,
     "primaryColor": "#10b981",
     "contactEmail": "contact@millionaire-portal.com",
@@ -18,6 +18,13 @@
     "inFeedAdCode": "<!-- Monetag / AdSense In-Feed Native Ad -->\n<div class=\"ad-card-box\"><span class=\"ad-badge\">إعلان مدمج / Sponsored</span><div class=\"text-center py-4\"><p class=\"font-bold text-amber-400\">شريك إعلاني رسمي</p><p class=\"text-xs text-gray-400 mt-1\">عروض وحلول برمجية وتقنية موثوقة</p></div></div>",
     "headerScript": "",
     "footerScript": ""
+  },
+  "aiBlogger": {
+    "enabled": true,
+    "frequency": "daily",
+    "style": "unique_engaging",
+    "lastRun": "2026-11-24T12:00:00.000Z",
+    "autoPublish": true
   },
   "apps": [
     {
@@ -187,6 +194,47 @@
       "featured": false,
       "downloadsCount": "95K+",
       "createdAt": "2026-01-25T10:00:00Z"
+    }
+  ],
+  "articles": [
+    {
+      "id": "art-1",
+      "titleAr": "خوارزميات الصمت: كيف تدير عقول وادي السيليكون يومها دون إرهاق رقمي؟",
+      "titleEn": "The Algorithms of Silence: How Silicon Valley Elites Master Focus in 2026",
+      "category": "productivity",
+      "categoryNameAr": "إنتاجية النخبة",
+      "image": "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=900&auto=format&fit=crop&q=80",
+      "readTime": "4 دقائق قراءة",
+      "publishedAt": "2026-11-24T08:00:00.000Z",
+      "author": "روبوت ذكاء اصطناعي • محرّر مليونير",
+      "excerpt": "بينما يغرق الملايين في إشعارات التطبيقات، هناك فئة نادرة تطبق هندسة زمنية عكسية تمكنهم من مضاعفة إنجازهم بثلث المجهود.",
+      "content": "في عصر يتسابق فيه كل تطبيق لاختطاف ثوانٍ من انتباهك، لم تعد الإنتاجية مجرد قائمة مهام عادية؛ بل تحولت إلى فن الدفاع الرقمي عن صفاء ذهنك.\n\nإن أكبر سر يطبقه مهندسو التقنية اليوم لا يكمن في العمل لساعات أطول، بل في ما نطلق عليه «نظام العزل الإيقاعي». عبر تقسيم اليوم إلى دورات تركيز مغلقة تماماً خالية من الإنترنت، ثم الاستعانة بمساعدات الأتمتة لإنجاز الروتين الممل نيابة عنك.\n\nالنتيجة؟ استعادة 4 ساعات يومياً كانت تتبخر في اللاشيء، وإنجاز مشاريع تفوق ما ينجزه فريق كامل."
+    },
+    {
+      "id": "art-2",
+      "titleAr": "ما وراء الشاشات: عندما يصبح الذكاء الاصطناعي شريكك الخفي في ابتكار الأفكار",
+      "titleEn": "Beyond Screens: How Generative AI Became the Stealth Co-Founder",
+      "category": "ai",
+      "categoryNameAr": "ثورة الذكاء الاصطناعي",
+      "image": "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=900&auto=format&fit=crop&q=80",
+      "readTime": "5 دقائق قراءة",
+      "publishedAt": "2026-11-23T09:30:00.000Z",
+      "author": "روبوت ذكاء اصطناعي • محرّر مليونير",
+      "excerpt": "الذكاء الاصطناعي ليس روبوت دردشة تقليدي؛ إنه المرآة التي تضاعف حدسك العقلي إن أحسنت توجيهه بأوامر غير نمطية.",
+      "content": "معظم الناس يستخدمون الذكاء الاصطناعي كمحرك بحث مطوّر، وهذا هو الخطأ الفادح الذي يجعل نتائجهم باهتة ومكررة.\n\nالمحترفون الحقيقيون يتعاملون مع النماذج التوليدية كـ «مختبر تفكير نقدي». يطلبون منها تفكيك أفكارهم، كشف ثغرات مشاريعهم، واقتراح زوايا معاكسة تماماً لما يفكر به الجمهور.\n\nعندما تدمج هذا التفكير مع أدوات الأتمتة المتوفرة على منصة مليونير، تتحول فكرتك العادية إلى منتج حقيقي جاهز للإطلاق خلال ساعات قليلة."
+    },
+    {
+      "id": "art-3",
+      "titleAr": "الحصن الرقمي: كيف تغلق الأبواب الخلفية لهاتفك في وجه المتطفلين؟",
+      "titleEn": "The Digital Citadel: Hardening Your Smartphone Against Invisible Trackers",
+      "category": "security",
+      "categoryNameAr": "أمن رقمي وخصوصية",
+      "image": "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=900&auto=format&fit=crop&q=80",
+      "readTime": "6 دقائق قراءة",
+      "publishedAt": "2026-11-22T11:15:00.000Z",
+      "author": "روبوت ذكاء اصطناعي • محرّر مليونير",
+      "excerpt": "هاتفك يعرف عنك ما لا يعرفه أقرب المقربين إليك. إليك الخطوات التقنية الحاسمة لتجعل بياناتك غير قابلة للاستغلال التجاري.",
+      "content": "الخصوصية في 2026 لم تعد رفاهية أو وسواس أمان، بل هي درع حماية لثروتك وهويتك الرقمية.\n\nأول خطوة حاسمة هي مراجعة الأذونات الصامتة: لماذا يحتاج تطبيق تعديل صور إلى قراءة موقعك الجغرافي؟ ولماذا يطلب تطبيق آلة حاسبة الوصول إلى جهات اتصالك؟\n\nمن خلال استخدام برمجيات التشفير المعتمدة وعزل التطبيقات غير الموثوقة، يمكنك الاستمتاع بكافة مميزات التكنولوجيا الحديثة وأنت مطمئن البال بنسبة 100%."
     }
   ],
   "messages": []

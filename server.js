@@ -4,6 +4,7 @@ const fs = require('fs');
 const multer = require('multer');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
+const aiBlogger = require('./ai-blogger');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -74,7 +75,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 function requireAdmin(req, res, next) {
   const db = readDatabase();
   const token = req.cookies['millionaire_admin_token'];
-  const expectedPassword = db.settings.adminPassword || 'admin123millionaire';
+  const expectedPassword = db.settings.adminPassword || 'Ab527149';
 
   if (token && token === Buffer.from(expectedPassword).toString('base64')) {
     return next();
@@ -84,7 +85,7 @@ function requireAdmin(req, res, next) {
 
 // ---------------- PUBLIC API ROUTES ----------------
 
-// Get site public data & apps list
+// Get site public data & apps & articles list
 app.get('/api/public-data', (req, res) => {
   const db = readDatabase();
   const safeSettings = { ...db.settings };
@@ -93,7 +94,34 @@ app.get('/api/public-data', (req, res) => {
   res.json({
     success: true,
     settings: safeSettings,
-    apps: db.apps || []
+    apps: db.apps || [],
+    articles: db.articles || []
+  });
+});
+
+// Get all articles (for news section / blog)
+app.get('/api/articles', (req, res) => {
+  const db = readDatabase();
+  res.json({ success: true, articles: db.articles || [] });
+});
+
+// Get single article details
+app.get('/api/articles/:id', (req, res) => {
+  const db = readDatabase();
+  const article = (db.articles || []).find(a => a.id === req.params.id);
+  if (!article) {
+    return res.status(404).json({ success: false, message: 'المقال غير موجود' });
+  }
+
+  const relatedArticles = (db.articles || []).filter(a => a.id !== req.params.id).slice(0, 3);
+  const safeSettings = { ...db.settings };
+  delete safeSettings.adminPassword;
+
+  res.json({
+    success: true,
+    article,
+    relatedArticles,
+    settings: safeSettings
   });
 });
 
@@ -153,7 +181,7 @@ app.post('/api/contact', (req, res) => {
 app.post('/api/admin/login', (req, res) => {
   const { password } = req.body;
   const db = readDatabase();
-  const validPassword = db.settings.adminPassword || 'admin123millionaire';
+  const validPassword = db.settings.adminPassword || 'Ab527149';
 
   if (password === validPassword) {
     const token = Buffer.from(validPassword).toString('base64');
@@ -172,7 +200,7 @@ app.post('/api/admin/login', (req, res) => {
 app.get('/api/admin/check-auth', (req, res) => {
   const db = readDatabase();
   const token = req.cookies['millionaire_admin_token'];
-  const expectedPassword = db.settings.adminPassword || 'admin123millionaire';
+  const expectedPassword = db.settings.adminPassword || 'Ab527149';
 
   if (token && token === Buffer.from(expectedPassword).toString('base64')) {
     return res.json({ success: true, authenticated: true });
@@ -193,8 +221,44 @@ app.get('/api/admin/dashboard-data', requireAdmin, (req, res) => {
     success: true,
     settings: db.settings,
     apps: db.apps || [],
-    messages: db.messages || []
+    messages: db.messages || [],
+    articles: db.articles || [],
+    aiBlogger: db.aiBlogger || { enabled: true, frequency: "daily", autoPublish: true }
   });
+});
+
+// Admin AI Blogger manual trigger: generate new article immediately
+app.post('/api/admin/ai-blogger/generate', requireAdmin, (req, res) => {
+  try {
+    const article = aiBlogger.generateNewArticle(req.body.category);
+    res.json({
+      success: true,
+      article,
+      message: 'تم توليد ونشر مقال تقني فريد جديد فوراً بنجاح!'
+    });
+  } catch (err) {
+    console.error('AI Blogger manual error:', err);
+    res.status(500).json({ success: false, message: 'حدث خطأ أثناء توليد المقال' });
+  }
+});
+
+// Admin AI Blogger update settings
+app.post('/api/admin/ai-blogger/settings', requireAdmin, (req, res) => {
+  const db = readDatabase();
+  db.aiBlogger = {
+    ...(db.aiBlogger || {}),
+    ...req.body
+  };
+  writeDatabase(db);
+  res.json({ success: true, aiBlogger: db.aiBlogger, message: 'تم حفظ إعدادات روبوت الذكاء الاصطناعي بنجاح' });
+});
+
+// Admin delete article
+app.delete('/api/admin/articles/:id', requireAdmin, (req, res) => {
+  const db = readDatabase();
+  db.articles = (db.articles || []).filter(a => a.id !== req.params.id);
+  writeDatabase(db);
+  res.json({ success: true, message: 'تم حذف المقال بنجاح' });
 });
 
 // Admin add new app
@@ -350,6 +414,10 @@ app.get('/run/:id', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'run.html'));
 });
 
+app.get('/article/:id', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'article.html'));
+});
+
 app.get('/contact', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'contact.html'));
 });
@@ -385,6 +453,9 @@ app.get('/health', (req, res) => {
 // Start Server
 app.listen(PORT, () => {
   console.log(`🚀 خادم موقع مليونير يعمل بنجاح على: http://localhost:${PORT}`);
+
+  // Start AI Auto-Blogger Daily Scheduler
+  aiBlogger.initAIBloggerScheduler();
 
   // Safe Auto-Keep-Alive Mechanism (100% Legal & Safe):
   // Render spins down free services after 15 min of inactivity.

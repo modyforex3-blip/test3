@@ -39,12 +39,6 @@
           <span>تسجيل الدخول</span>
         </button>
 
-        <div class="p-3 bg-emerald-500/10 rounded-xl border border-emerald-500/20 text-[11px] text-gray-300 text-center">
-          <span class="text-emerald-400 font-bold">كلمة المرور الافتراضية:</span>
-          <code class="bg-black/40 px-2 py-0.5 rounded font-mono text-amber-300 mr-1">admin123millionaire</code>
-          <p class="text-[10px] text-gray-400 mt-1">(يمكنك تغييرها بسهولة من الإعدادات بالداخل)</p>
-        </div>
-
         <div class="text-center pt-2">
           <a href="/" class="text-xs text-gray-400 hover:text-emerald-400 transition-colors">
             <i class="fas fa-arrow-right text-[10px]"></i> العودة للرئيسية
@@ -86,6 +80,10 @@
           <i class="fas fa-th-large text-emerald-400 text-sm"></i>
           <span>إدارة التطبيقات</span>
         </button>
+        <button onclick="switchAdminTab('tabAIBlogger')" id="btn-tabAIBlogger" class="admin-nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold text-gray-300 hover:bg-white/5 transition-all">
+          <i class="fas fa-robot text-teal-400 text-sm"></i>
+          <span>روبوت المقالات الذكي (AI Blogger)</span>
+        </button>
         <button onclick="switchAdminTab('tabAds')" id="btn-tabAds" class="admin-nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold text-gray-300 hover:bg-white/5 transition-all">
           <i class="fas fa-ad text-amber-400 text-sm"></i>
           <span>إدارة الإعلانات (AdSense / Monetag)</span>
@@ -104,22 +102,26 @@
       <main class="flex-1 p-6 sm:p-8 max-w-6xl mx-auto w-full space-y-8">
         
         <!-- Stats Row -->
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          <div class="glass-panel p-5 border-l-4 border-emerald-500">
+        <div class="grid grid-cols-2 lg:grid-cols-5 gap-3">
+          <div class="glass-panel p-4 border-l-4 border-emerald-500">
             <span class="text-xs text-gray-400 font-semibold">إجمالي التطبيقات</span>
-            <div id="statTotalApps" class="text-3xl font-black text-white mt-1">0</div>
+            <div id="statTotalApps" class="text-2xl font-black text-white mt-1">0</div>
           </div>
-          <div class="glass-panel p-5 border-l-4 border-amber-500">
+          <div class="glass-panel p-4 border-l-4 border-teal-500">
+            <span class="text-xs text-gray-400 font-semibold">مقالات الذكاء الاصطناعي</span>
+            <div id="statTotalArticles" class="text-2xl font-black text-teal-400 mt-1">0</div>
+          </div>
+          <div class="glass-panel p-4 border-l-4 border-amber-500">
             <span class="text-xs text-gray-400 font-semibold">التطبيقات المميزة</span>
-            <div id="statFeaturedApps" class="text-3xl font-black text-amber-400 mt-1">0</div>
+            <div id="statFeaturedApps" class="text-2xl font-black text-amber-400 mt-1">0</div>
           </div>
-          <div class="glass-panel p-5 border-l-4 border-blue-500">
-            <span class="text-xs text-gray-400 font-semibold">المساحات الإعلانية المفعلة</span>
-            <div id="statActiveAds" class="text-3xl font-black text-blue-400 mt-1">0 / 3</div>
+          <div class="glass-panel p-4 border-l-4 border-blue-500">
+            <span class="text-xs text-gray-400 font-semibold">المساحات الإعلانية</span>
+            <div id="statActiveAds" class="text-2xl font-black text-blue-400 mt-1">0 / 3</div>
           </div>
-          <div class="glass-panel p-5 border-l-4 border-purple-500">
-            <span class="text-xs text-gray-400 font-semibold">رسائل واستفسارات الزوار</span>
-            <div id="statMessages" class="text-3xl font-black text-purple-400 mt-1">0</div>
+          <div class="glass-panel p-4 border-l-4 border-purple-500 col-span-2 lg:col-span-1">
+            <span class="text-xs text-gray-400 font-semibold">رسائل واستفسارات</span>
+            <div id="statMessages" class="text-2xl font-black text-purple-400 mt-1">0</div>
           </div>
         </div>
 
@@ -151,6 +153,114 @@
                   </tr>
                 </thead>
                 <tbody id="appsTableBody">
+                  <!-- Populated via admin.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB: AI AUTO-BLOGGER MANAGEMENT -->
+        <div id="tabAIBlogger" class="admin-tab-content hidden space-y-6">
+          <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-white/10">
+            <div>
+              <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-500/10 text-teal-400 text-xs font-bold mb-1">
+                <i class="fas fa-robot"></i>
+                <span>نظام الذكاء الاصطناعي التوليدي الحصري</span>
+              </div>
+              <h2 class="text-xl font-bold text-white">روبوت النشر التلقائي للمقالات والأخبار</h2>
+              <p class="text-xs text-gray-400 mt-1">يقوم الروبوت بتوليد ونشر مقالات تقنية حصرية يومياً بأسلوب مشوق ومتفرد غير مكرر</p>
+            </div>
+            
+            <!-- Generate Now Button -->
+            <button onclick="triggerAIBlogGeneration()" id="btnGenerateNow" class="btn-gold text-xs py-3 px-5 font-bold flex items-center gap-2 shadow-xl whitespace-nowrap">
+              <i class="fas fa-bolt text-sm"></i>
+              <span>توليد ونشر مقال جديد فوراً</span>
+            </button>
+          </div>
+
+          <!-- Bot Controls Grid -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            
+            <!-- Bot Status Card -->
+            <div class="glass-panel p-5 border border-teal-500/30 space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-white">حالة الروبوت</span>
+                <span class="flex items-center gap-1.5 text-xs text-emerald-400 font-bold px-2 py-0.5 rounded-full bg-emerald-500/10">
+                  <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                  <span>نشط وجاهز</span>
+                </span>
+              </div>
+              <p class="text-xs text-gray-400 leading-relaxed">
+                يعمل محرك الروبوت باستمرار على السيرفر ويتحقق من جدول النشر التلقائي كل يوم دون تدخل يدوي.
+              </p>
+              <div class="text-[11px] text-gray-500 pt-2 border-t border-white/5">
+                <span>آخر مقال نُشر: </span>
+                <strong id="aiLastRunTime" class="text-gray-300">اليوم</strong>
+              </div>
+            </div>
+
+            <!-- Bot Settings Form -->
+            <div class="md:col-span-2 glass-panel p-5 border border-white/10">
+              <h3 class="font-bold text-sm text-white mb-3 flex items-center gap-2">
+                <i class="fas fa-sliders-h text-teal-400"></i>
+                <span>إعدادات النشر وأسلوب الكتابة</span>
+              </h3>
+              <form id="aiBloggerSettingsForm" class="space-y-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-xs font-bold text-gray-300 mb-1">معدل النشر التلقائي</label>
+                    <select id="aiFrequency" class="w-full py-2 px-3 rounded-xl bg-slate-900 border border-white/10 text-xs text-white">
+                      <option value="daily">يومياً (مقال كل 24 ساعة)</option>
+                      <option value="twice_daily">مرتين يومياً (كل 12 ساعة)</option>
+                      <option value="manual">يدوي فقط عند الطلب</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="block text-xs font-bold text-gray-300 mb-1">أسلوب وطريقة الكتابة</label>
+                    <select id="aiStyle" class="w-full py-2 px-3 rounded-xl bg-slate-900 border border-white/10 text-xs text-white">
+                      <option value="unique_engaging">تشويقي متفرد وذكي (صحافة استقصائية حصرية)</option>
+                      <option value="analytical">تحليلي استشرافي عميق للأعمال</option>
+                      <option value="actionable">إرشادات وأسرار برمجية مباشرة</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="flex items-center justify-between pt-2">
+                  <div class="flex items-center gap-2">
+                    <input type="checkbox" id="aiAutoPublish" class="w-4 h-4 rounded text-teal-500 focus:ring-teal-400" checked>
+                    <label for="aiAutoPublish" class="text-xs text-gray-300 cursor-pointer">تفعيل النشر التلقائي على الصفحة الرئيسية مباشرة</label>
+                  </div>
+                  <button type="submit" class="btn-primary text-xs py-2 px-5 font-bold">
+                    <i class="fas fa-save"></i> حفظ الإعدادات
+                  </button>
+                </div>
+              </form>
+            </div>
+
+          </div>
+
+          <!-- Published Articles Table -->
+          <div class="glass-panel overflow-hidden border border-white/10">
+            <div class="p-4 border-b border-white/10 flex items-center justify-between">
+              <h3 class="font-bold text-sm text-white flex items-center gap-2">
+                <i class="fas fa-newspaper text-emerald-400"></i>
+                <span>المقالات المنشورة بواسطة الذكاء الاصطناعي</span>
+              </h3>
+              <span id="articlesCountBadge" class="text-xs text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded-full">3 مقالات</span>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-right text-sm">
+                <thead class="bg-slate-900/80 text-xs font-bold text-gray-400 border-b border-white/10">
+                  <tr>
+                    <th class="py-3 px-4">المقال</th>
+                    <th class="py-3 px-4">التصنيف</th>
+                    <th class="py-3 px-4">تاريخ النشر</th>
+                    <th class="py-3 px-4">المشاهدات</th>
+                    <th class="py-3 px-4 text-left">إجراءات</th>
+                  </tr>
+                </thead>
+                <tbody id="articlesTableBody">
                   <!-- Populated via admin.js -->
                 </tbody>
               </table>

@@ -5,7 +5,9 @@
 let dashboardData = {
   settings: {},
   apps: [],
-  messages: []
+  messages: [],
+  articles: [],
+  aiBlogger: {}
 };
 
 let currentEditingAppId = null;
@@ -48,8 +50,10 @@ async function loadDashboardData() {
       dashboardData = data;
       renderStats();
       renderAppsTable();
+      renderArticlesTable();
       populateSettingsForm();
       populateAdsForm();
+      populateAIBloggerForm();
       renderMessagesTable();
     } else if (res.status === 401) {
       showLogin();
@@ -63,6 +67,11 @@ function renderStats() {
   document.getElementById('statTotalApps').textContent = dashboardData.apps.length;
   document.getElementById('statFeaturedApps').textContent = dashboardData.apps.filter(a => a.featured).length;
   document.getElementById('statMessages').textContent = dashboardData.messages.length;
+  
+  const statArticles = document.getElementById('statTotalArticles');
+  if (statArticles) {
+    statArticles.textContent = (dashboardData.articles || []).length;
+  }
   
   const adsActive = (dashboardData.settings.enableTopBanner ? 1 : 0) + 
                     (dashboardData.settings.enableBottomBanner ? 1 : 0) + 
@@ -111,6 +120,49 @@ function renderAppsTable() {
   `).join('');
 }
 
+function renderArticlesTable() {
+  const tbody = document.getElementById('articlesTableBody');
+  if (!tbody) return;
+
+  const articles = dashboardData.articles || [];
+  if (articles.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="6" class="text-center py-8 text-gray-400">لا توجد مقالات منشورة حتى الآن. انقر على زر التوليد الفوري بالأعلى!</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = articles.map(art => `
+    <tr class="border-b border-white/5 hover:bg-slate-800/40 transition-colors">
+      <td class="py-4 px-4">
+        <div class="flex items-center gap-3">
+          <img src="${art.image}" class="w-12 h-12 rounded-xl object-cover bg-slate-900 border border-white/10" onerror="this.src='https://images.unsplash.com/photo-1518770660439-4636190af475?w=500&auto=format&fit=crop&q=80'">
+          <div>
+            <div class="font-bold text-white text-sm line-clamp-1">${art.titleAr}</div>
+            <div class="text-xs text-gray-400 line-clamp-1">${art.titleEn || ''}</div>
+          </div>
+        </div>
+      </td>
+      <td class="py-4 px-4 text-xs font-semibold">
+        <span class="category-pill">${art.category || 'tech'}</span>
+      </td>
+      <td class="py-4 px-4 text-xs text-gray-400">
+        ${new Date(art.publishedAt || Date.now()).toLocaleDateString('ar-EG')}
+      </td>
+      <td class="py-4 px-4 text-xs text-emerald-400 font-bold">
+        <i class="fas fa-eye text-xs"></i> ${art.views || 0}
+      </td>
+      <td class="py-4 px-4 text-xs">
+        <span class="text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full font-bold">منشور</span>
+      </td>
+      <td class="py-4 px-4 text-right">
+        <div class="flex items-center justify-end gap-2">
+          <a href="/article.html?id=${art.id}" target="_blank" class="p-2 text-gray-400 hover:text-emerald-400" title="قراءة المقال"><i class="fas fa-external-link-alt"></i></a>
+          <button onclick="deleteArticle('${art.id}')" class="p-2 text-rose-500 hover:text-rose-400" title="حذف المقال"><i class="fas fa-trash"></i></button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
 function renderMessagesTable() {
   const container = document.getElementById('messagesContainer');
   if (!container) return;
@@ -153,6 +205,29 @@ function populateAdsForm() {
   document.getElementById('bottomAdCode').value = s.bottomAdCode || '';
   document.getElementById('inFeedAdCode').value = s.inFeedAdCode || '';
   document.getElementById('headerScript').value = s.headerScript || '';
+}
+
+function populateAIBloggerForm() {
+  const b = dashboardData.aiBlogger || {};
+  const enabledEl = document.getElementById('aiBloggerEnabled');
+  if (enabledEl) enabledEl.checked = b.enabled !== false;
+  const catEl = document.getElementById('aiBloggerCategory');
+  if (catEl && b.category) catEl.value = b.category;
+  const styleEl = document.getElementById('aiBloggerStyle');
+  if (styleEl && b.writingStyle) styleEl.value = b.writingStyle;
+  const freqEl = document.getElementById('aiBloggerFrequency');
+  if (freqEl && b.frequency) freqEl.value = b.frequency;
+
+  const statusBadge = document.getElementById('aiBloggerStatusBadge');
+  if (statusBadge) {
+    if (b.enabled !== false) {
+      statusBadge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30';
+      statusBadge.textContent = 'نشط ويعمل تلقائياً';
+    } else {
+      statusBadge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-gray-500/20 text-gray-400 border border-gray-500/30';
+      statusBadge.textContent = 'متوقف مؤقتاً';
+    }
+  }
 }
 
 function setupAdminListeners() {
@@ -254,6 +329,61 @@ function setupAdminListeners() {
       }
     });
   }
+
+  // AI Blogger Manual Trigger
+  const btnTriggerAI = document.getElementById('btnTriggerAIBlog');
+  if (btnTriggerAI) {
+    btnTriggerAI.addEventListener('click', async () => {
+      const originalContent = btnTriggerAI.innerHTML;
+      btnTriggerAI.disabled = true;
+      btnTriggerAI.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جارٍ صياغة المقال بالذكاء الاصطناعي...';
+      try {
+        const res = await fetch('/api/admin/ai-blogger/generate', { method: 'POST' });
+        const data = await res.json();
+        if (data.success) {
+          alert('تم بنجاح صياغة ونشر مقال جديد بواسطة الروبوت الذكي!');
+          await loadDashboardData();
+        } else {
+          alert(data.message || 'فشل التوليد');
+        }
+      } catch (err) {
+        alert('حدث خطأ أثناء التوليد');
+      } finally {
+        btnTriggerAI.disabled = false;
+        btnTriggerAI.innerHTML = originalContent;
+      }
+    });
+  }
+
+  // Save AI Blogger Settings
+  const aiBloggerForm = document.getElementById('aiBloggerSettingsForm');
+  if (aiBloggerForm) {
+    aiBloggerForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const payload = {
+        enabled: document.getElementById('aiBloggerEnabled').checked,
+        category: document.getElementById('aiBloggerCategory').value,
+        writingStyle: document.getElementById('aiBloggerStyle').value,
+        frequency: document.getElementById('aiBloggerFrequency').value
+      };
+      try {
+        const res = await fetch('/api/admin/ai-blogger/settings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (data.success) {
+          alert('تم حفظ إعدادات روبوت الذكاء الاصطناعي بنجاح!');
+          await loadDashboardData();
+        } else {
+          alert(data.message || 'فشل الحفظ');
+        }
+      } catch (err) {
+        alert('حدث خطأ في الاتصال');
+      }
+    });
+  }
 }
 
 async function saveSettings(payload) {
@@ -337,6 +467,21 @@ async function deleteMessage(id) {
     }
   } catch (err) {
     alert('فشل حذف الرسالة');
+  }
+}
+
+async function deleteArticle(id) {
+  if (!confirm('هل تريد بالتأكيد حذف هذا المقال نهائياً؟')) return;
+  try {
+    const res = await fetch(`/api/admin/articles/${id}`, { method: 'DELETE' });
+    const data = await res.json();
+    if (data.success) {
+      await loadDashboardData();
+    } else {
+      alert(data.message || 'فشل حذف المقال');
+    }
+  } catch (err) {
+    alert('فشل في حذف المقال');
   }
 }
 
