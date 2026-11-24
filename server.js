@@ -362,12 +362,37 @@ app.get('/admin', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'admin.html'));
 });
 
-// Health check endpoint for Render
+// Health check endpoint for Render & Uptime monitoring
 app.get('/health', (req, res) => {
-  res.status(200).send('OK');
+  res.status(200).json({
+    status: 'active',
+    uptime: Math.floor(process.uptime()),
+    timestamp: new Date().toISOString()
+  });
 });
 
 // Start Server
 app.listen(PORT, () => {
   console.log(`🚀 خادم موقع مليونير يعمل بنجاح على: http://localhost:${PORT}`);
+
+  // Safe Auto-Keep-Alive Mechanism (100% Legal & Safe):
+  // Render spins down free services after 15 min of inactivity.
+  // Render automatically injects process.env.RENDER_EXTERNAL_URL (e.g. https://xxxx.onrender.com).
+  // A gentle self-ping every 13 minutes keeps the instance warm without violating Render or GitHub terms.
+  const appUrl = process.env.RENDER_EXTERNAL_URL || process.env.APP_URL;
+  if (appUrl) {
+    console.log(`⚡ تفعيل نظام التنبيه الذكي للإبقاء على الموقع نشطاً: ${appUrl}`);
+    const PING_INTERVAL = 13 * 60 * 1000; // 13 minutes
+    setInterval(async () => {
+      try {
+        const pingUrl = `${appUrl}/health`;
+        const res = await fetch(pingUrl);
+        if (res.ok) {
+          console.log(`[Keep-Alive] تم فحص وتنشيط السيرفر بنجاح: ${new Date().toLocaleTimeString()}`);
+        }
+      } catch (err) {
+        console.warn('[Keep-Alive] تنبيه اتصال:', err.message);
+      }
+    }, PING_INTERVAL);
+  }
 });
