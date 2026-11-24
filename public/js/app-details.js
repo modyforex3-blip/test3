@@ -153,7 +153,13 @@ function renderAppDetails() {
 
   const appRunWebBtn = document.getElementById('appRunWebBtn');
   if (appRunWebBtn) {
-    appRunWebBtn.href = `/run.html?id=${app.id}`;
+    if (app.webAppUrl) {
+      appRunWebBtn.href = app.webAppUrl;
+      appRunWebBtn.target = '_blank';
+      appRunWebBtn.rel = 'noopener noreferrer';
+    } else {
+      appRunWebBtn.href = `/run.html?id=${app.id}`;
+    }
   }
 
   if (appFeaturesList) {

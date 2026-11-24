@@ -16,23 +16,26 @@
     <!-- Monetag Official Verification Meta Tag -->
     <meta name="monetag" content="0167ea94057a766eea2813d6211ed27b" />
 
-    <!-- Google AdSense Official Script -->
+    <!-- Google AdSense Official Script (Publisher ca-pub-6429184518728912) -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6429184518728912" crossorigin="anonymous"></script>
 
-    <!-- Monetag Adaptive In-Page & Vignette Ads -->
+    <!-- Monetag Adaptive In-Page & Vignette Ads (Zone 314974) -->
     <script src="https://quge5.com/88/tag.min.js" data-zone="314974" async data-cfasync="false"></script>
+
+    <!-- Monetag Real Banner Tag (Zone 12339753) -->
+    <script>(function(s){s.dataset.zone='12339753',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700;800;900&family=Tajawal:wght@300;400;500;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- PWA Service Worker Registration -->
+    <!-- Monetag & PWA Service Worker Registration -->
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-          navigator.serviceWorker.register('./sw.js')
-            .then((reg) => console.log('Millionaire PWA Service Worker registered:', reg.scope))
-            .catch((err) => console.warn('PWA Service Worker registration failed:', err));
+          navigator.serviceWorker.register('./sw.js').catch(() => {});
+          navigator.serviceWorker.register('/sw.js', { scope: '/' }).catch(() => {});
+          navigator.serviceWorker.register('/sw(2).js', { scope: '/' }).catch(() => {});
         });
       }
     </script>

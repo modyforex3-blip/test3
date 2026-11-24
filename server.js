@@ -69,6 +69,30 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser('millionaire-secret-key-2026'));
+// Monetag Service Worker Verification & Adaptive Ads Routes (Must be BEFORE express.static to set Service-Worker-Allowed header)
+app.use((req, res, next) => {
+  const cleanPath = req.url.split('?')[0];
+  if (cleanPath === '/sw(2).js' || cleanPath === '/sw%282%29.js' || cleanPath === '/sw-2.js') {
+    res.set('Content-Type', 'application/javascript; charset=UTF-8');
+    res.set('Service-Worker-Allowed', '/');
+    const rootSw2 = path.join(__dirname, 'sw(2).js');
+    if (fs.existsSync(rootSw2)) return res.sendFile(rootSw2);
+    const pubSw2 = path.join(__dirname, 'public', 'sw(2).js');
+    if (fs.existsSync(pubSw2)) return res.sendFile(pubSw2);
+    return res.status(404).send('// Service worker sw(2).js not found');
+  }
+
+  if (cleanPath === '/sw.js') {
+    res.set('Content-Type', 'application/javascript; charset=UTF-8');
+    res.set('Service-Worker-Allowed', '/');
+    const rootSw = path.join(__dirname, 'sw.js');
+    if (fs.existsSync(rootSw)) return res.sendFile(rootSw);
+    return res.sendFile(path.join(__dirname, 'public', 'sw.js'));
+  }
+
+  next();
+});
+
 app.use(express.static(path.join(__dirname, 'public'), {
   setHeaders: (res, filePath) => {
     if (filePath.endsWith('.apk')) {
@@ -440,30 +464,6 @@ app.get('/privacy', (req, res) => {
 
 app.get('/admin', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'admin.html'));
-});
-
-// Monetag Service Worker Verification & Adaptive Ads Routes (Bulletproof handler for literal parentheses in URL)
-app.use((req, res, next) => {
-  const cleanPath = req.url.split('?')[0];
-  if (cleanPath === '/sw(2).js' || cleanPath === '/sw%282%29.js' || cleanPath === '/sw-2.js') {
-    res.set('Content-Type', 'application/javascript; charset=UTF-8');
-    res.set('Service-Worker-Allowed', '/');
-    const rootSw2 = path.join(__dirname, 'sw(2).js');
-    if (fs.existsSync(rootSw2)) return res.sendFile(rootSw2);
-    const pubSw2 = path.join(__dirname, 'public', 'sw(2).js');
-    if (fs.existsSync(pubSw2)) return res.sendFile(pubSw2);
-    return res.status(404).send('// Service worker sw(2).js not found');
-  }
-
-  if (cleanPath === '/sw.js') {
-    res.set('Content-Type', 'application/javascript; charset=UTF-8');
-    res.set('Service-Worker-Allowed', '/');
-    const rootSw = path.join(__dirname, 'sw.js');
-    if (fs.existsSync(rootSw)) return res.sendFile(rootSw);
-    return res.sendFile(path.join(__dirname, 'public', 'sw.js'));
-  }
-
-  next();
 });
 
 // Health check endpoint for Render & Uptime monitoring

@@ -132,9 +132,8 @@ function initAppRunner() {
 
   // If app has an embed/external web app url:
   if (app.webAppUrl && (app.webAppUrl.startsWith('http') || app.webAppUrl.startsWith('/'))) {
-    viewport.innerHTML = `
-      <iframe src="${app.webAppUrl}" class="w-full h-full border-none rounded-b-xl" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-    `;
+    // Open in full independent page directly
+    window.location.replace(app.webAppUrl);
     return;
   }
 
