@@ -132,10 +132,16 @@
               <h2 class="text-xl font-bold text-white">إدارة التطبيقات والبرامج</h2>
               <p class="text-xs text-gray-400 mt-1">رفع وتعديل وحذف التطبيقات المعروضة في الصفحة الرئيسية</p>
             </div>
-            <button onclick="openAddAppModal()" class="btn-primary text-xs py-2.5 px-4 font-bold flex items-center gap-2">
-              <i class="fas fa-plus"></i>
-              <span>إضافة تطبيق جديد</span>
-            </button>
+            <div class="flex items-center gap-2">
+              <button onclick="openUploadPackageModal()" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs py-2.5 px-4 rounded-xl font-bold flex items-center gap-2 shadow-lg shadow-indigo-600/20 transition-all">
+                <i class="fas fa-file-archive"></i>
+                <span>رفع حزمة تطبيق (.ZIP)</span>
+              </button>
+              <button onclick="openAddAppModal()" class="btn-primary text-xs py-2.5 px-4 font-bold flex items-center gap-2">
+                <i class="fas fa-plus"></i>
+                <span>إضافة تطبيق جديد</span>
+              </button>
+            </div>
           </div>
 
           <!-- Apps Table -->
@@ -404,6 +410,54 @@
                     <input type="checkbox" id="enableAdaptiveAds" class="sr-only peer" checked>
                     <div class="w-11 h-6 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
                   </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- 2.5 Ad Frequency & User Experience Control (Anti-Annoyance) -->
+            <div class="glass-panel p-6 border border-amber-500/30 space-y-4">
+              <div class="flex items-center gap-2 pb-3 border-b border-white/5">
+                <div class="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold text-sm">
+                  <i class="fas fa-tachometer-alt"></i>
+                </div>
+                <div>
+                  <h3 class="font-bold text-white text-sm">التحكم الذكي بمعدل تكرار الإعلانات وتجربة المستخدم</h3>
+                  <p class="text-[11px] text-gray-400">تقليل معدل الإعلانات المنبثقة ومنع إزعاج المستخدمين أثناء تجربة التطبيقات</p>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-bold text-gray-300 mb-1">معدل تكرار الإعلانات المنبثقة (Ad Frequency Rate)</label>
+                  <select id="adFrequencyRate" class="w-full text-xs p-2.5 rounded-xl bg-slate-900 border border-white/10 text-white font-bold">
+                    <option value="relaxed">هادئ جداً (إعلان واحد كل 10 دقائق كحد أقصى - موصى به)</option>
+                    <option value="balanced">متوازن (إعلان واحد كل 5 دقائق)</option>
+                    <option value="frequent">مكثف (إعلان كل دقيقتين)</option>
+                    <option value="off">تعطيل النوافذ المنبثقة تماماً (بانرات 50px فقط)</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label class="block text-xs font-bold text-gray-300 mb-1">فترة التهدئة بين الإعلانات بالدقائق (Cooldown Minutes)</label>
+                  <input type="number" id="adCooldownMinutes" min="1" max="60" value="10" class="w-full text-xs p-2.5 rounded-xl bg-slate-900 border border-white/10 text-amber-400 font-bold">
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                <div class="flex items-center justify-between p-3.5 bg-slate-900/60 rounded-xl border border-white/5">
+                  <div>
+                    <div class="font-bold text-sm text-white">تعطيل المنبثقات داخل التطبيقات (No Popups in Apps)</div>
+                    <div class="text-xs text-gray-400">منع فتح نوافذ إعلانية منبثقة عند الضغط على أزرار داخل التطبيقات والألعاب</div>
+                  </div>
+                  <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" id="disablePopupsInApps" class="sr-only peer" checked>
+                    <div class="w-11 h-6 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
+                  </label>
+                </div>
+
+                <div>
+                  <label class="block text-xs font-bold text-gray-300 mb-1">الحد الأقصى للإعلانات المنبثقة في الجلسة الواحدة</label>
+                  <input type="number" id="maxPopupsPerSession" min="1" max="10" value="2" class="w-full text-xs p-2.5 rounded-xl bg-slate-900 border border-white/10 text-emerald-400 font-bold">
                 </div>
               </div>
             </div>
@@ -687,6 +741,108 @@
           </button>
         </div>
 
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= UPLOAD APP PACKAGE (.ZIP) MODAL ================= -->
+  <div id="uploadPackageModal" class="modal-overlay">
+    <div class="modal-content p-6 sm:p-8 max-w-2xl w-full">
+      <div class="flex items-center justify-between pb-4 border-b border-white/10 mb-6">
+        <div class="flex items-center gap-2">
+          <div class="w-9 h-9 rounded-xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-bold text-base">
+            <i class="fas fa-file-archive"></i>
+          </div>
+          <div>
+            <h3 class="text-lg font-bold text-white">رفع مجلد وحزمة تطبيق جديد (.ZIP)</h3>
+            <p class="text-xs text-gray-400">فك ضغط ونشر التطبيق فورياً داخل مسار /public/apps/ وتفعيله بالمنصة</p>
+          </div>
+        </div>
+        <button onclick="closeUploadPackageModal()" class="text-gray-400 hover:text-white"><i class="fas fa-times text-lg"></i></button>
+      </div>
+
+      <form id="uploadPackageForm" class="space-y-4">
+        <!-- ZIP File Input Box -->
+        <div class="p-4 rounded-2xl bg-indigo-950/30 border-2 border-dashed border-indigo-500/40 text-center">
+          <i class="fas fa-cloud-upload-alt text-3xl text-indigo-400 mb-2"></i>
+          <label class="block text-xs font-bold text-white mb-1">اختر ملف الحزمة البرمجية المضغوطة (.ZIP) *</label>
+          <p class="text-[11px] text-gray-400 mb-3">يجب أن تحتوي الحزمة على ملف index.html ومجلدات الـ JS/CSS والأصول</p>
+          <input type="file" name="packageZip" id="pkgZipFile" accept=".zip" required class="block w-full text-xs text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-500 cursor-pointer">
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-gray-300 mb-1">اسم التطبيق بالعربية *</label>
+            <input type="text" name="nameAr" id="pkgNameAr" required placeholder="مثال: حاسبة العملات والذهب" class="w-full py-2 px-3 rounded-xl bg-slate-900 border border-white/10 text-sm">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-300 mb-1">اسم التطبيق بالإنجليزية *</label>
+            <input type="text" name="nameEn" id="pkgNameEn" required placeholder="Gold & Crypto Tracker" class="w-full py-2 px-3 rounded-xl bg-slate-900 border border-white/10 text-sm">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-indigo-400 mb-1">اسم المجلد / الرابط (Slug) *</label>
+            <input type="text" name="slug" id="pkgSlug" required placeholder="gold-tracker" class="w-full py-2 px-3 rounded-xl bg-slate-900 border border-white/10 text-sm font-mono text-indigo-300">
+            <span class="text-[10px] text-gray-400">المسار: /apps/[slug]/</span>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-300 mb-1">التصنيف</label>
+            <select name="category" id="pkgCategory" class="w-full py-2 px-3 rounded-xl bg-slate-900 border border-white/10 text-sm text-white">
+              <option value="finance">تداول واستثمار (Finance)</option>
+              <option value="tools">أدوات وإنتاجية (Tools)</option>
+              <option value="crypto">عملات وبلوكتشين (Crypto)</option>
+              <option value="ai">ذكاء اصطناعي (AI Suite)</option>
+              <option value="education">تعليم وأكاديميا (Education)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-300 mb-1">عدد التحميلات</label>
+            <input type="text" name="downloadsCount" id="pkgDownloadsCount" value="10K+" class="w-full py-2 px-3 rounded-xl bg-slate-900 border border-white/10 text-sm">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-gray-300 mb-1">أيقونة التطبيق (صورة اختيارية)</label>
+            <input type="file" name="iconFile" id="pkgIconFile" accept="image/*" class="w-full text-xs text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-indigo-500/10 file:text-indigo-400 hover:file:bg-indigo-500/20">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-300 mb-1">رابط تحميل APK اختياري</label>
+            <input type="url" name="downloadUrl" id="pkgDownloadUrl" placeholder="https://.../app.apk" class="w-full py-2 px-3 rounded-xl bg-slate-900 border border-white/10 text-sm">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-gray-300 mb-1">وصف قصير (عربي)</label>
+            <textarea name="shortDescAr" id="pkgShortDescAr" rows="2" placeholder="وصف موجز يظهر في بطاقة التطبيق" class="w-full py-2 px-3 rounded-xl bg-slate-900 border border-white/10 text-sm resize-none"></textarea>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-300 mb-1">وصف قصير (إنجليزي)</label>
+            <textarea name="shortDescEn" id="pkgShortDescEn" rows="2" placeholder="Brief description for app card" class="w-full py-2 px-3 rounded-xl bg-slate-900 border border-white/10 text-sm resize-none"></textarea>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 pt-1">
+          <input type="checkbox" name="featured" id="pkgFeatured" class="w-4 h-4 rounded text-indigo-500 focus:ring-indigo-400">
+          <label for="pkgFeatured" class="text-xs font-bold text-amber-400 cursor-pointer">تمييز التطبيق على الصفحة الرئيسية (Featured App)</label>
+        </div>
+
+        <!-- Progress Indicator -->
+        <div id="pkgUploadProgress" class="hidden p-3 rounded-xl bg-indigo-900/40 border border-indigo-500/30 text-center">
+          <i class="fas fa-spinner fa-spin text-indigo-400 ml-2"></i>
+          <span class="text-xs font-bold text-indigo-200">جاري رفع وفك ضغط حزمة التطبيق ونشرها في المنصة...</span>
+        </div>
+
+        <div class="flex items-center justify-end gap-3 pt-4 border-t border-white/10">
+          <button type="button" onclick="closeUploadPackageModal()" class="btn-secondary text-xs py-2.5 px-5">إلغاء</button>
+          <button type="submit" id="pkgSubmitBtn" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs py-2.5 px-6 rounded-xl font-bold flex items-center gap-2 shadow-lg shadow-indigo-600/25">
+            <i class="fas fa-cloud-upload-alt"></i>
+            <span>بدء الرفع والنشر المباشر</span>
+          </button>
+        </div>
       </form>
     </div>
   </div>

@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
+  <!-- Smart Ad Frequency & User Experience Controller -->
+  <script src="/js/ad-frequency.js"></script>
   <!-- Monetag Adaptive In-Page & Vignette Ads -->
   <script src="https://quge5.com/88/tag.min.js" data-zone="314974" async data-cfasync="false"></script>
   <meta charset="UTF-8">
@@ -19,10 +21,13 @@
 </head>
 <body class="bg-[#080c14] text-slate-100 flex flex-col min-h-screen">
 
-  <!-- TOP AD BANNER -->
+  <!-- TOP AD BANNER (Strict 50px Height - Google AdSense Official) -->
   <aside id="topAdContainer" class="ad-container-top" aria-label="إعلان ممول">
     <div class="ad-inner-wrapper">
-      <script>(function(s){s.dataset.zone='12339753',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+      <div class="ad-banner-50 flex items-center justify-center w-full h-[50px] overflow-hidden text-center">
+        <ins class="adsbygoogle" style="display:inline-block;width:100%;max-width:728px;height:50px" data-ad-client="ca-pub-6429184518728912" data-ad-slot="6300978111" data-ad-format="horizontal"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      </div>
     </div>
   </aside>
 
@@ -152,10 +157,12 @@
 
   </main>
 
-  <!-- BOTTOM STICKY AD BANNER -->
+  <!-- BOTTOM STICKY AD BANNER (Strict 50px Height - Monetag Official) -->
   <aside id="bottomAdContainer" class="ad-container-bottom" aria-label="إعلان ممول">
     <div class="ad-inner-wrapper">
-      <script>(function(s){s.dataset.zone='12339753',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+      <div class="ad-banner-50 flex items-center justify-center w-full h-[50px] overflow-hidden text-center">
+        <script>(function(s){s.dataset.zone='12339753',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+      </div>
     </div>
   </aside>
 

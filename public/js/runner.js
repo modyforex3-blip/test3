@@ -80,9 +80,9 @@ function renderAdBanners() {
     if (!adsGloballyDisabled && siteSettings.enableTopBanner !== false) {
       topAd.style.display = 'flex';
       executeAdCode(topAd, siteSettings.topAdCode, `
-        <div class="ad-demo-box">
-          <span class="ad-badge">إعلان ممول / Sponsored (AdSense & Monetag)</span>
-          <div class="ad-content-inner">مساحة إعلانية علوية ثابتة أثناء استخدام التطبيق</div>
+        <div class="ad-banner-50 flex items-center justify-center w-full h-[50px] overflow-hidden text-center">
+          <ins class="adsbygoogle" style="display:inline-block;width:100%;max-width:728px;height:50px" data-ad-client="ca-pub-6429184518728912" data-ad-slot="6300978111" data-ad-format="horizontal"></ins>
+          <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
         </div>
       `);
     } else {
@@ -95,9 +95,8 @@ function renderAdBanners() {
     if (!adsGloballyDisabled && siteSettings.enableBottomBanner !== false) {
       bottomAd.style.display = 'flex';
       executeAdCode(bottomAd, siteSettings.bottomAdCode, `
-        <div class="ad-demo-box">
-          <span class="ad-badge">إعلان ممول / Sponsored</span>
-          <div class="ad-content-inner">مساحة إعلانية سفلية ثابتة داخل مشغل التطبيقات</div>
+        <div class="ad-banner-50 flex items-center justify-center w-full h-[50px] overflow-hidden text-center">
+          <script>(function(s){s.dataset.zone='12339753',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
         </div>
       `);
     } else {

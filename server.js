@@ -1,10 +1,18 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
+const { execSync } = require('child_process');
 const multer = require('multer');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const aiBlogger = require('./ai-blogger');
+
+let AdmZip;
+try {
+  AdmZip = require('adm-zip');
+} catch (e) {
+  // AdmZip will be loaded after npm install on server or fallback to tar/powershell
+}
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -63,6 +71,71 @@ const upload = multer({
     }
   }
 });
+
+// Multer storage for app package ZIP uploads (up to 100MB)
+const tempPackagesDir = path.join(uploadsDir, 'temp-packages');
+if (!fs.existsSync(tempPackagesDir)) fs.mkdirSync(tempPackagesDir, { recursive: true });
+
+const packageStorage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, tempPackagesDir);
+  },
+  filename: function (req, file, cb) {
+    const ext = path.extname(file.originalname);
+    cb(null, 'pkg-' + Date.now() + '-' + Math.round(Math.random() * 1e6) + ext);
+  }
+});
+
+const uploadPackage = multer({
+  storage: packageStorage,
+  limits: { fileSize: 100 * 1024 * 1024 } // 100MB
+});
+
+// Robust ZIP extraction helper with multiple fallbacks
+function extractZipToDirectory(zipPath, targetDir) {
+  if (!fs.existsSync(targetDir)) {
+    fs.mkdirSync(targetDir, { recursive: true });
+  }
+
+  // 1. Try AdmZip if available
+  if (AdmZip) {
+    try {
+      const zip = new AdmZip(zipPath);
+      zip.extractAllTo(targetDir, true);
+      return true;
+    } catch (e) {
+      console.warn('[ZIP] AdmZip warning, trying system extraction:', e.message);
+    }
+  }
+
+  // 2. Try native tar (standard on Linux & modern Windows)
+  try {
+    execSync(`tar -xf "${zipPath}" -C "${targetDir}"`, { stdio: 'pipe' });
+    return true;
+  } catch (err) {
+    console.warn('[ZIP] tar warning, trying fallback:', err.message);
+  }
+
+  // 3. Try PowerShell Expand-Archive (Windows fallback)
+  if (process.platform === 'win32') {
+    try {
+      execSync(`powershell -Command "Expand-Archive -Path '${zipPath}' -DestinationPath '${targetDir}' -Force"`, { stdio: 'pipe' });
+      return true;
+    } catch (err) {
+      console.warn('[ZIP] PowerShell warning:', err.message);
+    }
+  }
+
+  // 4. Try Linux unzip
+  try {
+    execSync(`unzip -o "${zipPath}" -d "${targetDir}"`, { stdio: 'pipe' });
+    return true;
+  } catch (err) {
+    console.error('[ZIP] Linux unzip error:', err.message);
+  }
+
+  return false;
+}
 
 // Middleware
 app.use(cors());
@@ -353,6 +426,146 @@ app.post('/api/admin/apps', requireAdmin, upload.single('iconFile'), (req, res) 
   } catch (err) {
     console.error('Error adding app:', err);
     res.status(500).json({ success: false, message: 'فشل في إضافة التطبيق' });
+  }
+});
+
+// Admin upload entire App Package (.ZIP) directly to platform
+app.post('/api/admin/apps/upload-package', requireAdmin, uploadPackage.fields([
+  { name: 'packageZip', maxCount: 1 },
+  { name: 'iconFile', maxCount: 1 }
+]), (req, res) => {
+  try {
+    const files = req.files || {};
+    const packageFile = files.packageZip ? files.packageZip[0] : null;
+    const iconFile = files.iconFile ? files.iconFile[0] : null;
+
+    if (!packageFile) {
+      return res.status(400).json({ success: false, message: 'يرجى اختيار ملف الحزمة البرمجية (.zip)' });
+    }
+
+    // Determine slug
+    let rawSlug = req.body.slug || req.body.nameEn || ('app-' + Date.now());
+    const slug = rawSlug.toLowerCase().replace(/[^a-z0-9_-]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '') || ('app-' + Date.now());
+
+    const appsBaseDir = path.join(__dirname, 'public', 'apps');
+    if (!fs.existsSync(appsBaseDir)) fs.mkdirSync(appsBaseDir, { recursive: true });
+
+    const targetDir = path.join(appsBaseDir, slug);
+
+    // Extract zip
+    const extracted = extractZipToDirectory(packageFile.path, targetDir);
+    // Remove temp zip file
+    try { fs.unlinkSync(packageFile.path); } catch (_) {}
+
+    if (!extracted) {
+      return res.status(500).json({ success: false, message: 'فشل في فك ضغط ملف الحزمة البرمجية (.zip)' });
+    }
+
+    // Normalize directory if all files were nested inside a single folder
+    try {
+      if (!fs.existsSync(path.join(targetDir, 'index.html'))) {
+        const items = fs.readdirSync(targetDir);
+        if (items.length === 1 && fs.statSync(path.join(targetDir, items[0])).isDirectory()) {
+          const subDirPath = path.join(targetDir, items[0]);
+          if (fs.existsSync(path.join(subDirPath, 'index.html'))) {
+            const subItems = fs.readdirSync(subDirPath);
+            for (const item of subItems) {
+              const src = path.join(subDirPath, item);
+              const dst = path.join(targetDir, item);
+              if (!fs.existsSync(dst)) {
+                fs.renameSync(src, dst);
+              }
+            }
+          }
+        }
+      }
+    } catch (normErr) {
+      console.warn('Folder normalization warning:', normErr.message);
+    }
+
+    // Determine icon
+    let iconUrl = req.body.iconUrl || '';
+    if (iconFile) {
+      const finalIconName = 'icon-' + slug + path.extname(iconFile.originalname);
+      const finalIconPath = path.join(uploadsDir, finalIconName);
+      try {
+        fs.renameSync(iconFile.path, finalIconPath);
+        iconUrl = '/uploads/' + finalIconName;
+      } catch (e) {
+        iconUrl = '/uploads/' + iconFile.filename;
+      }
+    }
+    if (!iconUrl) {
+      if (fs.existsSync(path.join(targetDir, 'icon.svg'))) {
+        iconUrl = `/apps/${slug}/icon.svg`;
+      } else if (fs.existsSync(path.join(targetDir, 'icon.png'))) {
+        iconUrl = `/apps/${slug}/icon.png`;
+      } else {
+        iconUrl = 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500&auto=format&fit=crop&q=80';
+      }
+    }
+
+    // Parse features
+    let featuresAr = ['واجهة تفاعلية حديثة وسريعة', 'متوافق بالكامل مع الهواتف الذكية والتطبيقات التقدمية (PWA)'];
+    if (req.body.featuresAr) {
+      if (typeof req.body.featuresAr === 'string') {
+        featuresAr = req.body.featuresAr.split('\n').map(s => s.trim()).filter(Boolean);
+      } else if (Array.isArray(req.body.featuresAr)) {
+        featuresAr = req.body.featuresAr;
+      }
+    }
+    let featuresEn = ['Modern ultra-fast responsive user interface', 'Fully mobile and PWA compliant'];
+    if (req.body.featuresEn) {
+      if (typeof req.body.featuresEn === 'string') {
+        featuresEn = req.body.featuresEn.split('\n').map(s => s.trim()).filter(Boolean);
+      } else if (Array.isArray(req.body.featuresEn)) {
+        featuresEn = req.body.featuresEn;
+      }
+    }
+
+    const newApp = {
+      id: 'app-' + slug,
+      slug: slug,
+      nameAr: req.body.nameAr || slug,
+      nameEn: req.body.nameEn || slug,
+      category: req.body.category || 'tools',
+      icon: iconUrl,
+      shortDescAr: req.body.shortDescAr || 'تطبيق ويب سحابي متطور متاح عبر منصة مليونير.',
+      shortDescEn: req.body.shortDescEn || 'Advanced web application available on Millionaire platform.',
+      fullDescAr: req.body.fullDescAr || req.body.shortDescAr || 'تطبيق ويب سحابي متطور.',
+      fullDescEn: req.body.fullDescEn || req.body.shortDescEn || 'Advanced web application.',
+      featuresAr,
+      featuresEn,
+      webAppUrl: `/apps/${slug}/index.html`,
+      downloadUrl: req.body.downloadUrl || '#',
+      rating: parseFloat(req.body.rating) || 4.9,
+      featured: req.body.featured === 'true' || req.body.featured === true,
+      downloadsCount: req.body.downloadsCount || '10K+',
+      isPwa: true,
+      createdAt: new Date().toISOString()
+    };
+
+    const db = readDatabase();
+    if (!db.apps) db.apps = [];
+
+    // Check if app already exists -> update or prepend
+    const existingIndex = db.apps.findIndex(a => a.id === newApp.id || a.slug === slug);
+    if (existingIndex !== -1) {
+      db.apps[existingIndex] = { ...db.apps[existingIndex], ...newApp };
+    } else {
+      db.apps.unshift(newApp);
+    }
+
+    writeDatabase(db);
+
+    res.json({
+      success: true,
+      app: newApp,
+      message: `تم رفع ونشر حزمة تطبيق [${newApp.nameAr}] بنجاح، وأصبح جاهزاً للتشغيل!`
+    });
+  } catch (err) {
+    console.error('Error uploading app package:', err);
+    res.status(500).json({ success: false, message: 'حدث خطأ أثناء رفع ومعالجة الحزمة: ' + err.message });
   }
 });
 

@@ -220,6 +220,19 @@ function populateAdsForm() {
   const adaptiveEl = document.getElementById('enableAdaptiveAds');
   if (adaptiveEl) adaptiveEl.checked = s.enableAdaptiveAds !== false;
 
+  // Smart Ad Frequency & Experience Controls
+  const freqRateEl = document.getElementById('adFrequencyRate');
+  if (freqRateEl) freqRateEl.value = s.adFrequencyRate || 'relaxed';
+
+  const cooldownEl = document.getElementById('adCooldownMinutes');
+  if (cooldownEl) cooldownEl.value = typeof s.adCooldownMinutes === 'number' ? s.adCooldownMinutes : 10;
+
+  const noPopupsEl = document.getElementById('disablePopupsInApps');
+  if (noPopupsEl) noPopupsEl.checked = s.disablePopupsInApps !== false;
+
+  const maxPopupsEl = document.getElementById('maxPopupsPerSession');
+  if (maxPopupsEl) maxPopupsEl.value = typeof s.maxPopupsPerSession === 'number' ? s.maxPopupsPerSession : 2;
+
   // Monetag
   const mEnabledEl = document.getElementById('monetagEnabled');
   if (mEnabledEl) mEnabledEl.checked = m.enabled !== false;
@@ -373,6 +386,11 @@ function setupAdminListeners() {
         enableBottomBanner: document.getElementById('enableBottomBanner').checked,
         enableInFeedAds: document.getElementById('enableInFeedAds').checked,
         enableAdaptiveAds: document.getElementById('enableAdaptiveAds').checked,
+
+        adFrequencyRate: document.getElementById('adFrequencyRate') ? document.getElementById('adFrequencyRate').value : 'relaxed',
+        adCooldownMinutes: parseInt(document.getElementById('adCooldownMinutes') ? document.getElementById('adCooldownMinutes').value : '10', 10) || 10,
+        disablePopupsInApps: document.getElementById('disablePopupsInApps') ? document.getElementById('disablePopupsInApps').checked : true,
+        maxPopupsPerSession: parseInt(document.getElementById('maxPopupsPerSession') ? document.getElementById('maxPopupsPerSession').value : '2', 10) || 2,
         
         topAdCode: monetagTopCode,
         bottomAdCode: document.getElementById('bottomAdCode').value,
@@ -427,6 +445,47 @@ function setupAdminListeners() {
         }
       } catch (err) {
         alert('حدث خطأ في الاتصال بالخادم');
+      }
+    });
+  }
+
+  // Upload App Package (.ZIP) Form
+  const uploadPackageForm = document.getElementById('uploadPackageForm');
+  if (uploadPackageForm) {
+    uploadPackageForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const progress = document.getElementById('pkgUploadProgress');
+      const submitBtn = document.getElementById('pkgSubmitBtn');
+
+      if (progress) progress.classList.remove('hidden');
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جارٍ الرفع والفك...';
+      }
+
+      const formData = new FormData(uploadPackageForm);
+
+      try {
+        const res = await fetch('/api/admin/apps/upload-package', {
+          method: 'POST',
+          body: formData
+        });
+        const data = await res.json();
+        if (data.success) {
+          closeUploadPackageModal();
+          await loadDashboardData();
+          alert(data.message || 'تم رفع واستخراج حزمة التطبيق ونشرها بنجاح!');
+        } else {
+          alert(data.message || 'فشل في رفع ومعالجة التطبيق');
+        }
+      } catch (err) {
+        alert('حدث خطأ في الاتصال بالخادم أثناء رفع الحزمة');
+      } finally {
+        if (progress) progress.classList.add('hidden');
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> <span>بدء الرفع والنشر المباشر</span>';
+        }
       }
     });
   }
@@ -541,6 +600,20 @@ function openEditAppModal(id) {
 
 function closeAppModal() {
   document.getElementById('appModal').classList.remove('active');
+}
+
+function openUploadPackageModal() {
+  const form = document.getElementById('uploadPackageForm');
+  if (form) form.reset();
+  const progress = document.getElementById('pkgUploadProgress');
+  if (progress) progress.classList.add('hidden');
+  const btn = document.getElementById('pkgSubmitBtn');
+  if (btn) btn.disabled = false;
+  document.getElementById('uploadPackageModal').classList.add('active');
+}
+
+function closeUploadPackageModal() {
+  document.getElementById('uploadPackageModal').classList.remove('active');
 }
 
 async function deleteApp(id) {
