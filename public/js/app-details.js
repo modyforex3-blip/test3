@@ -107,10 +107,20 @@ function renderAdBanners() {
     }
   }
 
-  // Bottom banner retired in favor of Monetag Rewarded Modal
+  // Bottom banner embedded strictly at 50px without overlapping any content
   if (bottomAd) {
-    bottomAd.style.display = 'none';
-    bottomAd.innerHTML = '';
+    if (!adsGloballyDisabled && siteSettings.enableBottomBanner !== false) {
+      bottomAd.style.display = 'flex';
+      executeAdCode(bottomAd, siteSettings.bottomAdCode, `
+        <div class="ad-banner-50 relative flex items-center justify-center w-full h-[50px] overflow-hidden text-center">
+          <script>(function(s){s.dataset.zone='12339753',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+          <button onclick="document.getElementById('bottomAdContainer').style.display='none'" class="absolute left-2 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-black/60 hover:bg-black/90 text-white/70 hover:text-white flex items-center justify-center text-xs transition-all z-20" title="إغلاق الإعلان" aria-label="إغلاق الإعلان">✕</button>
+        </div>
+      `);
+    } else {
+      bottomAd.style.display = 'none';
+      bottomAd.innerHTML = '';
+    }
   }
 }
 

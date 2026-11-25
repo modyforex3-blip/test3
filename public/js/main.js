@@ -104,10 +104,20 @@ function renderAdBanners() {
     }
   }
 
-  // Bottom banner retired in favor of Monetag Rewarded Modal to prevent screen overlap
+  // Bottom banner embedded strictly at 50px without overlapping any content
   if (bottomAdContainer) {
-    bottomAdContainer.style.display = 'none';
-    bottomAdContainer.innerHTML = '';
+    if (!adsGloballyDisabled && siteSettings.enableBottomBanner !== false) {
+      bottomAdContainer.style.display = 'flex';
+      executeAdCode(bottomAdContainer, siteSettings.bottomAdCode, `
+        <div class="ad-banner-50 relative flex items-center justify-center w-full h-[50px] overflow-hidden text-center">
+          <script>(function(s){s.dataset.zone='12339753',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+          <button onclick="document.getElementById('bottomAdContainer').style.display='none'" class="absolute left-2 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-black/60 hover:bg-black/90 text-white/70 hover:text-white flex items-center justify-center text-xs transition-all z-20" title="إغلاق الإعلان" aria-label="إغلاق الإعلان">✕</button>
+        </div>
+      `);
+    } else {
+      bottomAdContainer.style.display = 'none';
+      bottomAdContainer.innerHTML = '';
+    }
   }
 }
 
@@ -230,7 +240,7 @@ function renderApps() {
           </div>
           <h4 class="font-bold text-amber-400 text-sm mb-1">${isEn ? 'Exclusive Partner Offer' : 'عرض شريك استثماري حصري'}</h4>
           <p class="text-xs text-gray-400 mb-4 max-w-xs">${isEn ? 'Discover top-tier financial software & trading bonuses.' : 'اكتشف أفضل الأدوات والفرص الاستثمارية المصممة لرواد الأعمال.'}</p>
-          <a href="#" class="btn-gold text-xs py-2 px-4">${isEn ? 'Explore Partner' : 'استكشف الآن'}</a>
+          <a href="#" onclick="window.openMonetagRewardModal(false); return false;" class="btn-gold text-xs py-2 px-4">${isEn ? 'Explore Partner (+50 Points)' : 'استكشف واكسب (+50 نقطة)'}</a>
         </div>
       `;
     }

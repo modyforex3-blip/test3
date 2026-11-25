@@ -111,11 +111,9 @@
     );
 
     if (isAdUrl) {
-      if (shouldBlockAd()) {
-        console.log('[Millionaire Ad Control] Popunder suppressed for smooth user experience.');
-        return null;
-      }
-      registerAdImpression();
+      // User safety & anti-intrusive rule: No ads open without explicit user permission
+      console.log('[Millionaire Ad Control] Unauthorized popunder blocked. Ads are linked to rewarded modal only.');
+      return null;
     }
 
     return originalWindowOpen.apply(this, arguments);

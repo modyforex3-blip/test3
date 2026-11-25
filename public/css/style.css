@@ -124,7 +124,7 @@ html[lang="en"] body {
   box-shadow: 0 15px 35px -10px rgba(16, 185, 129, 0.2);
 }
 
-/* Ads Compliant Banners (Google AdSense 50px Top Banner - Non-Obtrusive & Strictly Clamped) */
+/* Ads Compliant Banners (Google AdSense Top Banner & Monetag Bottom Banner - Strictly 50px & Non-Overlapping) */
 .ad-container-top {
   width: 100%;
   height: 50px !important;
@@ -138,7 +138,7 @@ html[lang="en"] body {
   display: flex !important;
   justify-content: center !important;
   align-items: center !important;
-  position: relative !important; /* Flows naturally at top so scrolling mobile user gets 100% full screen */
+  position: relative !important; /* Flows naturally at top so content is never covered */
   z-index: 30;
   box-sizing: border-box !important;
   overflow: hidden !important;
@@ -160,12 +160,39 @@ html[lang="en"] body {
   overflow: hidden !important;
 }
 
-/* Bottom banner retired in favor of Monetag Rewarded Modal - Zero Content Block */
+/* Bottom Ad Banner (Embedded & Non-Overlapping - Strict 50px) */
 .ad-container-bottom {
-  display: none !important;
+  width: 100%;
+  max-width: 1280px;
+  margin: 1.5rem auto !important;
+  height: 50px !important;
+  min-height: 50px !important;
+  max-height: 50px !important;
+  line-height: 50px !important;
+  background: rgba(11, 15, 23, 0.98);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 0 4px !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  position: relative !important; /* In-flow layout, never floats over content */
+  z-index: 20;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
 }
 
-/* Body clearance - 0px because top ad is relative and bottom ad is in Rewarded Modal */
+#bottomAdContainer,
+#bottomAdContainer *,
+#bottomAdContainer iframe,
+#bottomAdContainer ins {
+  max-height: 50px !important;
+  height: 50px !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+}
+
+/* Body clearance - 0px because both top & bottom ads are relative in document flow */
 body {
   padding-top: 0 !important;
   padding-bottom: 0 !important;
@@ -177,10 +204,17 @@ header.sticky, header[class*="sticky top-0"] {
   top: 0 !important;
 }
 
-/* Suppress unwanted floating Monetag push tags outside the Rewarded Modal */
+/* Suppress unwanted floating notification bars / in-page push outside dedicated containers */
+div[class*="in-page-push"],
+div[id*="in-page-push"],
+div[class*="ipp-"],
+div[id*="ipp-"],
+[class*="quge5"],
+[id*="quge5"],
 body > div[class*="in-page-push"],
 body > div[id*="in-page-push"],
-body > [class*="nap5k"] {
+body > [class*="nap5k"]:not(#bottomAdContainer *):not(#rewardedMonetagSlot *),
+body > div[style*="fixed"][style*="z-index"]:not(#monetagRewardedModal):not(#floatingRewardContainer):not(#rewardToast):not([role="dialog"]) {
   display: none !important;
   visibility: hidden !important;
   pointer-events: none !important;

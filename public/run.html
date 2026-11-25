@@ -52,7 +52,13 @@
       <span class="text-xs text-emerald-400 font-bold hidden sm:inline">مشغل التطبيقات السحابي (Web Runner)</span>
     </div>
 
-    <div class="flex items-center gap-3">
+    <div class="flex items-center gap-2 sm:gap-3">
+      <!-- Wealth Points Rewards Badge -->
+      <div id="userWealthPointsNavbar" onclick="window.openMonetagRewardModal(false)" class="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-full bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/30 text-amber-400 text-[11px] sm:text-xs font-bold cursor-pointer transition-all select-none shadow-sm" title="اضغط لمشاهدة إعلان الشريك وكسب +50 نقطة ثروة">
+        <i class="fas fa-coins text-amber-400 animate-pulse"></i>
+        <span id="userRewardPointsBadge">150 نقطة</span>
+      </div>
+
       <a id="backToDetailsBtn" href="/app.html" class="btn-secondary text-xs py-1.5 px-3 flex items-center gap-1.5">
         <i class="fas fa-arrow-right text-[10px]"></i>
         <span>صفحة تفاصيل التطبيق</span>
@@ -128,6 +134,17 @@
     </div>
 
   </main>
+
+  <!-- BOTTOM AD BANNER (Strict 50px Height - Embedded & Non-Overlapping) -->
+  <aside id="bottomAdContainer" class="ad-container-bottom max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-6" aria-label="إعلان ممول">
+    <div class="ad-inner-wrapper relative flex items-center justify-center w-full h-[50px] overflow-hidden rounded-xl border border-white/10 bg-[#0b0f17]">
+      <div class="ad-banner-50 flex items-center justify-center w-full h-[50px] overflow-hidden text-center">
+        <!-- Monetag Official Zone 12339753 Banner -->
+        <script>(function(s){s.dataset.zone='12339753',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+      </div>
+      <button onclick="document.getElementById('bottomAdContainer').style.display='none'" class="absolute left-2 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-black/60 hover:bg-black/90 text-white/70 hover:text-white flex items-center justify-center text-xs transition-all z-20" title="إغلاق الإعلان" aria-label="إغلاق الإعلان">✕</button>
+    </div>
+  </aside>
 
   <script src="/js/i18n.js"></script>
   <script src="/js/runner.js"></script>

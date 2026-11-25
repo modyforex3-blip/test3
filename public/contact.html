@@ -5,8 +5,6 @@
   <script src="/js/ad-frequency.js"></script>
   <!-- Monetag Rewarded Ad Modal Controller -->
   <script src="/js/rewarded-ad.js"></script>
-  <!-- Monetag Adaptive In-Page & Vignette Ads -->
-  <script src="https://quge5.com/88/tag.min.js" data-zone="314974" async data-cfasync="false"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>اتصل بنا | مليونير</title>
@@ -44,7 +42,13 @@
         <span class="text-xl sm:text-2xl font-black brand-title">مليونير</span>
       </a>
 
-      <div class="flex items-center gap-4">
+      <div class="flex items-center gap-2 sm:gap-4">
+        <!-- Wealth Points Rewards Badge -->
+        <div id="userWealthPointsNavbar" onclick="window.openMonetagRewardModal(false)" class="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-full bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/30 text-amber-400 text-[11px] sm:text-xs font-bold cursor-pointer transition-all select-none shadow-sm" title="اضغط لمشاهدة إعلان الشريك وكسب +50 نقطة ثروة">
+          <i class="fas fa-coins text-amber-400 animate-pulse"></i>
+          <span id="userRewardPointsBadge">150 نقطة</span>
+        </div>
+
         <div class="flex items-center bg-slate-900 border border-white/10 rounded-full p-1 text-xs">
           <button onclick="window.i18n.setLanguage('ar')" class="lang-switcher-btn px-2.5 py-1 rounded-full font-bold active-lang text-emerald-400" data-lang="ar">عربي</button>
           <button onclick="window.i18n.setLanguage('en')" class="lang-switcher-btn px-2.5 py-1 rounded-full font-bold text-gray-400" data-lang="en">EN</button>
@@ -134,6 +138,17 @@
     </div>
 
   </main>
+
+  <!-- BOTTOM AD BANNER (Strict 50px Height - Embedded & Non-Overlapping) -->
+  <aside id="bottomAdContainer" class="ad-container-bottom max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-6" aria-label="إعلان ممول">
+    <div class="ad-inner-wrapper relative flex items-center justify-center w-full h-[50px] overflow-hidden rounded-xl border border-white/10 bg-[#0b0f17]">
+      <div class="ad-banner-50 flex items-center justify-center w-full h-[50px] overflow-hidden text-center">
+        <!-- Monetag Official Zone 12339753 Banner -->
+        <script>(function(s){s.dataset.zone='12339753',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+      </div>
+      <button onclick="document.getElementById('bottomAdContainer').style.display='none'" class="absolute left-2 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-black/60 hover:bg-black/90 text-white/70 hover:text-white flex items-center justify-center text-xs transition-all z-20" title="إغلاق الإعلان" aria-label="إغلاق الإعلان">✕</button>
+    </div>
+  </aside>
 
   <!-- FOOTER -->
   <footer class="bg-[#0b0f17] border-t border-white/10 py-8 text-center text-xs text-gray-500">

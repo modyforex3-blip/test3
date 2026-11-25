@@ -1,12 +1,13 @@
 /**
- * Millionaire Rewarded Monetag Ad Modal Controller
- * إعلانات مونيتاج المدبلجة في صفحة منبثقة بمكافأة وتغلق ولا تغطي على محتوى الموقع
- * Features:
- * 1. Embedded Monetag Ad in a dedicated Popup Modal
- * 2. Rewarded User Experience (+50 Wealth Points upon view/interaction)
- * 3. Easy-to-close (Prominent Close Button 'X' and dismiss actions)
- * 4. Zero Content Block: When closed, occupies 0px screen space
- * 5. Floating optional Reward Pill allowing users to claim bonuses on demand
+ * Millionaire Rewarded Monetag Ad Modal & User Safety Shield Controller
+ * إعلانات مونيتاج المدبلجة في صفحة منبثقة بمكافأة وتغلق بدون حجب المحتوى
+ * 
+ * الميزات:
+ * 1. منع فتح أي إعلانات بدون إذن المستخدم (حجب Popunders والنقر الخفي 100%)
+ * 2. عند إغلاق النافذة المنبثقة تضاف +50 نقطة ثروة فوراً للرصيد
+ * 3. دمج الإعلانات في البانر العلوي والسفلي بدقة 50px وبدون تغطية أي محتوى
+ * 4. إزالة أي أشرطة إعلانية عائمة متراكمة (In-Page Push) تطفو فوق الموقع
+ * 5. عرض رصيد النقاط وتحديثه المباشر في النافبار
  */
 
 (function() {
@@ -14,8 +15,13 @@
 
   const STORAGE_POINTS_KEY = 'millionaire_user_wealth_points';
   const STORAGE_LAST_REWARD_TIME = 'mil_last_rewarded_ad_ts';
-  const REWARD_COOLDOWN_MS = 5 * 60 * 1000; // 5 minutes cooldown between auto-prompts
+  const REWARD_COOLDOWN_MS = 10 * 60 * 1000; // 10 minutes cooldown
 
+  let rewardAwardedThisTurn = false;
+  let onRewardClosedCallback = null;
+  let rewardCountdownTimer = null;
+
+  // 1. Points Management
   function getUserPoints() {
     return parseInt(localStorage.getItem(STORAGE_POINTS_KEY) || '150', 10);
   }
@@ -29,8 +35,11 @@
   }
 
   function updatePointsDisplay(points) {
-    const el = document.getElementById('userRewardPointsBadge');
-    if (el) el.textContent = `${points} نقطة`;
+    const pts = typeof points === 'number' ? points : getUserPoints();
+    const elements = document.querySelectorAll('#userRewardPointsBadge, .user-wealth-points-val');
+    elements.forEach(el => {
+      el.textContent = `${pts} نقطة`;
+    });
   }
 
   function isAppActive() {
@@ -40,7 +49,92 @@
            window.__IS_IN_APP__ === true;
   }
 
-  // Inject Modal & Floating Pill into DOM
+  // 2. Shield: Block Unauthorized Popups & Popunders ("لا يتم فتح أي إعلانات بدون إذن المستخدم")
+  const originalWindowOpen = window.open;
+  window.open = function(url, target, features) {
+    if (window.__ALLOW_USER_INTENT_OPEN__) {
+      return originalWindowOpen.apply(this, arguments);
+    }
+
+    const urlStr = String(url || '').toLowerCase();
+    const isAdPopunder = urlStr && (
+      urlStr.includes('quge5.com') ||
+      urlStr.includes('nap5k.com') ||
+      urlStr.includes('monetag') ||
+      urlStr.includes('onclick') ||
+      urlStr.includes('popunder') ||
+      urlStr.includes('adcash') ||
+      urlStr.includes('propeller') ||
+      urlStr.includes('doubleclick') ||
+      urlStr.includes('adservice')
+    );
+
+    if (isAdPopunder) {
+      console.warn('[Millionaire Shield] تم منع فتح إعلان منبثق بدون إذن المستخدم:', url);
+      return null;
+    }
+
+    return originalWindowOpen.apply(this, arguments);
+  };
+
+  // Prevent hidden synthetic clicks on ad links
+  const originalAClick = HTMLAnchorElement.prototype.click;
+  HTMLAnchorElement.prototype.click = function() {
+    const href = String(this.href || '').toLowerCase();
+    if (href.includes('quge5.com') || href.includes('nap5k.com') || href.includes('onclick') || href.includes('popunder')) {
+      console.warn('[Millionaire Shield] تم اعتراض نقرة إعلانية خفية بدون إذن.');
+      return;
+    }
+    return originalAClick.apply(this, arguments);
+  };
+
+  // 3. Remove Rogue Floating Notification Push Bars ("شريطين إعلاميين يفتحان تحت بعضهما")
+  function suppressFloatingAds() {
+    const selectors = [
+      'div[class*="in-page-push"]',
+      'div[id*="in-page-push"]',
+      'div[class*="ipp-"]',
+      'div[id*="ipp-"]',
+      '[class*="quge5"]',
+      '[id*="quge5"]'
+    ];
+
+    selectors.forEach(sel => {
+      document.querySelectorAll(sel).forEach(el => {
+        if (!el.closest('#monetagRewardedModal') && !el.closest('#bottomAdContainer') && !el.closest('#topAdContainer')) {
+          el.remove();
+        }
+      });
+    });
+  }
+
+  // Active DOM Observer to keep page clean from floating stacked banners
+  const adCleanObserver = new MutationObserver((mutations) => {
+    for (let i = 0; i < mutations.length; i++) {
+      const added = mutations[i].addedNodes;
+      for (let j = 0; j < added.length; j++) {
+        const node = added[j];
+        if (node.nodeType === 1) {
+          const cls = (node.className || '').toString().toLowerCase();
+          const id = (node.id || '').toString().toLowerCase();
+          if (
+            cls.includes('in-page-push') ||
+            id.includes('in-page-push') ||
+            cls.includes('ipp-') ||
+            id.includes('ipp-') ||
+            cls.includes('quge5') ||
+            id.includes('quge5')
+          ) {
+            if (!node.closest('#monetagRewardedModal') && !node.closest('#bottomAdContainer')) {
+              node.remove();
+            }
+          }
+        }
+      }
+    }
+  });
+
+  // 4. Inject Modal & Floating Pill
   function injectRewardedModalHTML() {
     if (document.getElementById('monetagRewardedModal')) return;
 
@@ -57,31 +151,31 @@
         <div class="absolute -top-12 -left-12 w-40 h-40 bg-amber-500/15 rounded-full blur-3xl pointer-events-none"></div>
         <div class="absolute -bottom-12 -right-12 w-40 h-40 bg-emerald-500/15 rounded-full blur-3xl pointer-events-none"></div>
 
-        <!-- Prominent Close Button (X) -->
-        <button onclick="window.closeMonetagRewardModal()" class="absolute top-4 left-4 w-9 h-9 rounded-full bg-slate-800/90 hover:bg-slate-700 text-gray-300 hover:text-white flex items-center justify-center transition-all z-20 border border-white/10" title="إغلاق الإعلان">
+        <!-- Prominent Close Button (X) - Always grants reward upon closing -->
+        <button onclick="window.closeMonetagRewardModal()" class="absolute top-4 left-4 w-9 h-9 rounded-full bg-slate-800/90 hover:bg-slate-700 text-gray-300 hover:text-white flex items-center justify-center transition-all z-20 border border-white/10" title="إغلاق وجمع النقاط">
           <i class="fas fa-times text-sm"></i>
         </button>
 
         <!-- Badge & Reward Header -->
         <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-amber-500/15 text-amber-400 border border-amber-500/30 text-xs font-black mb-3">
           <i class="fas fa-gift text-sm text-amber-400 animate-bounce"></i>
-          <span>عرض الشريك بمكافأة • Rewarded Ad</span>
+          <span>برنامج مكافآت الشريك • Rewarded Program</span>
         </div>
 
         <h3 class="text-lg font-black text-white mb-1.5 flex items-center justify-center gap-2">
           <span>شاهد الإعلان واربح +50 نقطة ثروة!</span>
         </h3>
         <p class="text-xs text-gray-300 mb-4 leading-relaxed">
-          يدعم هذا الإعلان استمرارية أدوات الذكاء الاصطناعي مجاناً. يمكنك إغلاق النافذة في أي وقت أو استلام المكافأة.
+          إعلان رسمي معتمد لدعم استمرارية التطبيقات مجاناً. بمجرد إغلاق هذه النافذة ستُضاف <strong>50 نقطة مكافأة</strong> تلقائياً إلى رصيدك!
         </p>
 
-        <!-- Embedded Monetag Ad Slot (مدبلجة في النافذة) -->
+        <!-- Embedded Monetag Ad Slot (مدبلجة داخل النافذة) -->
         <div id="rewardedMonetagSlot" class="w-full min-h-[140px] rounded-2xl bg-slate-900/90 border border-white/10 p-3 flex flex-col items-center justify-center relative overflow-hidden mb-4">
           <div class="w-10 h-10 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center mb-2">
             <i class="fas fa-ad text-lg"></i>
           </div>
           <span class="text-xs font-bold text-amber-300 mb-1">إعلان معتمد من شبكة Monetag العالمية</span>
-          <p class="text-[11px] text-gray-400 max-w-xs text-center">أفضل العروض والحلول المالية والتداول الموثوقة مع شركاء معتمدين.</p>
+          <p class="text-[11px] text-gray-400 max-w-xs text-center">أفضل العروض والحلول الرقمية الآمنة مع شركاء معتمدين.</p>
           <div id="monetagInnerScriptContainer" class="w-full mt-2"></div>
         </div>
 
@@ -100,7 +194,7 @@
         <div class="flex items-center justify-center gap-2.5">
           <button id="claimRewardBtn" onclick="window.claimMonetagReward()" class="flex-1 py-2.5 px-4 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-xs flex items-center justify-center gap-2 shadow-lg shadow-amber-500/25 transition-all">
             <i class="fas fa-coins text-sm"></i>
-            <span id="claimBtnLabel">استلام المكافأة (+50)</span>
+            <span id="claimBtnLabel">استلام المكافأة وإغلاق (+50)</span>
           </button>
           <button onclick="window.closeMonetagRewardModal()" class="py-2.5 px-5 rounded-xl bg-slate-800 hover:bg-slate-700 text-gray-300 text-xs font-bold border border-white/10 transition-all">
             <span>إغلاق</span>
@@ -112,7 +206,7 @@
 
     document.body.appendChild(modalDiv);
 
-    // Floating Reward Pill (غير معطل ولا يغطي المحتوى وقابل للإخفاء)
+    // Floating Reward Pill (اختياري وقابل للإخفاء الفوري)
     if (!document.getElementById('floatingRewardContainer') && !isAppActive()) {
       const pillWrapper = document.createElement('div');
       pillWrapper.id = 'floatingRewardContainer';
@@ -128,19 +222,19 @@
     }
   }
 
-  let rewardCountdownTimer = null;
-  let rewardCompleted = false;
-
-  window.openMonetagRewardModal = function(autoTriggered = false) {
+  // 5. Open Rewarded Ad Modal
+  window.openMonetagRewardModal = function(autoTriggered = false, callback = null) {
     injectRewardedModalHTML();
 
     const modal = document.getElementById('monetagRewardedModal');
     if (!modal) return;
 
+    onRewardClosedCallback = typeof callback === 'function' ? callback : null;
+    rewardAwardedThisTurn = false;
+
     modal.classList.remove('hidden');
     modal.style.display = 'flex';
 
-    rewardCompleted = false;
     const bar = document.getElementById('rewardProgressBar');
     const timerLabel = document.getElementById('rewardTimerLabel');
     const timerSeconds = document.getElementById('rewardTimerSeconds');
@@ -153,7 +247,7 @@
       claimBtn.classList.add('bg-gradient-to-r', 'from-amber-500', 'to-amber-600', 'text-slate-950');
     }
 
-    // Execute Monetag zone inside modal slot
+    // Load Monetag zone inside modal slot
     const slot = document.getElementById('monetagInnerScriptContainer');
     if (slot && !slot.dataset.loaded) {
       slot.dataset.loaded = 'true';
@@ -164,7 +258,7 @@
       slot.appendChild(s);
     }
 
-    // Start 5-second countdown to unlock reward
+    // 5-second countdown to unlock reward
     let remaining = 5;
     if (timerSeconds) timerSeconds.textContent = `${remaining} ثوانٍ`;
 
@@ -178,17 +272,17 @@
         if (timerSeconds) timerSeconds.textContent = `${remaining} ثوانٍ`;
       } else {
         clearInterval(rewardCountdownTimer);
-        rewardCompleted = true;
         if (timerSeconds) timerSeconds.textContent = 'جاهز!';
-        if (timerLabel) timerLabel.textContent = '✅ اكتمل العرض بنجاح! مكافأتك جاهزة للاستلام';
+        if (timerLabel) timerLabel.textContent = '✅ اكتمل العرض بنجاح! المكافأة جاهزة عند الإغلاق';
         if (claimBtn) {
-          claimBtn.innerHTML = '<i class="fas fa-check-circle"></i> <span>استلم +50 نقطة الآن!</span>';
+          claimBtn.innerHTML = '<i class="fas fa-check-circle"></i> <span>استلم +50 نقطة الآن وأغلق</span>';
           claimBtn.classList.add('animate-pulse');
         }
       }
     }, 1000);
   };
 
+  // 6. Close Modal & Add Points ("عند إغلاقها تضاف نقاط")
   window.closeMonetagRewardModal = function() {
     const modal = document.getElementById('monetagRewardedModal');
     if (modal) {
@@ -197,37 +291,72 @@
     }
     if (rewardCountdownTimer) clearInterval(rewardCountdownTimer);
     sessionStorage.setItem(STORAGE_LAST_REWARD_TIME, Date.now().toString());
+
+    // Award +50 points whenever closed as requested by user
+    if (!rewardAwardedThisTurn) {
+      rewardAwardedThisTurn = true;
+      const newPoints = addPoints(50);
+      showRewardToast(50, newPoints);
+    }
+
+    // Execute callback if user was waiting to continue action
+    if (typeof onRewardClosedCallback === 'function') {
+      const cb = onRewardClosedCallback;
+      onRewardClosedCallback = null;
+      cb();
+    }
   };
 
   window.claimMonetagReward = function() {
-    addPoints(50);
     window.closeMonetagRewardModal();
+  };
 
-    // Show celebration alert/toast
+  function showRewardToast(amount, total) {
+    const existing = document.getElementById('rewardToast');
+    if (existing) existing.remove();
+
     const toast = document.createElement('div');
-    toast.className = 'fixed top-20 left-1/2 transform -translate-x-1/2 z-[100001] bg-emerald-600 text-white font-bold text-xs py-3 px-6 rounded-2xl shadow-2xl flex items-center gap-2 border border-white/20 animate-bounce';
+    toast.id = 'rewardToast';
+    toast.className = 'fixed top-20 left-1/2 transform -translate-x-1/2 z-[100001] bg-emerald-600 text-white font-bold text-xs sm:text-sm py-3 px-6 rounded-2xl shadow-2xl flex items-center gap-2 border border-white/20 animate-bounce select-none';
     toast.innerHTML = `
-      <i class="fas fa-check-circle text-base"></i>
-      <span>🎉 رائع! تم إضافة +50 نقطة ثروة إلى حسابك بنجاح! الرصيد: ${getUserPoints()} نقطة</span>
+      <i class="fas fa-check-circle text-base text-white"></i>
+      <span>🎉 رائع! تمت إضافة +${amount} نقطة ثروة بنجاح! رصيدك الآن: ${total} نقطة</span>
     `;
     document.body.appendChild(toast);
     setTimeout(() => {
       toast.remove();
-    }, 4000);
-  };
+    }, 4500);
+  }
 
-  // Auto-prompt rewarded modal smoothly after 25s if user hasn't seen it recently
-  document.addEventListener('DOMContentLoaded', () => {
-    injectRewardedModalHTML();
-
-    if (isAppActive()) return; // Never auto-pop inside apps
-
-    setTimeout(() => {
-      const last = parseInt(sessionStorage.getItem(STORAGE_LAST_REWARD_TIME) || '0', 10);
-      const now = Date.now();
-      if (now - last > REWARD_COOLDOWN_MS) {
-        window.openMonetagRewardModal(true);
+  // 7. Connect Clicks on Site Content to Rewards ("اربط الاعلانات التي تفتح عند الضغط على محتويات الموقع ببرنامج المكافأت")
+  function setupContentClickRewards() {
+    document.addEventListener('click', function(e) {
+      const trigger = e.target.closest('[data-reward-ad="true"], .btn-trigger-reward');
+      if (trigger) {
+        e.preventDefault();
+        const targetUrl = trigger.getAttribute('href');
+        window.openMonetagRewardModal(false, () => {
+          if (targetUrl && targetUrl !== '#') {
+            window.location.href = targetUrl;
+          }
+        });
       }
-    }, 25000);
+    });
+  }
+
+  // 8. Lifecycle init
+  document.addEventListener('DOMContentLoaded', () => {
+    updatePointsDisplay();
+    injectRewardedModalHTML();
+    setupContentClickRewards();
+    suppressFloatingAds();
+
+    try {
+      adCleanObserver.observe(document.body, { childList: true, subtree: true });
+    } catch (_) {}
+
+    // Periodic sweep every 3 seconds to guarantee no rogue floating ads appear
+    setInterval(suppressFloatingAds, 3000);
   });
+
 })();

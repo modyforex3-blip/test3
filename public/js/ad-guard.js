@@ -56,10 +56,17 @@
         'button, a, input, select, textarea, .filter-btn, .lang-switcher-btn, .btn-primary, .btn-secondary, .btn-gold, .runner-container, [role="button"]'
       );
 
-      // If user is clicking an interactive app button, stop popunders
+      // If user is clicking an interactive app button, guarantee no ad hijacks it
       if (interactiveTarget) {
-        // Mark event as user app interaction
         e.isAppInteraction = true;
+        // Never allow third-party ad scripts to hijack this click into an ad window
+        window.__ALLOW_USER_INTENT_OPEN__ = false;
+        
+        // If it's a genuine external social link clicked by user (Telegram, Twitter, GitHub), allow it
+        const href = interactiveTarget.getAttribute('href') || '';
+        if (href.includes('t.me') || href.includes('twitter.com') || href.includes('x.com') || href.includes('github.com')) {
+          window.__ALLOW_USER_INTENT_OPEN__ = true;
+        }
       }
     }, true);
   }
