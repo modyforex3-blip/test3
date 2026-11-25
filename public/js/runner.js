@@ -57,6 +57,13 @@ function executeAdCode(container, code, fallback) {
     return;
   }
 
+  // If container already has an AdSense tag loaded from HTML, preserve it!
+  const existingAdsense = container.querySelector('ins.adsbygoogle');
+  if (existingAdsense && content.includes('adsbygoogle')) {
+    container.dataset.renderedCode = content;
+    return;
+  }
+
   container.dataset.renderedCode = content;
   container.innerHTML = content;
 
@@ -80,8 +87,8 @@ function renderAdBanners() {
     if (!adsGloballyDisabled && siteSettings.enableTopBanner !== false) {
       topAd.style.display = 'flex';
       executeAdCode(topAd, siteSettings.topAdCode, `
-        <div class="ad-banner-50 flex items-center justify-center w-full h-[50px] overflow-hidden text-center">
-          <ins class="adsbygoogle" style="display:inline-block;width:100%;max-width:728px;height:50px" data-ad-client="ca-pub-6429184518728912" data-ad-slot="6300978111" data-ad-format="horizontal"></ins>
+        <div class="ad-banner-clean flex items-center justify-center w-full min-h-[50px] text-center">
+          <ins class="adsbygoogle" style="display:inline-block;width:100%;max-width:728px;min-height:50px" data-ad-client="ca-pub-6429184518728912" data-ad-slot="6300978111" data-ad-format="horizontal" data-full-width-responsive="true"></ins>
           <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
         </div>
       `);
@@ -95,7 +102,7 @@ function renderAdBanners() {
     if (!adsGloballyDisabled && siteSettings.enableBottomBanner !== false) {
       bottomAd.style.display = 'flex';
       executeAdCode(bottomAd, siteSettings.bottomAdCode, `
-        <div class="ad-banner-50 flex items-center justify-center w-full h-[50px] overflow-hidden text-center">
+        <div class="ad-banner-clean flex items-center justify-center w-full min-h-[50px] text-center">
           <script>(function(s){s.dataset.zone='12339753',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
         </div>
       `);
