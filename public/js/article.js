@@ -89,9 +89,10 @@ function renderAdBanners() {
     if (!adsGloballyDisabled && siteSettings.enableTopBanner !== false) {
       topAd.style.display = 'flex';
       executeAdCode(topAd, siteSettings.topAdCode, `
-        <div class="ad-banner-clean flex items-center justify-center w-full min-h-[50px] text-center">
-          <ins class="adsbygoogle" style="display:inline-block;width:100%;max-width:728px;min-height:50px" data-ad-client="ca-pub-6429184518728912" data-ad-slot="6300978111" data-ad-format="horizontal" data-full-width-responsive="true"></ins>
+        <div class="ad-banner-50 relative flex items-center justify-center w-full h-[50px] overflow-hidden text-center">
+          <ins class="adsbygoogle" style="display:inline-block;width:100%;max-width:728px;height:50px" data-ad-client="ca-pub-6429184518728912" data-ad-slot="6300978111" data-ad-format="horizontal"></ins>
           <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+          <button onclick="document.getElementById('topAdContainer').style.display='none'" class="absolute left-2 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-black/60 hover:bg-black/90 text-white/70 hover:text-white flex items-center justify-center text-xs transition-all z-20" title="إغلاق الإعلان" aria-label="إغلاق الإعلان">✕</button>
         </div>
       `);
     } else {
@@ -100,18 +101,10 @@ function renderAdBanners() {
     }
   }
 
+  // Bottom banner retired in favor of Monetag Rewarded Modal
   if (bottomAd) {
-    if (!adsGloballyDisabled && siteSettings.enableBottomBanner !== false) {
-      bottomAd.style.display = 'flex';
-      executeAdCode(bottomAd, siteSettings.bottomAdCode, `
-        <div class="ad-banner-clean flex items-center justify-center w-full min-h-[50px] text-center">
-          <script>(function(s){s.dataset.zone='12339753',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
-        </div>
-      `);
-    } else {
-      bottomAd.style.display = 'none';
-      bottomAd.innerHTML = '';
-    }
+    bottomAd.style.display = 'none';
+    bottomAd.innerHTML = '';
   }
 }
 

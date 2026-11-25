@@ -3,6 +3,8 @@
 <head>
   <!-- Smart Ad Frequency & User Experience Controller -->
   <script src="/js/ad-frequency.js"></script>
+  <!-- Monetag Rewarded Ad Modal Controller -->
+  <script src="/js/rewarded-ad.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>تشغيل التطبيق | مليونير</title>
@@ -26,13 +28,14 @@
 </head>
 <body class="bg-[#080c14] text-slate-100 flex flex-col min-h-screen">
 
-  <!-- TOP AD BANNER (Google AdSense / Monetag Responsive Sticky Banner) -->
+  <!-- TOP AD BANNER (Strict 50px Height - Google AdSense Official) -->
   <aside id="topAdContainer" class="ad-container-top" aria-label="إعلان ممول">
-    <div class="ad-inner-wrapper">
-      <div class="ad-banner-clean flex items-center justify-center w-full min-h-[50px] text-center">
-        <ins class="adsbygoogle" style="display:inline-block;width:100%;max-width:728px;min-height:50px" data-ad-client="ca-pub-6429184518728912" data-ad-slot="6300978111" data-ad-format="horizontal" data-full-width-responsive="true"></ins>
+    <div class="ad-inner-wrapper relative flex items-center justify-center w-full h-[50px] overflow-hidden">
+      <div class="ad-banner-50 flex items-center justify-center w-full h-[50px] overflow-hidden text-center">
+        <ins class="adsbygoogle" style="display:inline-block;width:100%;max-width:728px;height:50px" data-ad-client="ca-pub-6429184518728912" data-ad-slot="6300978111" data-ad-format="horizontal"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
       </div>
+      <button onclick="document.getElementById('topAdContainer').style.display='none'" class="absolute left-2 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-black/60 hover:bg-black/90 text-white/70 hover:text-white flex items-center justify-center text-xs transition-all z-20" title="إغلاق الإعلان" aria-label="إغلاق الإعلان">✕</button>
     </div>
   </aside>
 
@@ -125,15 +128,6 @@
     </div>
 
   </main>
-
-  <!-- BOTTOM AD BANNER (Monetag / Google AdSense Clean Placement) -->
-  <aside id="bottomAdContainer" class="ad-container-bottom" aria-label="إعلان ممول">
-    <div class="ad-inner-wrapper">
-      <div class="ad-banner-clean flex items-center justify-center w-full min-h-[50px] text-center">
-        <script>(function(s){s.dataset.zone='12339753',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
-      </div>
-    </div>
-  </aside>
 
   <script src="/js/i18n.js"></script>
   <script src="/js/runner.js"></script>

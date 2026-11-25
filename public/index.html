@@ -3,6 +3,8 @@
 <head>
   <!-- Smart Ad Frequency & User Experience Controller -->
   <script src="/js/ad-frequency.js"></script>
+  <!-- Monetag Rewarded Ad Modal Controller -->
+  <script src="/js/rewarded-ad.js"></script>
   <!-- Monetag Adaptive In-Page & Vignette Ads -->
   <script src="https://quge5.com/88/tag.min.js" data-zone="314974" async data-cfasync="false"></script>
   <meta charset="UTF-8">
@@ -35,27 +37,28 @@
 </head>
 <body class="bg-[#080c14] text-slate-100 flex flex-col min-h-screen">
 
-  <!-- TOP AD BANNER (Google AdSense / Monetag Responsive Sticky Banner) -->
+  <!-- TOP AD BANNER (Strict 50px Height - Google AdSense Official) -->
   <aside id="topAdContainer" class="ad-container-top" aria-label="إعلان ممول">
-    <div class="ad-inner-wrapper">
-      <div class="ad-banner-clean flex items-center justify-center w-full min-h-[50px] text-center">
-        <ins class="adsbygoogle" style="display:inline-block;width:100%;max-width:728px;min-height:50px" data-ad-client="ca-pub-6429184518728912" data-ad-slot="6300978111" data-ad-format="horizontal" data-full-width-responsive="true"></ins>
+    <div class="ad-inner-wrapper relative flex items-center justify-center w-full h-[50px] overflow-hidden">
+      <div class="ad-banner-50 flex items-center justify-center w-full h-[50px] overflow-hidden text-center">
+        <ins class="adsbygoogle" style="display:inline-block;width:100%;max-width:728px;height:50px" data-ad-client="ca-pub-6429184518728912" data-ad-slot="6300978111" data-ad-format="horizontal"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
       </div>
+      <button onclick="document.getElementById('topAdContainer').style.display='none'" class="absolute left-2 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-black/60 hover:bg-black/90 text-white/70 hover:text-white flex items-center justify-center text-xs transition-all z-20" title="إغلاق الإعلان" aria-label="إغلاق الإعلان">✕</button>
     </div>
   </aside>
 
   <!-- NAVBAR -->
   <header class="bg-[#0b0f17]/90 backdrop-blur-md border-b border-white/10 relative z-30">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between gap-4">
       
       <!-- Brand Logo & Name -->
       <a href="/" class="flex items-center gap-3 group">
-        <div class="w-12 h-12 flex-shrink-0 brand-logo-icon">
+        <div class="w-9 h-9 sm:w-11 sm:h-11 flex-shrink-0 brand-logo-icon">
           <img src="/assets/logo.svg" alt="مليونير Logo" class="w-full h-full object-contain">
         </div>
         <div class="flex flex-col">
-          <span class="text-2xl sm:text-3xl font-black brand-title tracking-tight flex items-center gap-2">
+          <span class="text-xl sm:text-2xl font-black brand-title tracking-tight flex items-center gap-2">
             <span>مليونير</span>
             <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">PRO</span>
           </span>
@@ -293,15 +296,6 @@
     </section>
 
   </main>
-
-  <!-- BOTTOM AD BANNER (Monetag / Google AdSense Clean Placement) -->
-  <aside id="bottomAdContainer" class="ad-container-bottom" aria-label="إعلان ممول">
-    <div class="ad-inner-wrapper">
-      <div class="ad-banner-clean flex items-center justify-center w-full min-h-[50px] text-center">
-        <script>(function(s){s.dataset.zone='12339753',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
-      </div>
-    </div>
-  </aside>
 
   <!-- FOOTER -->
   <footer class="bg-[#0b0f17] border-t border-white/10 py-12 mt-16 text-gray-400 text-sm">

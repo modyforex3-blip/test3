@@ -124,35 +124,66 @@ html[lang="en"] body {
   box-shadow: 0 15px 35px -10px rgba(16, 185, 129, 0.2);
 }
 
-/* Ads Compliant Banners (Google AdSense & Monetag Ready - Non-overlapping & Responsive) */
+/* Ads Compliant Banners (Google AdSense 50px Top Banner - Non-Obtrusive & Strictly Clamped) */
 .ad-container-top {
   width: 100%;
-  position: sticky;
-  top: 0;
-  z-index: 40;
+  height: 50px !important;
+  min-height: 50px !important;
+  max-height: 50px !important;
+  line-height: 50px !important;
   background: rgba(11, 15, 23, 0.98);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 6px 12px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 50px;
-  box-sizing: border-box;
-  backdrop-filter: blur(14px);
-  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.4);
+  padding: 0 4px !important;
+  margin: 0 !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  position: relative !important; /* Flows naturally at top so scrolling mobile user gets 100% full screen */
+  z-index: 30;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
 }
 
+#topAdContainer,
+#topAdContainer *,
+.ad-banner-50 {
+  max-height: 50px !important;
+  height: 50px !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+}
+
+#topAdContainer iframe,
+#topAdContainer ins {
+  max-height: 50px !important;
+  height: 50px !important;
+  overflow: hidden !important;
+}
+
+/* Bottom banner retired in favor of Monetag Rewarded Modal - Zero Content Block */
 .ad-container-bottom {
-  width: 100%;
-  position: relative;
-  margin: 1.5rem auto;
-  padding: 8px 12px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 50px;
+  display: none !important;
+}
+
+/* Body clearance - 0px because top ad is relative and bottom ad is in Rewarded Modal */
+body {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
   box-sizing: border-box;
-  z-index: 10;
+}
+
+/* Sticky header sticks cleanly to top 0 without gaps */
+header.sticky, header[class*="sticky top-0"] {
+  top: 0 !important;
+}
+
+/* Suppress unwanted floating Monetag push tags outside the Rewarded Modal */
+body > div[class*="in-page-push"],
+body > div[id*="in-page-push"],
+body > [class*="nap5k"] {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
 }
 
 .ad-inner-wrapper,
@@ -160,13 +191,16 @@ html[lang="en"] body {
 .ad-banner-clean {
   width: 100%;
   max-width: 970px;
-  min-height: 50px;
+  height: 50px !important;
+  min-height: 50px !important;
+  max-height: 50px !important;
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
   box-sizing: border-box;
   position: relative;
+  overflow: hidden !important;
 }
 
 /* Responsive Luxury Partner Ad Banner for Desktop & Mobile */
