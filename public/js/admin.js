@@ -233,6 +233,12 @@ function populateAdsForm() {
   const maxPopupsEl = document.getElementById('maxPopupsPerSession');
   if (maxPopupsEl) maxPopupsEl.value = typeof s.maxPopupsPerSession === 'number' ? s.maxPopupsPerSession : 2;
 
+  const cleanRunnerEl = document.getElementById('cleanAppRunner');
+  if (cleanRunnerEl) cleanRunnerEl.checked = s.cleanAppRunner !== false;
+
+  const onClickEl = document.getElementById('enableOnClickAds');
+  if (onClickEl) onClickEl.checked = !!s.enableOnClickAds;
+
   // Monetag
   const mEnabledEl = document.getElementById('monetagEnabled');
   if (mEnabledEl) mEnabledEl.checked = m.enabled !== false;
@@ -386,11 +392,12 @@ function setupAdminListeners() {
         enableBottomBanner: document.getElementById('enableBottomBanner').checked,
         enableInFeedAds: document.getElementById('enableInFeedAds').checked,
         enableAdaptiveAds: document.getElementById('enableAdaptiveAds').checked,
-
         adFrequencyRate: document.getElementById('adFrequencyRate') ? document.getElementById('adFrequencyRate').value : 'relaxed',
         adCooldownMinutes: parseInt(document.getElementById('adCooldownMinutes') ? document.getElementById('adCooldownMinutes').value : '10', 10) || 10,
         disablePopupsInApps: document.getElementById('disablePopupsInApps') ? document.getElementById('disablePopupsInApps').checked : true,
         maxPopupsPerSession: parseInt(document.getElementById('maxPopupsPerSession') ? document.getElementById('maxPopupsPerSession').value : '2', 10) || 2,
+        cleanAppRunner: document.getElementById('cleanAppRunner') ? document.getElementById('cleanAppRunner').checked : true,
+        enableOnClickAds: document.getElementById('enableOnClickAds') ? document.getElementById('enableOnClickAds').checked : false,
         
         topAdCode: monetagTopCode,
         bottomAdCode: document.getElementById('bottomAdCode').value,

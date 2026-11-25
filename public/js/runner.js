@@ -335,6 +335,15 @@ function setupRunnerControls() {
   if (installBtn) {
     installBtn.addEventListener('click', promptPWAInstall);
   }
+
+  // Ad-Shield: Prevent external ad popunder scripts from hijacking clicks inside the app
+  const runnerContainer = document.getElementById('runnerContainer');
+  if (runnerContainer) {
+    runnerContainer.addEventListener('click', (e) => {
+      // Stop event from propagating to window/document level ad listeners
+      e.stopPropagation();
+    }, true);
+  }
 }
 
 // PWA Install Prompt handling

@@ -203,6 +203,159 @@ div[id*="in-page-push"],
   text-align: center;
   overflow: hidden;
   box-sizing: border-box;
+  position: relative;
+}
+
+/* Responsive Luxury Partner Ad Banner for Desktop & Mobile */
+.ad-partner-card {
+  width: 100%;
+  max-width: 920px;
+  background: linear-gradient(90deg, rgba(16, 185, 129, 0.14) 0%, rgba(15, 23, 42, 0.88) 50%, rgba(245, 158, 11, 0.14) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  padding: 6px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+.ad-partner-badge {
+  font-size: 9px;
+  font-weight: 800;
+  padding: 2px 8px;
+  background: rgba(245, 158, 11, 0.2);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  color: #fbbf24;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.ad-partner-body {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 12px;
+}
+
+.ad-partner-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.ad-partner-text {
+  text-align: right;
+  flex: 1;
+  min-width: 0;
+}
+
+html[lang="en"] .ad-partner-text {
+  text-align: left;
+}
+
+.ad-partner-title {
+  font-size: 12px;
+  font-weight: 800;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ad-partner-sub {
+  font-size: 10px;
+  color: #94a3b8;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ad-partner-cta {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 5px 14px;
+  border-radius: 20px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+}
+
+.ad-partner-cta:hover {
+  filter: brightness(1.15);
+  transform: translateY(-1px);
+}
+
+/* Close button on bottom banner */
+.ad-close-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 12px;
+  width: 22px;
+  height: 22px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #94a3b8;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  z-index: 20;
+}
+
+.ad-close-btn:hover {
+  background: rgba(244, 63, 94, 0.3);
+  color: #ffffff;
+  border-color: rgba(244, 63, 94, 0.5);
+}
+
+@media (max-width: 640px) {
+  .ad-partner-card {
+    padding: 4px 8px;
+    gap: 6px;
+  }
+  .ad-partner-icon {
+    display: none;
+  }
+  .ad-partner-title {
+    font-size: 11px;
+  }
+  .ad-partner-sub {
+    font-size: 9px;
+  }
+  .ad-partner-cta {
+    padding: 4px 10px;
+    font-size: 10px;
+  }
+  .ad-close-btn {
+    left: 4px;
+  }
 }
 
 .ad-demo-box {

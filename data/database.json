@@ -19,6 +19,8 @@
     "enableBottomBanner": true,
     "enableInFeedAds": true,
     "enableAdaptiveAds": true,
+    "enableOnClickAds": false,
+    "cleanAppRunner": true,
     "topAdCode": "<!-- Google AdSense Official 50px Top Banner -->\n<div class=\"ad-banner-50 flex items-center justify-center w-full h-[50px] overflow-hidden text-center\">\n  <ins class=\"adsbygoogle\" style=\"display:inline-block;width:100%;max-width:728px;height:50px\" data-ad-client=\"ca-pub-6429184518728912\" data-ad-slot=\"6300978111\" data-ad-format=\"horizontal\"></ins>\n  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>\n</div>",
     "bottomAdCode": "<!-- Monetag Official 50px Bottom Banner (Single Instance) -->\n<div class=\"ad-banner-50 flex items-center justify-center w-full h-[50px] overflow-hidden text-center\">\n  <script>(function(s){s.dataset.zone='12339753',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>\n</div>",
     "inFeedAdCode": "<!-- Monetag / AdSense In-Feed Native Ad -->\n<div class=\"ad-card-box\"><span class=\"ad-badge\">إعلان مدمج / Sponsored</span><div class=\"text-center py-4\"><p class=\"font-bold text-amber-400\">شريك إعلاني رسمي</p><p class=\"text-xs text-gray-400 mt-1\">عروض وحلول برمجية وتقنية موثوقة</p></div></div>",
