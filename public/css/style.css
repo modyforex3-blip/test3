@@ -883,7 +883,6 @@ html[lang="en"] .featured-badge {
   justify-content: center !important;
   box-sizing: border-box !important;
   transform: translateZ(0) !important;
-  contain: layout !important;
 }
 
 #bottomAdContainer,
@@ -904,15 +903,85 @@ html[lang="en"] .featured-badge {
   justify-content: center !important;
   box-sizing: border-box !important;
   transform: translateZ(0) !important;
-  contain: layout !important;
 }
 
 #bottomAdContainer {
   margin-top: auto;
 }
 
-/* Fit neutralized Monetag ads cleanly inside the 50px banner without overflowing */
+/* Universal 50px Height Strict Lock for Any Ad Container or Inner Element */
+.ad-banner-50,
+.ad-banner-clean,
+.in-app-ad-banner,
+.in-app-monetag-banner,
+.ad-inner-wrapper,
+.monetag-slot,
+[data-monetag-zone] {
+  width: 100% !important;
+  height: 50px !important;
+  min-height: 50px !important;
+  max-height: 50px !important;
+  line-height: 50px !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+  flex-shrink: 0 !important;
+}
+
+/* Ensure all child tags, iframes and ins units never exceed 50px height */
+#topAdContainer *,
+#bottomAdContainer *,
+#inAppTopBanner *,
+#inAppBottomBanner *,
+#runnerInAppTopAd *,
+#runnerInAppBottomAd *,
+.ad-banner-50 *,
+.ad-banner-clean *,
+.in-app-ad-banner *,
+.in-app-monetag-banner *,
+.monetag-slot *,
+[data-neutralized-ad="true"],
+[data-neutralized-ad="true"] * {
+  max-height: 50px !important;
+  box-sizing: border-box !important;
+}
+
+#topAdContainer iframe,
+#bottomAdContainer iframe,
+#inAppTopBanner iframe,
+#inAppBottomBanner iframe,
+#runnerInAppTopAd iframe,
+#runnerInAppBottomAd iframe,
+.ad-banner-50 iframe,
+.ad-banner-clean iframe,
+.in-app-ad-banner iframe,
+.in-app-monetag-banner iframe,
+#topAdContainer ins.adsbygoogle,
+#bottomAdContainer ins.adsbygoogle,
+.monetag-slot iframe {
+  height: 50px !important;
+  max-height: 50px !important;
+  min-height: 50px !important;
+  overflow: hidden !important;
+}
+
+/* Complete suppression of Google Auto Ads that expand and take half the page */
+.google-auto-placed,
+div[class*="google-auto-placed"],
+ins.adsbygoogle-noab,
+div[id*="google_ads_iframe"]:not(#rewardAdModal *):not(#monetagRewardedModal *) {
+  display: none !important;
+  height: 0 !important;
+  max-height: 0 !important;
+  overflow: hidden !important;
+}
+
+/* Fit neutralized Monetag ads cleanly inside 50px */
 [data-neutralized-ad="true"] {
+  position: relative !important;
+  max-height: 48px !important;
+  overflow: hidden !important;
+  margin: 0 auto !important;
+}
   position: relative !important;
   max-height: 46px !important;
   overflow: hidden !important;
@@ -983,19 +1052,28 @@ div[class*="ipp-"] {
 #bottomAdContainer {
   will-change: auto !important;
   transform: translateZ(0) !important;
-  contain: layout size !important;
+  contain: layout !important;
 }
 
-/* Desktop: ensure banner slots are visible and have minimum presence */
+/* Desktop: ensure banner slots strictly remain 50px */
 @media (min-width: 768px) {
   #topAdContainer .monetag-slot,
-  #bottomAdContainer .monetag-slot {
+  #bottomAdContainer .monetag-slot,
+  .monetag-slot {
     min-width: 320px !important;
-    min-height: 50px !important;
-  }
-  .ad-inner-wrapper {
+    max-width: 728px !important;
+    height: 50px !important;
     min-height: 50px !important;
     max-height: 50px !important;
+    overflow: hidden !important;
+  }
+  .ad-inner-wrapper,
+  .ad-banner-50,
+  .ad-banner-clean {
+    height: 50px !important;
+    min-height: 50px !important;
+    max-height: 50px !important;
+    overflow: hidden !important;
   }
 }
 

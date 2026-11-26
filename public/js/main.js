@@ -97,12 +97,13 @@ function renderAdBanners() {
     if (!adsGloballyDisabled && siteSettings.enableTopBanner !== false) {
       topAdContainer.style.display = 'flex';
       executeAdCode(topAdContainer, siteSettings.topAdCode, `
-        <div class="ad-inner-wrapper w-full">
-          <div class="ad-banner-clean flex flex-col md:flex-row items-center justify-center w-full min-h-[50px] text-center gap-2">
-            <div class="monetag-slot w-full max-w-[728px] min-h-[50px] flex items-center justify-center" data-monetag-zone="12339753"></div>
-            <ins class="adsbygoogle" style="display:inline-block;width:100%;max-width:728px;min-height:50px" data-ad-client="ca-pub-6429184518728912" data-ad-slot="6300978111" data-ad-format="horizontal" data-full-width-responsive="true"></ins>
-            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        <div class="ad-inner-wrapper relative flex items-center justify-center w-full h-[50px] min-h-[50px] max-h-[50px] overflow-hidden">
+          <div class="ad-banner-50 flex items-center justify-center w-full h-[50px] min-h-[50px] max-h-[50px] overflow-hidden text-center">
+            <div class="monetag-slot w-full max-w-[728px] h-[50px] min-h-[50px] max-h-[50px] overflow-hidden flex items-center justify-center" data-monetag-zone="12339753">
+              <script>(function(s){s.dataset.zone='12339753',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+            </div>
           </div>
+          <button onclick="document.getElementById('topAdContainer').style.display='none'" class="absolute left-2 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-black/60 hover:bg-black/90 text-white/70 hover:text-white flex items-center justify-center text-xs transition-all z-20" title="إغلاق الإعلان" aria-label="إغلاق الإعلان">✕</button>
         </div>
       `);
     } else {
@@ -115,10 +116,13 @@ function renderAdBanners() {
     if (!adsGloballyDisabled && siteSettings.enableBottomBanner !== false) {
       bottomAdContainer.style.display = 'flex';
       executeAdCode(bottomAdContainer, siteSettings.bottomAdCode, `
-        <div class="ad-inner-wrapper w-full">
-          <div class="ad-banner-clean flex items-center justify-center w-full min-h-[50px] text-center">
-            <div class="monetag-slot w-full max-w-[728px] min-h-[50px] flex items-center justify-center" data-monetag-zone="12339753"></div>
+        <div class="ad-inner-wrapper relative flex items-center justify-center w-full h-[50px] min-h-[50px] max-h-[50px] overflow-hidden rounded-xl border border-white/10 bg-[#0b0f17]">
+          <div class="ad-banner-50 flex items-center justify-center w-full h-[50px] min-h-[50px] max-h-[50px] overflow-hidden text-center">
+            <div class="monetag-slot w-full max-w-[728px] h-[50px] min-h-[50px] max-h-[50px] overflow-hidden flex items-center justify-center" data-monetag-zone="12339753">
+              <script>(function(s){s.dataset.zone='12339753',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+            </div>
           </div>
+          <button onclick="document.getElementById('bottomAdContainer').style.display='none'" class="absolute left-2 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-black/60 hover:bg-black/90 text-white/70 hover:text-white flex items-center justify-center text-xs transition-all z-20" title="إغلاق الإعلان" aria-label="إغلاق الإعلان">✕</button>
         </div>
       `);
     } else {

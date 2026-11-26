@@ -3,8 +3,8 @@
 <head>
   <!-- Smart Ad Frequency & User Experience Controller -->
   <script src="/js/ad-frequency.js"></script>
-  <!-- Monetag Adaptive In-Page & Vignette Ads -->
-  <script src="https://quge5.com/88/tag.min.js" data-zone="314974" async data-cfasync="false"></script>
+  <!-- Monetag Rewarded Ad Modal Controller -->
+  <script src="/js/rewarded-ad.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>مليونير | Millionaire - منصة وبوابة التطبيقات والأدوات الرقمية</title>
@@ -63,14 +63,15 @@
 </head>
 <body class="bg-[#080c14] text-slate-100 flex flex-col min-h-screen">
 
-  <!-- TOP AD BANNER (Google AdSense / Monetag Responsive Sticky Banner) -->
+  <!-- TOP AD BANNER (Strict 50px Height - Google AdSense / Monetag Official) -->
   <aside id="topAdContainer" class="ad-container-top" aria-label="إعلان ممول">
-    <div class="ad-inner-wrapper">
-      <div class="ad-banner-clean flex flex-col md:flex-row items-center justify-center w-full min-h-[50px] text-center gap-2">
-        <div class="monetag-slot w-full max-w-[728px] min-h-[50px] flex items-center justify-center" data-monetag-zone="12339753"></div>
-        <ins class="adsbygoogle" style="display:inline-block;width:100%;max-width:728px;min-height:50px" data-ad-client="ca-pub-6429184518728912" data-ad-slot="6300978111" data-ad-format="horizontal" data-full-width-responsive="true"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    <div class="ad-inner-wrapper relative flex items-center justify-center w-full h-[50px] min-h-[50px] max-h-[50px] overflow-hidden">
+      <div class="ad-banner-50 flex items-center justify-center w-full h-[50px] min-h-[50px] max-h-[50px] overflow-hidden text-center">
+        <div class="monetag-slot w-full max-w-[728px] h-[50px] min-h-[50px] max-h-[50px] overflow-hidden flex items-center justify-center" data-monetag-zone="12339753">
+          <script>(function(s){s.dataset.zone='12339753',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+        </div>
       </div>
+      <button onclick="document.getElementById('topAdContainer').style.display='none'" class="absolute left-2 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-black/60 hover:bg-black/90 text-white/70 hover:text-white flex items-center justify-center text-xs transition-all z-20" title="إغلاق الإعلان" aria-label="إغلاق الإعلان">✕</button>
     </div>
   </aside>
 
@@ -360,12 +361,15 @@
 
   </main>
 
-  <!-- BOTTOM AD BANNER (Monetag / Google AdSense Clean Placement) -->
-  <aside id="bottomAdContainer" class="ad-container-bottom" aria-label="إعلان ممول">
-    <div class="ad-inner-wrapper">
-      <div class="ad-banner-clean flex items-center justify-center w-full min-h-[50px] text-center">
-        <div class="monetag-slot w-full max-w-[728px] min-h-[50px] flex items-center justify-center" data-monetag-zone="12339753"></div>
+  <!-- BOTTOM AD BANNER (Strict 50px Height - Embedded & Non-Overlapping) -->
+  <aside id="bottomAdContainer" class="ad-container-bottom max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-6" aria-label="إعلان ممول">
+    <div class="ad-inner-wrapper relative flex items-center justify-center w-full h-[50px] min-h-[50px] max-h-[50px] overflow-hidden rounded-xl border border-white/10 bg-[#0b0f17]">
+      <div class="ad-banner-50 flex items-center justify-center w-full h-[50px] min-h-[50px] max-h-[50px] overflow-hidden text-center">
+        <div class="monetag-slot w-full max-w-[728px] h-[50px] min-h-[50px] max-h-[50px] overflow-hidden flex items-center justify-center" data-monetag-zone="12339753">
+          <script>(function(s){s.dataset.zone='12339753',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+        </div>
       </div>
+      <button onclick="document.getElementById('bottomAdContainer').style.display='none'" class="absolute left-2 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-black/60 hover:bg-black/90 text-white/70 hover:text-white flex items-center justify-center text-xs transition-all z-20" title="إغلاق الإعلان" aria-label="إغلاق الإعلان">✕</button>
     </div>
   </aside>
 

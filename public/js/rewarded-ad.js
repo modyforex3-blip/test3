@@ -88,7 +88,7 @@
     return originalAClick.apply(this, arguments);
   };
 
-  // 3. Remove Rogue Floating Notification Push Bars ("شريطين إعلاميين يفتحان تحت بعضهما")
+  // 3. Remove Rogue Floating Notification Push Bars & Auto-Placed Overlays ("شريطين إعلاميين يفتحان تحت بعضهما")
   function suppressFloatingAds() {
     const selectors = [
       'div[class*="in-page-push"]',
@@ -96,12 +96,15 @@
       'div[class*="ipp-"]',
       'div[id*="ipp-"]',
       '[class*="quge5"]',
-      '[id*="quge5"]'
+      '[id*="quge5"]',
+      '.google-auto-placed',
+      'div[class*="google-auto-placed"]',
+      'ins.adsbygoogle-noab'
     ];
 
     selectors.forEach(sel => {
       document.querySelectorAll(sel).forEach(el => {
-        if (!el.closest('#monetagRewardedModal') && !el.closest('#bottomAdContainer') && !el.closest('#topAdContainer')) {
+        if (!el.closest('#monetagRewardedModal') && !el.closest('#rewardAdModal')) {
           el.remove();
         }
       });
@@ -123,9 +126,11 @@
             cls.includes('ipp-') ||
             id.includes('ipp-') ||
             cls.includes('quge5') ||
-            id.includes('quge5')
+            id.includes('quge5') ||
+            cls.includes('google-auto-placed') ||
+            id.includes('google-auto-placed')
           ) {
-            if (!node.closest('#monetagRewardedModal') && !node.closest('#bottomAdContainer')) {
+            if (!node.closest('#monetagRewardedModal') && !node.closest('#rewardAdModal')) {
               node.remove();
             }
           }

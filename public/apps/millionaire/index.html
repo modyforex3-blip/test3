@@ -78,11 +78,11 @@
   </head>
   <body class="bg-slate-950 text-slate-100 antialiased font-arabic selection:bg-emerald-500 selection:text-white overflow-x-hidden min-h-screen">
 
-    <!-- In-App Top Ad Banner (Integrated inside page flow, never covers app) -->
-    <div id="inAppTopBanner" class="in-app-ad-banner in-app-top">
-      <div class="ad-inner-wrapper w-full flex flex-col items-center justify-center">
-        <div class="ad-banner-clean flex flex-wrap items-center justify-center w-full min-h-[48px] gap-2">
-          <div class="monetag-slot w-full max-w-[728px] min-h-[48px] flex items-center justify-center" data-monetag-zone="12339753">
+    <!-- In-App Top Ad Banner (Strict 50px Height - Never covers app) -->
+    <div id="inAppTopBanner" class="in-app-ad-banner in-app-top w-full h-[50px] min-h-[50px] max-h-[50px] overflow-hidden flex items-center justify-center">
+      <div class="ad-inner-wrapper w-full h-[50px] min-h-[50px] max-h-[50px] overflow-hidden flex items-center justify-center">
+        <div class="ad-banner-50 flex items-center justify-center w-full h-[50px] min-h-[50px] max-h-[50px] overflow-hidden">
+          <div class="monetag-slot w-full max-w-[728px] h-[50px] min-h-[50px] max-h-[50px] overflow-hidden flex items-center justify-center" data-monetag-zone="12339753">
             <script>(function(s){s.dataset.zone='12339753',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
           </div>
         </div>
@@ -116,11 +116,11 @@
     <!-- Original Millionaire OS React Root -->
     <div id="root"></div>
 
-    <!-- In-App Bottom Ad Banner (Integrated cleanly below app content) -->
-    <div id="inAppBottomBanner" class="in-app-ad-banner in-app-bottom">
-      <div class="ad-inner-wrapper w-full flex flex-col items-center justify-center">
-        <div class="ad-banner-clean flex items-center justify-center w-full min-h-[48px]">
-          <div class="monetag-slot w-full max-w-[728px] min-h-[48px] flex items-center justify-center" data-monetag-zone="12339753">
+    <!-- In-App Bottom Ad Banner (Strict 50px Height - Embedded cleanly below app) -->
+    <div id="inAppBottomBanner" class="in-app-ad-banner in-app-bottom w-full h-[50px] min-h-[50px] max-h-[50px] overflow-hidden flex items-center justify-center">
+      <div class="ad-inner-wrapper w-full h-[50px] min-h-[50px] max-h-[50px] overflow-hidden flex items-center justify-center">
+        <div class="ad-banner-50 flex items-center justify-center w-full h-[50px] min-h-[50px] max-h-[50px] overflow-hidden">
+          <div class="monetag-slot w-full max-w-[728px] h-[50px] min-h-[50px] max-h-[50px] overflow-hidden flex items-center justify-center" data-monetag-zone="12339753">
             <script>(function(s){s.dataset.zone='12339753',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
           </div>
         </div>

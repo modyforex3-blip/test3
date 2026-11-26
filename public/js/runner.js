@@ -94,12 +94,13 @@ function renderAdBanners() {
     if (!adsGloballyDisabled && siteSettings.enableTopBanner !== false) {
       topAd.style.display = 'flex';
       executeAdCode(topAd, siteSettings.topAdCode, `
-        <div class="ad-inner-wrapper w-full">
-          <div class="ad-banner-clean flex flex-col md:flex-row items-center justify-center w-full min-h-[50px] text-center gap-2">
-            <div class="monetag-slot w-full max-w-[728px] min-h-[50px] flex items-center justify-center" data-monetag-zone="12339753"></div>
-            <ins class="adsbygoogle" style="display:inline-block;width:100%;max-width:728px;min-height:50px" data-ad-client="ca-pub-6429184518728912" data-ad-slot="6300978111" data-ad-format="horizontal" data-full-width-responsive="true"></ins>
-            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        <div class="ad-inner-wrapper relative flex items-center justify-center w-full h-[50px] min-h-[50px] max-h-[50px] overflow-hidden">
+          <div class="ad-banner-50 flex items-center justify-center w-full h-[50px] min-h-[50px] max-h-[50px] overflow-hidden text-center">
+            <div class="monetag-slot w-full max-w-[728px] h-[50px] min-h-[50px] max-h-[50px] overflow-hidden flex items-center justify-center" data-monetag-zone="12339753">
+              <script>(function(s){s.dataset.zone='12339753',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+            </div>
           </div>
+          <button onclick="document.getElementById('topAdContainer').style.display='none'" class="absolute left-2 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-black/60 hover:bg-black/90 text-white/70 hover:text-white flex items-center justify-center text-xs transition-all z-20" title="إغلاق الإعلان" aria-label="إغلاق الإعلان">✕</button>
         </div>
       `);
     } else {
@@ -112,10 +113,13 @@ function renderAdBanners() {
     if (!adsGloballyDisabled && siteSettings.enableBottomBanner !== false) {
       bottomAd.style.display = 'flex';
       executeAdCode(bottomAd, siteSettings.bottomAdCode, `
-        <div class="ad-inner-wrapper w-full">
-          <div class="ad-banner-clean flex items-center justify-center w-full min-h-[50px] text-center">
-            <div class="monetag-slot w-full max-w-[728px] min-h-[50px] flex items-center justify-center" data-monetag-zone="12339753"></div>
+        <div class="ad-inner-wrapper relative flex items-center justify-center w-full h-[50px] min-h-[50px] max-h-[50px] overflow-hidden rounded-xl border border-white/10 bg-[#0b0f17]">
+          <div class="ad-banner-50 flex items-center justify-center w-full h-[50px] min-h-[50px] max-h-[50px] overflow-hidden text-center">
+            <div class="monetag-slot w-full max-w-[728px] h-[50px] min-h-[50px] max-h-[50px] overflow-hidden flex items-center justify-center" data-monetag-zone="12339753">
+              <script>(function(s){s.dataset.zone='12339753',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+            </div>
           </div>
+          <button onclick="document.getElementById('bottomAdContainer').style.display='none'" class="absolute left-2 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-black/60 hover:bg-black/90 text-white/70 hover:text-white flex items-center justify-center text-xs transition-all z-20" title="إغلاق الإعلان" aria-label="إغلاق الإعلان">✕</button>
         </div>
       `);
     } else {
@@ -129,10 +133,10 @@ function renderAdBanners() {
       runnerInAppTop.style.display = 'block';
       const inner = runnerInAppTop.querySelector('.ad-inner-wrapper') || runnerInAppTop;
       executeAdCode(inner, siteSettings.topAdCode, `
-        <div class="ad-banner-clean flex items-center justify-center w-full min-h-[48px]">
-          <div class="monetag-slot w-full max-w-[728px] min-h-[48px] flex items-center justify-center" data-monetag-zone="12339753"></div>
-          <ins class="adsbygoogle" style="display:inline-block;width:100%;max-width:728px;min-height:48px" data-ad-client="ca-pub-6429184518728912" data-ad-slot="6300978111" data-ad-format="horizontal" data-full-width-responsive="true"></ins>
-          <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        <div class="ad-banner-50 flex items-center justify-center w-full h-[50px] min-h-[50px] max-h-[50px] overflow-hidden">
+          <div class="monetag-slot w-full max-w-[728px] h-[50px] min-h-[50px] max-h-[50px] overflow-hidden flex items-center justify-center" data-monetag-zone="12339753">
+            <script>(function(s){s.dataset.zone='12339753',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+          </div>
         </div>
       `);
     } else {
@@ -145,8 +149,10 @@ function renderAdBanners() {
       runnerInAppBottom.style.display = 'block';
       const inner = runnerInAppBottom.querySelector('.ad-inner-wrapper') || runnerInAppBottom;
       executeAdCode(inner, siteSettings.bottomAdCode, `
-        <div class="ad-banner-clean flex items-center justify-center w-full min-h-[48px]">
-          <div class="monetag-slot w-full max-w-[728px] min-h-[48px] flex items-center justify-center" data-monetag-zone="12339753"></div>
+        <div class="ad-banner-50 flex items-center justify-center w-full h-[50px] min-h-[50px] max-h-[50px] overflow-hidden">
+          <div class="monetag-slot w-full max-w-[728px] h-[50px] min-h-[50px] max-h-[50px] overflow-hidden flex items-center justify-center" data-monetag-zone="12339753">
+            <script>(function(s){s.dataset.zone='12339753',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+          </div>
         </div>
       `);
     } else {
@@ -194,20 +200,20 @@ function initAppRunner() {
 
 function getInAppMonetagBannerHTML() {
   return `
-    <div class="in-app-monetag-banner my-4 p-3 rounded-2xl bg-slate-900/90 border border-amber-500/30 text-center overflow-hidden relative shadow-lg select-none">
-      <div class="flex items-center justify-between mb-2 px-1">
-        <span class="px-2 py-0.5 rounded text-[10px] font-black bg-amber-500/20 text-amber-400 border border-amber-500/30 flex items-center gap-1.5">
+    <div class="in-app-monetag-banner my-2 w-full h-[50px] min-h-[50px] max-h-[50px] rounded-xl bg-slate-900/95 border border-amber-500/30 flex items-center justify-between px-3 overflow-hidden relative shadow select-none">
+      <div class="flex items-center gap-1.5 shrink-0">
+        <span class="px-1.5 py-0.5 rounded text-[10px] font-black bg-amber-500/20 text-amber-400 border border-amber-500/30 flex items-center gap-1">
           <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
-          <span>إعلان شريك معتمد • Monetag</span>
+          <span>Monetag</span>
         </span>
-        <button onclick="window.openMonetagRewardModal && window.openMonetagRewardModal(false)" class="text-[11px] text-emerald-400 hover:text-emerald-300 font-bold flex items-center gap-1 cursor-pointer transition-colors" title="اضغط لمشاهدة إعلان الشريك وكسب +50 نقطة">
-          <i class="fas fa-gift text-amber-400 animate-bounce"></i>
-          <span>شاهد واربح +50 نقطة</span>
-        </button>
       </div>
-      <div class="monetag-runner-ad-slot w-full min-h-[50px] flex items-center justify-center relative py-1" data-zone="12339753">
-        <p class="text-xs text-gray-300">فرص استثمارية وشراكات رقمية مع شركاء معتمدين • Monetag Zone 12339753</p>
+      <div class="monetag-runner-ad-slot flex-1 min-h-[46px] max-h-[46px] flex items-center justify-center overflow-hidden px-2" data-zone="12339753">
+        <span class="text-xs text-gray-300 truncate">إعلان ممول معتمد • Monetag Zone 12339753</span>
       </div>
+      <button onclick="window.openMonetagRewardModal && window.openMonetagRewardModal(false)" class="shrink-0 text-[10px] text-amber-400 hover:text-amber-300 font-bold flex items-center gap-1 px-2 py-1 rounded bg-amber-500/10 border border-amber-500/20 cursor-pointer transition-colors" title="اضغط لمشاهدة إعلان الشريك وكسب +50 نقطة">
+        <i class="fas fa-gift text-amber-400 animate-bounce"></i>
+        <span>+50 نقطة</span>
+      </button>
     </div>
   `;
 }

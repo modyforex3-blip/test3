@@ -232,6 +232,7 @@
         node.style.setProperty('bottom', 'auto', 'important');
         node.style.setProperty('transform', 'translateZ(0)', 'important');
         node.style.setProperty('max-width', '100%', 'important');
+        node.style.setProperty('height', isRewardOpen ? 'auto' : '46px', 'important');
         node.style.setProperty('max-height', isRewardOpen ? 'none' : '46px', 'important');
         node.style.setProperty('overflow', 'hidden', 'important');
         node.style.setProperty('margin', '0 auto', 'important');
