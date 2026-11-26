@@ -192,6 +192,45 @@ function initAppRunner() {
   renderInteractiveAppSuite(app, viewport);
 }
 
+function getInAppMonetagBannerHTML() {
+  return `
+    <div class="in-app-monetag-banner my-4 p-3 rounded-2xl bg-slate-900/90 border border-amber-500/30 text-center overflow-hidden relative shadow-lg select-none">
+      <div class="flex items-center justify-between mb-2 px-1">
+        <span class="px-2 py-0.5 rounded text-[10px] font-black bg-amber-500/20 text-amber-400 border border-amber-500/30 flex items-center gap-1.5">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+          <span>إعلان شريك معتمد • Monetag</span>
+        </span>
+        <button onclick="window.openMonetagRewardModal && window.openMonetagRewardModal(false)" class="text-[11px] text-emerald-400 hover:text-emerald-300 font-bold flex items-center gap-1 cursor-pointer transition-colors" title="اضغط لمشاهدة إعلان الشريك وكسب +50 نقطة">
+          <i class="fas fa-gift text-amber-400 animate-bounce"></i>
+          <span>شاهد واربح +50 نقطة</span>
+        </button>
+      </div>
+      <div class="monetag-runner-ad-slot w-full min-h-[50px] flex items-center justify-center relative py-1" data-zone="12339753">
+        <p class="text-xs text-gray-300">فرص استثمارية وشراكات رقمية مع شركاء معتمدين • Monetag Zone 12339753</p>
+      </div>
+    </div>
+  `;
+}
+
+function initInAppMonetagScript(container) {
+  if (!container) return;
+  const slots = container.querySelectorAll('.monetag-runner-ad-slot');
+  slots.forEach(slot => {
+    if (!slot.dataset.loaded) {
+      slot.dataset.loaded = 'true';
+      try {
+        const s = document.createElement('script');
+        s.dataset.zone = '12339753';
+        s.src = 'https://nap5k.com/tag.min.js';
+        s.async = true;
+        slot.appendChild(s);
+      } catch (e) {
+        console.warn('Monetag runner in-app script error:', e);
+      }
+    }
+  });
+}
+
 function renderInteractiveAppSuite(app, viewport) {
   const isEn = window.i18n && window.i18n.currentLang === 'en';
 
@@ -252,11 +291,8 @@ function renderInteractiveAppSuite(app, viewport) {
           </div>
         </div>
 
-        <!-- In-App Safe Ad Slot -->
-        <div class="ad-demo-box my-4">
-          <span class="ad-badge">إعلان معتمد داخل التطبيق / In-App Monetag & AdSense</span>
-          <div class="ad-content-inner">مساحة إعلانية داخلية تظهر على الويب وعند التثبيت على الهاتف المحمول دون تعطيل الاستخدام</div>
-        </div>
+        <!-- In-App Safe Monetag Ad Slot -->
+        ${getInAppMonetagBannerHTML()}
       </div>
     `;
   } else if (app.category === 'ai') {
@@ -285,10 +321,8 @@ function renderInteractiveAppSuite(app, viewport) {
           </div>
         </div>
 
-        <div class="ad-demo-box my-4">
-          <span class="ad-badge">إعلان ممول / In-App Ad</span>
-          <div class="ad-content-inner">إعلان مدمج متوافق مع كافة الأجهزة المحمولة ومتصفحات الويب</div>
-        </div>
+        <!-- In-App Safe Monetag Ad Slot -->
+        ${getInAppMonetagBannerHTML()}
       </div>
     `;
   } else {
@@ -325,13 +359,14 @@ function renderInteractiveAppSuite(app, viewport) {
           </div>
         </div>
 
-        <div class="ad-demo-box my-4">
-          <span class="ad-badge">إعلان ممول / Sponsored</span>
-          <div class="ad-content-inner">مساحة إعلانية مخصصة للمعلنين والشركاء الرسميين</div>
-        </div>
+        <!-- In-App Safe Monetag Ad Slot -->
+        ${getInAppMonetagBannerHTML()}
       </div>
     `;
   }
+
+  // Activate Monetag live scripts inside the app suite
+  initInAppMonetagScript(viewport);
 }
 
 function calculateProfit() {

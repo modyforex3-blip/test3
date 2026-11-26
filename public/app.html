@@ -149,12 +149,27 @@
       <div class="space-y-6">
         
         <!-- Safe Sidebar Ad Box (Compliant with Google AdSense & Monetag) -->
-        <div class="glass-panel p-6 border-dashed border-emerald-500/20 text-center">
-          <span class="ad-badge mb-3">إعلان ممول / Sponsored</span>
-          <div class="py-6 bg-slate-900/60 rounded-xl my-2 border border-white/5">
+        <div class="glass-panel p-6 border border-amber-500/30 text-center relative overflow-hidden shadow-lg select-none">
+          <div class="flex items-center justify-between mb-3">
+            <span class="px-2.5 py-0.5 rounded text-[10px] font-black bg-amber-500/20 text-amber-400 border border-amber-500/30 flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+              <span>Monetag • شريك معتمد</span>
+            </span>
+            <button onclick="window.openMonetagRewardModal && window.openMonetagRewardModal(false)" class="text-[11px] text-emerald-400 hover:text-emerald-300 font-bold flex items-center gap-1 cursor-pointer">
+              <i class="fas fa-gift text-amber-400 animate-bounce"></i>
+              <span>+50 نقطة</span>
+            </button>
+          </div>
+          <div class="py-4 bg-slate-900/80 rounded-xl my-2 border border-white/5 relative">
             <i class="fas fa-award text-3xl text-amber-400 mb-2"></i>
-            <h4 class="font-bold text-sm text-white">فرص استثمارية ذكية</h4>
-            <p class="text-xs text-gray-400 mt-1 px-4">مساحة إعلانية مخصصة للمعلنين والشركاء الرسميين</p>
+            <h4 class="font-bold text-sm text-white">فرص استثمارية وحلول رقمية</h4>
+            <p class="text-xs text-gray-400 mt-1 px-4 mb-3">أفضل الأدوات والحلول التكنولوجية مع شركاء معتمدين من شبكة Monetag العالمية.</p>
+            <div class="monetag-sidebar-slot my-2 flex items-center justify-center">
+              <script>(function(s){s.dataset.zone='12339753',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+            </div>
+            <button onclick="window.openMonetagRewardModal && window.openMonetagRewardModal(false)" class="btn-gold text-xs py-2 px-5 mt-2">
+              <i class="fas fa-coins ml-1"></i> استكشف واكسب (+50 نقطة)
+            </button>
           </div>
           <p class="text-[11px] text-gray-500 mt-2">إعلان متوافق مع معايير الأمان وتجربة المستخدم</p>
         </div>
