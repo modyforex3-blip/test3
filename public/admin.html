@@ -217,8 +217,12 @@
                   <div>
                     <label class="block text-xs font-bold text-gray-300 mb-1">معدل النشر التلقائي</label>
                     <select id="aiFrequency" class="w-full py-2 px-3 rounded-xl bg-slate-900 border border-white/10 text-xs text-white">
-                      <option value="daily">يومياً (مقال كل 24 ساعة)</option>
+                      <option value="every_hour">كل ساعة (مقال كل 60 دقيقة)</option>
+                      <option value="every_6_hours">كل 6 ساعات (4 مقالات يومياً)</option>
                       <option value="twice_daily">مرتين يومياً (كل 12 ساعة)</option>
+                      <option value="daily">يومياً (مقال كل 24 ساعة)</option>
+                      <option value="every_3_days">كل 3 أيام</option>
+                      <option value="weekly">أسبوعياً (مقال كل 7 أيام)</option>
                       <option value="manual">يدوي فقط عند الطلب</option>
                     </select>
                   </div>

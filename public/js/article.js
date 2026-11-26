@@ -138,19 +138,36 @@ function renderArticle() {
   document.getElementById('articleImage').alt = a.titleAr;
   document.getElementById('articleExcerpt').textContent = a.excerpt || '';
 
-  // Format content with markdown/newlines
+  // Format rich long-form content with headings, illustrative images, quotes, and lists
   const contentEl = document.getElementById('articleContent');
   if (contentEl) {
+    const formatInline = (txt) => txt.replace(/\*\*(.+?)\*\*/g, '<strong class="text-white font-bold">$1</strong>');
     const formatted = a.content
       .split('\n\n')
-      .map(p => {
+      .map(block => {
+        const p = block.trim();
+        if (!p) return '';
+        const imgMatch = p.match(/^!\[(.*?)\]\((.*?)\)$/);
+        if (imgMatch) {
+          const alt = imgMatch[1] || a.titleAr;
+          const src = imgMatch[2];
+          return `
+            <figure class="my-7 rounded-2xl overflow-hidden border border-white/10 bg-slate-900/60 shadow-xl">
+              <img src="${src}" alt="${alt}" loading="lazy" class="w-full max-h-[420px] object-cover">
+              ${alt ? `<figcaption class="px-4 py-2.5 text-xs text-gray-400 text-center border-t border-white/5 bg-slate-950/60">${alt}</figcaption>` : ''}
+            </figure>
+          `;
+        }
+        if (p.startsWith('> ')) {
+          return `<blockquote class="my-6 p-4 sm:p-5 rounded-2xl bg-emerald-500/10 border-r-4 border-emerald-400 text-emerald-100 text-sm sm:text-base font-semibold leading-relaxed">${formatInline(p.replace(/^>\s*/, ''))}</blockquote>`;
+        }
         if (p.startsWith('### ')) {
-          return `<h3 class="text-xl font-bold text-emerald-400 mt-6 mb-3">${p.replace('### ', '')}</h3>`;
+          return `<h3 class="text-xl font-black text-emerald-400 mt-8 mb-3 flex items-center gap-2"><span class="w-1.5 h-6 rounded-full bg-emerald-400 inline-block"></span><span>${formatInline(p.replace('### ', ''))}</span></h3>`;
         }
-        if (p.startsWith('- ') || p.startsWith('1. ') || p.startsWith('2. ') || p.startsWith('3. ')) {
-          return `<div class="p-3 bg-slate-900/40 rounded-xl border border-white/5 my-2 text-sm leading-relaxed text-gray-200">${p}</div>`;
+        if (p.startsWith('- ') || /^\d+\.\s/.test(p)) {
+          return `<div class="p-4 bg-slate-900/50 rounded-xl border border-white/10 my-3 text-sm sm:text-base leading-relaxed text-gray-200">${formatInline(p)}</div>`;
         }
-        return `<p class="text-base text-gray-300 leading-relaxed my-4">${p}</p>`;
+        return `<p class="text-base text-gray-300 leading-8 my-4">${formatInline(p)}</p>`;
       })
       .join('');
     contentEl.innerHTML = formatted;
