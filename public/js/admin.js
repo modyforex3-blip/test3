@@ -331,24 +331,18 @@ function updateAdProviderBadge(provider) {
 
 function populateAIBloggerForm() {
   const b = dashboardData.aiBlogger || {};
-  const enabledEl = document.getElementById('aiBloggerEnabled');
-  if (enabledEl) enabledEl.checked = b.enabled !== false;
-  const catEl = document.getElementById('aiBloggerCategory');
-  if (catEl && b.category) catEl.value = b.category;
-  const styleEl = document.getElementById('aiBloggerStyle');
-  if (styleEl && b.writingStyle) styleEl.value = b.writingStyle;
-  const freqEl = document.getElementById('aiBloggerFrequency');
+  const freqEl = document.getElementById('aiFrequency') || document.getElementById('aiBloggerFrequency');
   if (freqEl && b.frequency) freqEl.value = b.frequency;
 
-  const statusBadge = document.getElementById('aiBloggerStatusBadge');
-  if (statusBadge) {
-    if (b.enabled !== false) {
-      statusBadge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30';
-      statusBadge.textContent = 'نشط ويعمل تلقائياً';
-    } else {
-      statusBadge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-gray-500/20 text-gray-400 border border-gray-500/30';
-      statusBadge.textContent = 'متوقف مؤقتاً';
-    }
+  const styleEl = document.getElementById('aiStyle') || document.getElementById('aiBloggerStyle');
+  if (styleEl && (b.style || b.writingStyle)) styleEl.value = b.style || b.writingStyle;
+
+  const autoEl = document.getElementById('aiAutoPublish') || document.getElementById('aiBloggerEnabled');
+  if (autoEl) autoEl.checked = b.autoPublish !== false && b.enabled !== false;
+
+  const lastRunEl = document.getElementById('aiLastRunTime');
+  if (lastRunEl && b.lastRun) {
+    lastRunEl.textContent = new Date(b.lastRun).toLocaleString('ar-EG');
   }
 }
 
@@ -561,41 +555,20 @@ function setupAdminListeners() {
     });
   }
 
-  // AI Blogger Manual Trigger
-  const btnTriggerAI = document.getElementById('btnTriggerAIBlog');
-  if (btnTriggerAI) {
-    btnTriggerAI.addEventListener('click', async () => {
-      const originalContent = btnTriggerAI.innerHTML;
-      btnTriggerAI.disabled = true;
-      btnTriggerAI.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جارٍ صياغة المقال بالذكاء الاصطناعي...';
-      try {
-        const res = await fetch('/api/admin/ai-blogger/generate', { method: 'POST' });
-        const data = await res.json();
-        if (data.success) {
-          alert('تم بنجاح صياغة ونشر مقال جديد بواسطة الروبوت الذكي!');
-          await loadDashboardData();
-        } else {
-          alert(data.message || 'فشل التوليد');
-        }
-      } catch (err) {
-        alert('حدث خطأ أثناء التوليد');
-      } finally {
-        btnTriggerAI.disabled = false;
-        btnTriggerAI.innerHTML = originalContent;
-      }
-    });
-  }
-
   // Save AI Blogger Settings
   const aiBloggerForm = document.getElementById('aiBloggerSettingsForm');
   if (aiBloggerForm) {
     aiBloggerForm.addEventListener('submit', async (e) => {
       e.preventDefault();
+      const freqEl = document.getElementById('aiFrequency') || document.getElementById('aiBloggerFrequency');
+      const styleEl = document.getElementById('aiStyle') || document.getElementById('aiBloggerStyle');
+      const autoEl = document.getElementById('aiAutoPublish') || document.getElementById('aiBloggerEnabled');
+
       const payload = {
-        enabled: document.getElementById('aiBloggerEnabled').checked,
-        category: document.getElementById('aiBloggerCategory').value,
-        writingStyle: document.getElementById('aiBloggerStyle').value,
-        frequency: document.getElementById('aiBloggerFrequency').value
+        enabled: autoEl ? autoEl.checked : true,
+        autoPublish: autoEl ? autoEl.checked : true,
+        style: styleEl ? styleEl.value : 'unique_engaging',
+        frequency: freqEl ? freqEl.value : 'daily'
       };
       try {
         const res = await fetch('/api/admin/ai-blogger/settings', {
@@ -614,6 +587,32 @@ function setupAdminListeners() {
         alert('حدث خطأ في الاتصال');
       }
     });
+  }
+}
+
+async function triggerAIBlogGeneration() {
+  const btn = document.getElementById('btnGenerateNow') || document.getElementById('btnTriggerAIBlog');
+  const originalContent = btn ? btn.innerHTML : '';
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>جارٍ صياغة المقال بالذكاء الاصطناعي...</span>';
+  }
+  try {
+    const res = await fetch('/api/admin/ai-blogger/generate', { method: 'POST' });
+    const data = await res.json();
+    if (data.success) {
+      alert('تم بنجاح صياغة ونشر مقال جديد بواسطة الروبوت الذكي!');
+      await loadDashboardData();
+    } else {
+      alert(data.message || 'فشل التوليد');
+    }
+  } catch (err) {
+    alert('حدث خطأ أثناء التوليد');
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = originalContent;
+    }
   }
 }
 
