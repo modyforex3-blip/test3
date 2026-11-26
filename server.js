@@ -712,6 +712,61 @@ app.delete('/api/admin/messages/:id', requireAdmin, (req, res) => {
   res.json({ success: true, message: 'تم حذف الرسالة بنجاح' });
 });
 
+// Dynamic SEO Sitemap & Robots.txt
+app.get('/sitemap.xml', (req, res) => {
+  const db = readDatabase();
+  const baseUrl = `${req.protocol}://${req.get('host')}`;
+  const today = new Date().toISOString().split('T')[0];
+
+  const staticPages = [
+    { loc: '/', priority: '1.0', changefreq: 'daily' },
+    { loc: '/contact', priority: '0.6', changefreq: 'monthly' },
+    { loc: '/privacy', priority: '0.4', changefreq: 'monthly' },
+    { loc: '/reward', priority: '0.7', changefreq: 'weekly' }
+  ];
+
+  const appUrls = (db.apps || []).map(app => ({
+    loc: `/app.html?id=${encodeURIComponent(app.id)}`,
+    priority: '0.9',
+    changefreq: 'weekly',
+    lastmod: (app.createdAt || today).split('T')[0]
+  }));
+
+  const articleUrls = (db.articles || []).map(art => ({
+    loc: `/article.html?id=${encodeURIComponent(art.id)}`,
+    priority: '0.8',
+    changefreq: 'weekly',
+    lastmod: (art.publishedAt || today).split('T')[0]
+  }));
+
+  const allUrls = [...staticPages, ...appUrls, ...articleUrls];
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${allUrls.map(u => `  <url>
+    <loc>${baseUrl}${u.loc}</loc>
+    <lastmod>${u.lastmod || today}</lastmod>
+    <changefreq>${u.changefreq}</changefreq>
+    <priority>${u.priority}</priority>
+  </url>`).join('\n')}
+</urlset>`;
+
+  res.header('Content-Type', 'application/xml; charset=utf-8');
+  res.send(xml);
+});
+
+app.get('/robots.txt', (req, res) => {
+  const baseUrl = `${req.protocol}://${req.get('host')}`;
+  res.type('text/plain');
+  res.send(`User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /admin.html
+Disallow: /api/admin/
+
+Sitemap: ${baseUrl}/sitemap.xml
+`);
+});
+
 // Wildcard routing to serve pages
 app.get('/app/:id', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'app.html'));

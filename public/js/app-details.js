@@ -137,6 +137,34 @@ function renderAppDetails() {
 
   document.title = `${isEn ? (app.nameEn || app.nameAr) : (app.nameAr || app.nameEn)} | مليونير`;
 
+  // Dynamic SoftwareApplication JSON-LD Schema & SEO Meta
+  try {
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (!metaDesc) {
+      metaDesc = document.createElement('meta');
+      metaDesc.name = 'description';
+      document.head.appendChild(metaDesc);
+    }
+    metaDesc.content = app.shortDescAr || app.nameAr;
+
+    const ld = document.createElement('script');
+    ld.type = 'application/ld+json';
+    ld.textContent = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'SoftwareApplication',
+      name: app.nameAr || app.nameEn,
+      applicationCategory: app.category || 'UtilitiesApplication',
+      operatingSystem: 'Web, Android, iOS',
+      aggregateRating: {
+        '@type': 'AggregateRating',
+        ratingValue: String(app.rating || 4.9),
+        ratingCount: '240'
+      },
+      offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }
+    });
+    document.head.appendChild(ld);
+  } catch (_) {}
+
   const appIcon = document.getElementById('appIcon');
   const appTitle = document.getElementById('appTitle');
   const appCategory = document.getElementById('appCategory');

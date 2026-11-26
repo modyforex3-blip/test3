@@ -48,6 +48,7 @@ async function loadDashboardData() {
     const data = await res.json();
     if (data.success) {
       dashboardData = data;
+      window.dashboardData = data;
       renderStats();
       renderAppsTable();
       renderArticlesTable();
@@ -55,6 +56,9 @@ async function loadDashboardData() {
       populateAdsForm();
       populateAIBloggerForm();
       renderMessagesTable();
+      if (window.AIMarketingStudio && typeof window.AIMarketingStudio.populateTargets === 'function') {
+        window.AIMarketingStudio.populateTargets();
+      }
     } else if (res.status === 401) {
       showLogin();
     }

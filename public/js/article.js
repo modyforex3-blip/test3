@@ -129,6 +129,31 @@ function renderArticle() {
   const a = currentArticle;
   document.title = `${a.titleAr} | مجلة مليونير`;
 
+  // Dynamic SEO Meta & Article JSON-LD Schema
+  try {
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (!metaDesc) {
+      metaDesc = document.createElement('meta');
+      metaDesc.name = 'description';
+      document.head.appendChild(metaDesc);
+    }
+    metaDesc.content = a.excerpt || a.titleAr;
+
+    const ld = document.createElement('script');
+    ld.type = 'application/ld+json';
+    ld.textContent = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: a.titleAr,
+      description: a.excerpt || a.titleAr,
+      image: a.image,
+      datePublished: a.publishedAt,
+      author: { '@type': 'Organization', name: 'منصة مليونير' },
+      publisher: { '@type': 'Organization', name: 'مليونير - Millionaire Portal' }
+    });
+    document.head.appendChild(ld);
+  } catch (_) {}
+
   document.getElementById('articleTitle').textContent = a.titleAr;
   document.getElementById('articleCategory').textContent = a.categoryNameAr || 'تقنية وذكاء اصطناعي';
   document.getElementById('articleReadTime').textContent = a.readTime || '5 دقائق قراءة';

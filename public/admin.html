@@ -84,6 +84,10 @@
           <i class="fas fa-robot text-teal-400 text-sm"></i>
           <span>روبوت المقالات الذكي (AI Blogger)</span>
         </button>
+        <button onclick="switchAdminTab('tabAIMarketing')" id="btn-tabAIMarketing" class="admin-nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold text-gray-300 hover:bg-white/5 transition-all">
+          <i class="fas fa-bullhorn text-pink-400 text-sm"></i>
+          <span>استوديو الـ SEO والبوستات والفيديو</span>
+        </button>
         <button onclick="switchAdminTab('tabAds')" id="btn-tabAds" class="admin-nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold text-gray-300 hover:bg-white/5 transition-all">
           <i class="fas fa-ad text-amber-400 text-sm"></i>
           <span>إدارة الإعلانات (AdSense / Monetag)</span>
@@ -311,6 +315,131 @@
                   <!-- Populated via admin.js -->
                 </tbody>
               </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 2.5: AI SEO, TARGETED POSTS & PROMO VIDEO STUDIO -->
+        <div id="tabAIMarketing" class="admin-tab-content hidden space-y-6">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/10">
+            <div>
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-pink-500/20 text-pink-400 text-[10px] font-bold border border-pink-500/30 mb-1">
+                <i class="fas fa-chart-line"></i>
+                <span>نمو الترافيك الشرعي والـ SEO بالذكاء الاصطناعي</span>
+              </span>
+              <h2 class="text-xl font-bold text-white">استوديو الـ SEO والبوستات والفيديوهات الإعلانية</h2>
+              <p class="text-xs text-gray-400 mt-1">أدوات ذكية لرفع ترتيب الموقع في جوجل وتوليد بوستات وفيديوهات إعلانية عالية الجذب لمنصات التواصل</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <a href="/sitemap.xml" target="_blank" class="btn-secondary text-xs py-2 px-3 font-bold flex items-center gap-1.5">
+                <i class="fas fa-sitemap text-emerald-400"></i> <span>معاينة Sitemap.xml</span>
+              </a>
+              <a href="/robots.txt" target="_blank" class="btn-secondary text-xs py-2 px-3 font-bold flex items-center gap-1.5">
+                <i class="fas fa-robot text-blue-400"></i> <span>Robots.txt</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- SEO Health & Status Banner -->
+          <div class="glass-panel p-5 border border-emerald-500/30 grid grid-cols-1 sm:grid-cols-4 gap-4">
+            <div class="p-3 rounded-xl bg-slate-900/60 border border-white/5">
+              <div class="text-[11px] text-gray-400">خريطة الموقع التلقائية</div>
+              <div class="text-sm font-bold text-emerald-400 mt-1"><i class="fas fa-check-circle ml-1"></i> Sitemap XML نشط</div>
+            </div>
+            <div class="p-3 rounded-xl bg-slate-900/60 border border-white/5">
+              <div class="text-[11px] text-gray-400">البيانات المهيكلة (Schema)</div>
+              <div class="text-sm font-bold text-emerald-400 mt-1"><i class="fas fa-check-circle ml-1"></i> JSON-LD مفعّل</div>
+            </div>
+            <div class="p-3 rounded-xl bg-slate-900/60 border border-white/5">
+              <div class="text-[11px] text-gray-400">بطاقات المشاركة الاجتماعية</div>
+              <div class="text-sm font-bold text-emerald-400 mt-1"><i class="fas fa-check-circle ml-1"></i> OpenGraph & X مفعّل</div>
+            </div>
+            <div class="p-3 rounded-xl bg-slate-900/60 border border-white/5">
+              <div class="text-[11px] text-gray-400">أرشفة محركات البحث</div>
+              <div class="text-sm font-bold text-amber-400 mt-1"><i class="fas fa-bolt ml-1"></i> Robots Index, Follow</div>
+            </div>
+          </div>
+
+          <!-- Target & Audience Selector -->
+          <div class="glass-panel p-6 border border-pink-500/30 space-y-4">
+            <h3 class="font-bold text-sm text-white flex items-center gap-2">
+              <i class="fas fa-crosshairs text-pink-400"></i>
+              <span>إعدادات الاستهداف الذكي بالذكاء الاصطناعي (AI Targeting)</span>
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label class="block text-xs font-bold text-gray-300 mb-1">اختر المنتج / الصفحة المستهدفة:</label>
+                <select id="mktTargetSelect" class="w-full py-2.5 px-3 rounded-xl bg-slate-900 border border-white/10 text-xs text-white"></select>
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-gray-300 mb-1">المنصة المستهدفة:</label>
+                <select id="mktPlatform" class="w-full py-2.5 px-3 rounded-xl bg-slate-900 border border-white/10 text-xs text-white">
+                  <option value="tiktok">TikTok / Instagram Reels</option>
+                  <option value="youtube">YouTube Shorts</option>
+                  <option value="twitter">منصة X (تويتر سابقاً)</option>
+                  <option value="telegram">قنوات ومجموعات Telegram</option>
+                  <option value="facebook">Facebook / LinkedIn</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-gray-300 mb-1">شريحة الجمهور المستهدف بالذكاء الاصطناعي:</label>
+                <select id="mktAudience" class="w-full py-2.5 px-3 rounded-xl bg-slate-900 border border-white/10 text-xs text-white">
+                  <option value="investors">رواد الأعمال والمستثمرين</option>
+                  <option value="ai_users">عشاق الذكاء الاصطناعي والتقنية</option>
+                  <option value="productivity">الباحثين عن الإنتاجية وأدوات العمل</option>
+                  <option value="general">جمهور عام باحث عن تطبيقات مجانية</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Posts & Video Generators Grid -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Targeted Social Posts Generator -->
+            <div class="glass-panel p-6 border border-white/10 space-y-4">
+              <div class="flex items-center justify-between">
+                <h3 class="font-bold text-sm text-white flex items-center gap-2">
+                  <i class="fas fa-share-alt text-emerald-400"></i>
+                  <span>مولّد البوستات الإعلانية المستهدفة</span>
+                </h3>
+                <button type="button" onclick="window.AIMarketingStudio && window.AIMarketingStudio.generatePost()" class="btn-primary text-xs py-2 px-4 font-bold">
+                  <i class="fas fa-magic"></i> <span>توليد بوست إعلاني</span>
+                </button>
+              </div>
+              <textarea id="mktPostOutput" rows="11" placeholder="اضغط على «توليد بوست إعلاني» لإنشاء منشور احترافي مستهدف مع رابط مباشر وهاشتاجات..." class="w-full p-3.5 rounded-xl bg-slate-900 border border-white/10 text-xs text-gray-200 leading-relaxed"></textarea>
+              <button type="button" onclick="window.AIMarketingStudio && window.AIMarketingStudio.copyPost()" class="btn-secondary w-full text-xs py-2.5 font-bold flex items-center justify-center gap-2">
+                <i class="fas fa-copy"></i> <span>نسخ البوست والهاشتاجات للنشر الفوري</span>
+              </button>
+            </div>
+
+            <!-- Promotional Video Script & Live Canvas Video Generator -->
+            <div class="glass-panel p-6 border border-amber-500/30 space-y-4">
+              <div class="flex items-center justify-between flex-wrap gap-2">
+                <h3 class="font-bold text-sm text-white flex items-center gap-2">
+                  <i class="fas fa-video text-amber-400"></i>
+                  <span>مولّد الفيديوهات الإعلانية القصيرة</span>
+                </h3>
+                <div class="flex items-center gap-2">
+                  <select id="mktVideoDuration" class="py-1.5 px-2.5 rounded-lg bg-slate-900 border border-white/10 text-xs text-white">
+                    <option value="15">15 ثانية</option>
+                    <option value="30" selected>30 ثانية</option>
+                    <option value="60">60 ثانية</option>
+                  </select>
+                  <button type="button" onclick="window.AIMarketingStudio && window.AIMarketingStudio.generateVideo()" class="btn-gold text-xs py-2 px-4 font-bold">
+                    <i class="fas fa-film"></i> <span>توليد الفيديو والسيناريو</span>
+                  </button>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-start">
+                <textarea id="mktVideoScriptOutput" rows="11" placeholder="سيظهر هنا سيناريو الفيديو الترويجي بتوقيت المشاهد والتعليق الصوتي..." class="w-full p-3 rounded-xl bg-slate-900 border border-white/10 text-[11px] text-gray-200 leading-relaxed"></textarea>
+                <div class="flex flex-col items-center gap-2">
+                  <canvas id="mktPromoCanvas" width="360" height="520" class="w-full max-w-[240px] rounded-2xl border border-amber-500/40 bg-slate-950 shadow-xl"></canvas>
+                  <button type="button" id="btnDownloadPromoVideo" onclick="window.AIMarketingStudio && window.AIMarketingStudio.downloadVideo()" class="btn-primary w-full text-[11px] py-2 px-3 font-bold flex items-center justify-center gap-1.5">
+                    <i class="fas fa-download"></i> <span>توليد وتحميل الفيديو (.WebM)</span>
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -1089,5 +1218,6 @@
 
   <script src="/js/i18n.js"></script>
   <script src="/js/admin.js"></script>
+  <script src="/js/ai-marketing.js"></script>
 </body>
 </html>
