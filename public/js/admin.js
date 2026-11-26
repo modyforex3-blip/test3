@@ -112,8 +112,8 @@ function renderAppsTable() {
       <td class="py-4 px-4 text-right">
         <div class="flex items-center justify-end gap-2">
           <a href="/app.html?id=${app.id}" target="_blank" class="p-2 text-gray-400 hover:text-emerald-400" title="معاينة"><i class="fas fa-external-link-alt"></i></a>
-          <button onclick="openEditAppModal('${app.id}')" class="p-2 text-amber-400 hover:text-amber-300" title="تعديل"><i class="fas fa-edit"></i></button>
-          <button onclick="deleteApp('${app.id}')" class="p-2 text-rose-500 hover:text-rose-400" title="حذف"><i class="fas fa-trash"></i></button>
+          <button type="button" onclick="openEditAppModal('${app.id}')" class="p-2 text-amber-400 hover:text-amber-300 cursor-pointer" title="تعديل"><i class="fas fa-edit"></i></button>
+          <button type="button" onclick="deleteApp('${app.id}')" class="p-2 text-rose-500 hover:text-rose-400 cursor-pointer" title="حذف"><i class="fas fa-trash"></i></button>
         </div>
       </td>
     </tr>
@@ -189,11 +189,22 @@ function renderMessagesTable() {
 
 function populateSettingsForm() {
   const s = dashboardData.settings || {};
-  document.getElementById('siteNameAr').value = s.siteNameAr || '';
-  document.getElementById('siteNameEn').value = s.siteNameEn || '';
-  document.getElementById('taglineAr').value = s.taglineAr || '';
-  document.getElementById('taglineEn').value = s.taglineEn || '';
-  document.getElementById('gridColumns').value = s.gridColumns || 3;
+  const setVal = (id, val) => { const el = document.getElementById(id); if (el) el.value = val; };
+  const setChk = (id, val) => { const el = document.getElementById(id); if (el) el.checked = val; };
+
+  setVal('siteNameAr', s.siteNameAr || '');
+  setVal('siteNameEn', s.siteNameEn || '');
+  setVal('taglineAr', s.taglineAr || '');
+  setVal('taglineEn', s.taglineEn || '');
+  setVal('gridColumns', s.gridColumns || 3);
+  setVal('contactEmail', s.contactEmail || '');
+  setVal('telegramLink', s.telegramLink || '');
+
+  const f = s.siteFeatures || {};
+  setChk('siteShowNavbarReward', f.showNavbarReward !== false);
+  setChk('siteShowFloatingReward', f.showFloatingReward !== false);
+  setChk('siteEnableSearch', f.enableSearch !== false);
+  setChk('siteEnableArticles', f.enableArticles !== false);
 }
 
 function populateAdsForm() {
@@ -219,6 +230,18 @@ function populateAdsForm() {
 
   const adaptiveEl = document.getElementById('enableAdaptiveAds');
   if (adaptiveEl) adaptiveEl.checked = s.enableAdaptiveAds !== false;
+
+  // Granular Ad Locations & Devices
+  const loc = s.adLocations || {};
+  const setChk = (id, val) => { const el = document.getElementById(id); if (el) el.checked = val; };
+  setChk('adPageHome', loc.home !== false);
+  setChk('adPageAppDetails', loc.appDetails !== false);
+  setChk('adPageArticles', loc.articles !== false);
+  setChk('adPageRunner', loc.runner !== false);
+  setChk('adPageMillionaireApp', loc.millionaireApp !== false);
+  setChk('adNeutralizeFloating', loc.neutralizeFloating !== false);
+  setChk('adDeviceDesktop', loc.desktop !== false);
+  setChk('adDeviceMobile', loc.mobile !== false);
 
   // Smart Ad Frequency & Experience Controls
   const freqRateEl = document.getElementById('adFrequencyRate');
@@ -370,7 +393,15 @@ function setupAdminListeners() {
         siteNameEn: document.getElementById('siteNameEn').value,
         taglineAr: document.getElementById('taglineAr').value,
         taglineEn: document.getElementById('taglineEn').value,
-        gridColumns: parseInt(document.getElementById('gridColumns').value) || 3
+        gridColumns: parseInt(document.getElementById('gridColumns').value) || 3,
+        contactEmail: document.getElementById('contactEmail') ? document.getElementById('contactEmail').value.trim() : '',
+        telegramLink: document.getElementById('telegramLink') ? document.getElementById('telegramLink').value.trim() : '',
+        siteFeatures: {
+          showNavbarReward: document.getElementById('siteShowNavbarReward') ? document.getElementById('siteShowNavbarReward').checked : true,
+          showFloatingReward: document.getElementById('siteShowFloatingReward') ? document.getElementById('siteShowFloatingReward').checked : true,
+          enableSearch: document.getElementById('siteEnableSearch') ? document.getElementById('siteEnableSearch').checked : true,
+          enableArticles: document.getElementById('siteEnableArticles') ? document.getElementById('siteEnableArticles').checked : true
+        }
       };
 
       const newPass = document.getElementById('newAdminPassword').value.trim();
@@ -399,19 +430,30 @@ function setupAdminListeners() {
 
       const monetagTopCode = document.getElementById('monetagTopBannerCode').value;
       const monetagAdaptCode = document.getElementById('monetagAdaptiveCode').value;
+      const getChk = (id, def = true) => { const el = document.getElementById(id); return el ? el.checked : def; };
 
       const payload = {
         adProvider: adProvider,
-        enableTopBanner: document.getElementById('enableTopBanner').checked,
-        enableBottomBanner: document.getElementById('enableBottomBanner').checked,
-        enableInFeedAds: document.getElementById('enableInFeedAds').checked,
-        enableAdaptiveAds: document.getElementById('enableAdaptiveAds').checked,
+        enableTopBanner: getChk('enableTopBanner'),
+        enableBottomBanner: getChk('enableBottomBanner'),
+        enableInFeedAds: getChk('enableInFeedAds'),
+        enableAdaptiveAds: getChk('enableAdaptiveAds'),
+        adLocations: {
+          home: getChk('adPageHome'),
+          appDetails: getChk('adPageAppDetails'),
+          articles: getChk('adPageArticles'),
+          runner: getChk('adPageRunner'),
+          millionaireApp: getChk('adPageMillionaireApp'),
+          neutralizeFloating: getChk('adNeutralizeFloating'),
+          desktop: getChk('adDeviceDesktop'),
+          mobile: getChk('adDeviceMobile')
+        },
         adFrequencyRate: document.getElementById('adFrequencyRate') ? document.getElementById('adFrequencyRate').value : 'relaxed',
         adCooldownMinutes: parseInt(document.getElementById('adCooldownMinutes') ? document.getElementById('adCooldownMinutes').value : '10', 10) || 10,
-        disablePopupsInApps: document.getElementById('disablePopupsInApps') ? document.getElementById('disablePopupsInApps').checked : true,
+        disablePopupsInApps: getChk('disablePopupsInApps'),
         maxPopupsPerSession: parseInt(document.getElementById('maxPopupsPerSession') ? document.getElementById('maxPopupsPerSession').value : '2', 10) || 2,
-        cleanAppRunner: document.getElementById('cleanAppRunner') ? document.getElementById('cleanAppRunner').checked : true,
-        enableOnClickAds: document.getElementById('enableOnClickAds') ? document.getElementById('enableOnClickAds').checked : false,
+        cleanAppRunner: getChk('cleanAppRunner'),
+        enableOnClickAds: getChk('enableOnClickAds', false),
         
         topAdCode: monetagTopCode,
         bottomAdCode: document.getElementById('bottomAdCode').value,
@@ -420,7 +462,7 @@ function setupAdminListeners() {
         headerScript: document.getElementById('headerScript').value,
 
         monetag: {
-          enabled: document.getElementById('monetagEnabled').checked,
+          enabled: getChk('monetagEnabled'),
           topBannerZone: '12339753',
           adaptiveZone: '314974',
           serviceWorkerZone: '12339769',
@@ -430,14 +472,14 @@ function setupAdminListeners() {
         },
 
         googleAdsense: {
-          enabled: document.getElementById('adsenseEnabled').checked,
+          enabled: getChk('adsenseEnabled'),
           publisherId: document.getElementById('adsensePublisherId').value.trim(),
-          autoAds: document.getElementById('adsenseAutoAds').checked,
+          autoAds: getChk('adsenseAutoAds'),
           customCode: document.getElementById('adsenseCustomCode').value
         },
 
         rewardSystem: {
-          enabled: document.getElementById('rewardSystemEnabled') ? document.getElementById('rewardSystemEnabled').checked : true,
+          enabled: getChk('rewardSystemEnabled'),
           pointsPerAd: parseInt(document.getElementById('rewardPointsPerAd') ? document.getElementById('rewardPointsPerAd').value : '50', 10) || 50,
           adDurationSeconds: parseInt(document.getElementById('rewardAdDuration') ? document.getElementById('rewardAdDuration').value : '15', 10) || 15,
           rewardAdCode: document.getElementById('rewardAdCode') ? document.getElementById('rewardAdCode').value : '',
@@ -603,28 +645,33 @@ function openAddAppModal() {
 }
 
 function openEditAppModal(id) {
-  const app = dashboardData.apps.find(a => a.id === id);
+  const app = (dashboardData.apps || []).find(a => a.id === id);
   if (!app) return;
 
   currentEditingAppId = id;
-  document.getElementById('modalTitle').textContent = 'تعديل التطبيق: ' + app.nameAr;
-  document.getElementById('appNameAr').value = app.nameAr || '';
-  document.getElementById('appNameEn').value = app.nameEn || '';
-  document.getElementById('appCategoryInput').value = app.category || 'tools';
-  document.getElementById('appRatingInput').value = app.rating || 4.8;
-  document.getElementById('appDownloadsCount').value = app.downloadsCount || '10K+';
-  document.getElementById('appDownloadUrl').value = app.downloadUrl || '';
-  document.getElementById('appWebAppUrl').value = app.webAppUrl || '';
-  document.getElementById('appIconUrl').value = app.icon || '';
-  document.getElementById('appFeatured').checked = !!app.featured;
-  document.getElementById('appShortDescAr').value = app.shortDescAr || '';
-  document.getElementById('appShortDescEn').value = app.shortDescEn || '';
-  document.getElementById('appFeaturesAr').value = (app.featuresAr || []).join('\n');
-  document.getElementById('appFeaturesEn').value = (app.featuresEn || []).join('\n');
-  document.getElementById('appFullDescAr').value = app.fullDescAr || '';
-  document.getElementById('appFullDescEn').value = app.fullDescEn || '';
+  const setVal = (elId, val) => { const el = document.getElementById(elId); if (el) el.value = val; };
+  const titleEl = document.getElementById('modalTitle');
+  if (titleEl) titleEl.textContent = 'تعديل التطبيق: ' + (app.nameAr || '');
 
-  document.getElementById('appModal').classList.add('active');
+  setVal('appNameAr', app.nameAr || '');
+  setVal('appNameEn', app.nameEn || '');
+  setVal('appCategoryInput', app.category || 'tools');
+  setVal('appRatingInput', app.rating || 4.8);
+  setVal('appDownloadsCount', app.downloadsCount || '10K+');
+  setVal('appDownloadUrl', app.downloadUrl || '');
+  setVal('appWebAppUrl', app.webAppUrl || '');
+  setVal('appIconUrl', app.icon || '');
+  const featEl = document.getElementById('appFeatured');
+  if (featEl) featEl.checked = !!app.featured;
+  setVal('appShortDescAr', app.shortDescAr || '');
+  setVal('appShortDescEn', app.shortDescEn || '');
+  setVal('appFeaturesAr', (app.featuresAr || []).join('\n'));
+  setVal('appFeaturesEn', (app.featuresEn || []).join('\n'));
+  setVal('appFullDescAr', app.fullDescAr || '');
+  setVal('appFullDescEn', app.fullDescEn || '');
+
+  const modal = document.getElementById('appModal');
+  if (modal) modal.classList.add('active');
 }
 
 function closeAppModal() {

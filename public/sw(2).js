@@ -51,8 +51,9 @@ self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
   const url = new URL(event.request.url);
 
-  // Never cache external ad network requests
+  // Never intercept external ad networks, API calls, or APK/AAB downloads
   if (url.origin !== self.location.origin) return;
+  if (url.pathname.startsWith('/api/') || url.pathname.includes('/downloads/')) return;
 
   event.respondWith(
     fetch(event.request).catch(() => {

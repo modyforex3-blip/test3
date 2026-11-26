@@ -1,9 +1,7 @@
 /**
  * Millionaire Smart Ad Frequency & User Experience Controller
- * Enforces:
- * 1. Ad Cooldown Intervals (e.g. at most 1 popup per 10 minutes)
- * 2. Session Capping (e.g. max 2 popups per user session)
- * 3. In-App Intrusive Popunder Suppression (Smooth, uninterrupted user experience inside apps)
+ * - Blocks unprompted popunders without breaking legitimate app actions (share, export, download, external links)
+ * - Neutralizes floating/stacked Monetag In-Page Push ads and confines them strictly inside Top/Bottom Banners
  */
 
 (function() {
@@ -13,15 +11,13 @@
   const STORAGE_KEY_SESSION_COUNT = 'mil_session_popup_count';
   const STORAGE_KEY_CONFIG = 'mil_ad_frequency_config';
 
-  // Default conservative settings
   let config = {
-    adFrequencyRate: 'relaxed', // 'relaxed' (10m), 'balanced' (5m), 'frequent' (2m), 'off'
+    adFrequencyRate: 'relaxed',
     adCooldownMinutes: 10,
     disablePopupsInApps: true,
     maxPopupsPerSession: 2
   };
 
-  // Try to load cached config from localStorage
   try {
     const cached = localStorage.getItem(STORAGE_KEY_CONFIG);
     if (cached) {
@@ -29,7 +25,6 @@
     }
   } catch (_) {}
 
-  // Fetch latest settings from server asynchronously
   fetch('/api/public-data')
     .then(r => r.json())
     .then(data => {
@@ -46,32 +41,16 @@
     })
     .catch(() => {});
 
-  function isInsideApp() {
-    const path = window.location.pathname.toLowerCase();
-    return path.includes('/run/') || 
-           path.includes('/apps/') || 
-           path.includes('/app/') ||
-           document.querySelector('iframe#appFrame') !== null ||
-           window.__IS_IN_APP__ === true;
-  }
-
   function shouldBlockAd() {
-    // If user is intentionally watching a voluntary rewarded ad, allow it
     if (window.__IS_REWARD_AD_ACTIVE__ === true) {
       return false;
     }
-
-    // Per user policy: Ads must NEVER open automatically upon clicking app/page content,
-    // only when explicitly choosing the "Watch ad for reward" button.
     if (config.disablePopupsInApps !== false || config.blockAutoPopups !== false) {
       return true;
     }
-
-    // If popups are completely turned off in settings
     if (config.adFrequencyRate === 'off') {
       return true;
     }
-
     return true;
   }
 
@@ -81,121 +60,228 @@
     sessionStorage.setItem(STORAGE_KEY_SESSION_COUNT, (count + 1).toString());
   }
 
-  // Intercept window.open calls triggered by third-party ad networks
+  // Intercept ONLY unauthorized third-party ad network popunders; allow all legitimate app actions
   const originalWindowOpen = window.open;
   window.open = function(url, target, features) {
+    if (window.__ALLOW_USER_INTENT_OPEN__) {
+      return originalWindowOpen.apply(this, arguments);
+    }
+
     const urlStr = String(url || '').toLowerCase();
-    const isAdUrl = urlStr && (
+    const isAdNetworkUrl = urlStr && (
       urlStr.includes('quge5.com') ||
       urlStr.includes('nap5k.com') ||
+      urlStr.includes('3nbf4.com') ||
       urlStr.includes('monetag') ||
       urlStr.includes('onclick') ||
       urlStr.includes('popunder') ||
       urlStr.includes('adcash') ||
-      urlStr.includes('propeller') ||
-      (!urlStr.includes(window.location.hostname) && 
-       !urlStr.startsWith('/') && 
-       !urlStr.startsWith('#') && 
-       !urlStr.startsWith('mailto:') && 
-       !urlStr.startsWith('tel:') && 
-       !urlStr.includes('github.com'))
+      urlStr.includes('propeller')
     );
 
-    if (isAdUrl) {
-      // User safety & anti-intrusive rule: No ads open without explicit user permission
-      console.log('[Millionaire Ad Control] Unauthorized popunder blocked. Ads are linked to rewarded modal only.');
+    if (isAdNetworkUrl) {
+      console.log('[Millionaire Ad Control] Unauthorized ad popunder blocked:', url);
       return null;
     }
 
     return originalWindowOpen.apply(this, arguments);
   };
 
-  // Block fake link clicks or unexpected ad triggers during aggressive cooldown
+  // Block hidden ad link clicks
   document.addEventListener('click', function(e) {
     if (shouldBlockAd()) {
       const target = e.target && e.target.closest ? e.target.closest('a') : null;
       if (target && target.href) {
         const href = target.href.toLowerCase();
-        if (href.includes('quge5.com') || href.includes('nap5k.com') || href.includes('onclick') || href.includes('adcash')) {
+        if (href.includes('quge5.com') || href.includes('nap5k.com') || href.includes('3nbf4.com') || href.includes('onclick') || href.includes('adcash')) {
           e.preventDefault();
           e.stopPropagation();
-          console.log('[Millionaire Ad Control] Ad click intercepted.');
         }
       }
     }
   }, true);
 
-  // --- Neutralize Monetag Floating/Stacked In-Page Push Ads on Mobile ---
-  // Confines any floating top ads into #topAdContainer inside the page layout
-  // so they never cover page content or navbar
+  // --- Neutralize Floating Monetag In-Page Push Ads & Confine to Top/Bottom Banners ---
+  const PROTECTED_IDS = new Set([
+    'root',
+    'rewardAdModal',
+    'monetagRewardedModal',
+    'mobileMenu',
+    'floatingRewardContainer',
+    'floatingRewardBtn',
+    'topAdContainer',
+    'bottomAdContainer',
+    'inAppTopBanner',
+    'inAppBottomBanner',
+    'runnerInAppTopAd',
+    'runnerInAppBottomAd',
+    'runnerContainer',
+    'monetagZoneSlot'
+  ]);
+
+  let neutralizedCount = 0;
+
+  function isProtectedElement(el) {
+    if (!el || el.nodeType !== 1) return true;
+    const tag = el.tagName;
+    if (tag === 'SCRIPT' || tag === 'STYLE' || tag === 'LINK' || tag === 'META' || tag === 'HEADER' || tag === 'MAIN' || tag === 'FOOTER') {
+      return true;
+    }
+    if (el.id && PROTECTED_IDS.has(el.id)) return true;
+    if (el.dataset && el.dataset.neutralizedAd === 'true') return true;
+    if (
+      el.closest('#root') ||
+      el.closest('#rewardAdModal') ||
+      el.closest('#monetagRewardedModal') ||
+      el.closest('#topAdContainer') ||
+      el.closest('#bottomAdContainer') ||
+      el.closest('#inAppTopBanner') ||
+      el.closest('#inAppBottomBanner') ||
+      el.closest('#runnerInAppTopAd') ||
+      el.closest('#runnerInAppBottomAd') ||
+      el.closest('#floatingRewardContainer') ||
+      el.closest('#mobileMenu') ||
+      el.closest('header') ||
+      el.closest('main') ||
+      el.closest('footer')
+    ) {
+      return true;
+    }
+    if (el.classList.contains('reward-modal-backdrop') || el.classList.contains('modal-overlay')) {
+      return true;
+    }
+    return false;
+  }
+
   function neutralizeAdElement(el) {
-    if (!el || el.nodeType !== 1) return;
-    if (el.id === 'rewardAdModal' || el.id === 'mobileMenu' || el.classList.contains('reward-modal-backdrop')) return;
+    if (isProtectedElement(el)) return;
 
     const s = el.style;
-    const computed = window.getComputedStyle ? window.getComputedStyle(el) : null;
+    let computed = null;
+    try {
+      computed = window.getComputedStyle ? window.getComputedStyle(el) : null;
+    } catch (_) {}
+
     const pos = s.position || (computed ? computed.position : '');
-    const topVal = s.top || (computed ? computed.top : '');
-    const zIndex = parseInt(s.zIndex || (computed ? computed.zIndex : '0'), 10);
+    const zIndex = parseInt(s.zIndex || (computed ? computed.zIndex : '0'), 10) || 0;
+    const cls = (typeof el.className === 'string' ? el.className : '').toLowerCase();
+    const id = (el.id || '').toLowerCase();
 
-    const isFloatingTopAd = (
-      (pos === 'fixed' || pos === 'absolute') &&
-      (topVal === '0px' || topVal === '0' || parseInt(topVal, 10) <= 60) &&
-      (zIndex > 100 || !zIndex) &&
-      !el.closest('#rewardAdModal') &&
-      !el.closest('header')
-    );
-
+    const isFloatingAd = (pos === 'fixed' || (pos === 'absolute' && zIndex >= 999)) && zIndex >= 100;
     const isMonetagNode = (
-      (el.id && (el.id.includes('monetag') || el.id.includes('zone_'))) ||
-      (typeof el.className === 'string' && (el.className.includes('monetag') || el.className.includes('zone-') || el.className.includes('ipp-'))) ||
-      (el.tagName === 'IFRAME' && (el.src.includes('quge5.com') || el.src.includes('nap5k.com') || el.src.includes('3nbf4.com')))
+      id.includes('monetag') ||
+      id.includes('zone_') ||
+      cls.includes('monetag') ||
+      cls.includes('zone-') ||
+      cls.includes('ipp-') ||
+      cls.includes('in-page-push') ||
+      (el.tagName === 'IFRAME' && el.src && (el.src.includes('quge5.com') || el.src.includes('nap5k.com') || el.src.includes('3nbf4.com')))
     );
 
-    if (isFloatingTopAd || isMonetagNode) {
-      const topContainer = document.getElementById('topAdContainer');
-      if (topContainer) {
-        el.style.setProperty('position', 'relative', 'important');
-        el.style.setProperty('top', 'auto', 'important');
-        el.style.setProperty('left', 'auto', 'important');
-        el.style.setProperty('right', 'auto', 'important');
-        el.style.setProperty('bottom', 'auto', 'important');
-        el.style.setProperty('transform', 'none', 'important');
-        el.style.setProperty('max-width', '728px', 'important');
-        el.style.setProperty('margin', '6px auto', 'important');
-        el.style.setProperty('z-index', '10', 'important');
-        el.style.setProperty('display', 'block', 'important');
+    if (!isFloatingAd && !isMonetagNode) return;
 
-        const wrapper = topContainer.querySelector('.ad-inner-wrapper') || topContainer;
-        if (el.parentNode !== wrapper) {
-          wrapper.appendChild(el);
-        }
+    // Determine target banner container (Top Banner first, then Bottom Banner for 2nd ad)
+    const topContainer = document.getElementById('topAdContainer') ||
+                         document.getElementById('inAppTopBanner') ||
+                         document.getElementById('runnerInAppTopAd');
+    const bottomContainer = document.getElementById('bottomAdContainer') ||
+                            document.getElementById('inAppBottomBanner') ||
+                            document.getElementById('runnerInAppBottomAd');
+
+    let targetContainer = topContainer;
+    if (neutralizedCount % 2 === 1 && bottomContainer) {
+      targetContainer = bottomContainer;
+    }
+    if (!targetContainer) {
+      targetContainer = document.getElementById('monetagZoneSlot');
+    }
+
+    if (targetContainer) {
+      neutralizedCount++;
+      el.dataset.neutralizedAd = 'true';
+
+      // Strip floating fixed overlay styles so it becomes part of the banner
+      el.style.setProperty('position', 'relative', 'important');
+      el.style.setProperty('top', 'auto', 'important');
+      el.style.setProperty('left', 'auto', 'important');
+      el.style.setProperty('right', 'auto', 'important');
+      el.style.setProperty('bottom', 'auto', 'important');
+      el.style.setProperty('transform', 'none', 'important');
+      el.style.setProperty('width', 'auto', 'important');
+      el.style.setProperty('max-width', '100%', 'important');
+      el.style.setProperty('margin', '4px auto', 'important');
+      el.style.setProperty('z-index', '5', 'important');
+      el.style.setProperty('display', 'block', 'important');
+
+      // Also neutralize any fixed children inside this ad wrapper
+      if (el.querySelectorAll) {
+        el.querySelectorAll('div, iframe').forEach(child => {
+          const cPos = child.style.position || (window.getComputedStyle ? window.getComputedStyle(child).position : '');
+          if (cPos === 'fixed') {
+            child.style.setProperty('position', 'relative', 'important');
+            child.style.setProperty('top', 'auto', 'important');
+            child.style.setProperty('left', 'auto', 'important');
+            child.style.setProperty('right', 'auto', 'important');
+            child.style.setProperty('bottom', 'auto', 'important');
+            child.style.setProperty('margin', '4px auto', 'important');
+          }
+        });
       }
+
+      const wrapper = targetContainer.querySelector('.ad-banner-clean') ||
+                      targetContainer.querySelector('.ad-inner-wrapper') ||
+                      targetContainer;
+      targetContainer.style.display = 'flex';
+      if (el.parentNode !== wrapper) {
+        wrapper.appendChild(el);
+      }
+    }
+  }
+
+  function scanBodyForFloatingAds() {
+    if (!document.body) return;
+    Array.from(document.body.children).forEach(neutralizeAdElement);
+    if (document.documentElement) {
+      Array.from(document.documentElement.children).forEach(child => {
+        if (child.tagName !== 'HEAD' && child.tagName !== 'BODY') {
+          neutralizeAdElement(child);
+        }
+      });
     }
   }
 
   function initAdNeutralizer() {
     const observer = new MutationObserver(mutations => {
       for (const m of mutations) {
-        for (const node of m.addedNodes) {
-          if (node.nodeType === 1) {
-            neutralizeAdElement(node);
-            const nested = node.querySelectorAll ? node.querySelectorAll('div, iframe') : [];
-            nested.forEach(neutralizeAdElement);
+        if (m.type === 'childList') {
+          for (const node of m.addedNodes) {
+            if (node.nodeType === 1) {
+              neutralizeAdElement(node);
+            }
           }
+        } else if (m.type === 'attributes' && m.target && m.target.nodeType === 1) {
+          neutralizeAdElement(m.target);
         }
       }
     });
 
     if (document.body) {
-      observer.observe(document.body, { childList: true, subtree: true });
-      document.body.querySelectorAll('body > div, body > iframe').forEach(neutralizeAdElement);
-    } else {
-      document.addEventListener('DOMContentLoaded', () => {
-        observer.observe(document.body, { childList: true, subtree: true });
-        document.body.querySelectorAll('body > div, body > iframe').forEach(neutralizeAdElement);
+      observer.observe(document.body, {
+        childList: true,
+        subtree: false,
+        attributes: true,
+        attributeFilter: ['style', 'class']
       });
+      scanBodyForFloatingAds();
     }
+
+    // Periodic scan for the first 15s to catch asynchronously styled Monetag nodes
+    let scans = 0;
+    const scanTimer = setInterval(() => {
+      scanBodyForFloatingAds();
+      scans++;
+      if (scans >= 30) clearInterval(scanTimer);
+    }, 500);
   }
 
   if (document.readyState === 'loading') {
@@ -207,7 +293,7 @@
   window.__MILLIONAIRE_AD_CTRL__ = {
     shouldBlockAd,
     registerAdImpression,
+    scanBodyForFloatingAds,
     getConfig: () => config
   };
 })();
-

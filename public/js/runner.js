@@ -392,9 +392,9 @@ function setupRunnerControls() {
   const runnerContainer = document.getElementById('runnerContainer');
   if (runnerContainer) {
     runnerContainer.addEventListener('click', (e) => {
-      // Stop event from propagating to window/document level ad listeners
+      // Stop event from bubbling up to window/document level ad listeners
       e.stopPropagation();
-    }, true);
+    }, false);
   }
 }
 

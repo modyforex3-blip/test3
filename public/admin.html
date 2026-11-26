@@ -436,6 +436,61 @@
               </div>
             </div>
 
+            <!-- 2.2 Granular Per-Page & Device Ad Placement Controls -->
+            <div class="glass-panel p-6 border border-emerald-500/30 space-y-4">
+              <div class="flex items-center gap-2 pb-3 border-b border-white/5">
+                <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-sm">
+                  <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <div>
+                  <h3 class="font-bold text-white text-sm">التحكم الدقيق في أماكن ظهور الإعلانات والأجهزة (Ad Locations)</h3>
+                  <p class="text-[11px] text-gray-400">حدد بدقة الصفحات والتطبيقات والأجهزة التي تظهر بها الإعلانات</p>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                <label class="flex items-center justify-between p-3 rounded-xl bg-slate-900/60 border border-white/5 cursor-pointer">
+                  <span class="text-xs font-bold text-gray-200"><i class="fas fa-home text-emerald-400 ml-1"></i> الصفحة الرئيسية</span>
+                  <input type="checkbox" id="adPageHome" checked class="w-4 h-4 rounded text-emerald-500">
+                </label>
+
+                <label class="flex items-center justify-between p-3 rounded-xl bg-slate-900/60 border border-white/5 cursor-pointer">
+                  <span class="text-xs font-bold text-gray-200"><i class="fas fa-mobile-alt text-emerald-400 ml-1"></i> صفحة تفاصيل التطبيق</span>
+                  <input type="checkbox" id="adPageAppDetails" checked class="w-4 h-4 rounded text-emerald-500">
+                </label>
+
+                <label class="flex items-center justify-between p-3 rounded-xl bg-slate-900/60 border border-white/5 cursor-pointer">
+                  <span class="text-xs font-bold text-gray-200"><i class="fas fa-newspaper text-emerald-400 ml-1"></i> صفحة المقالات والأخبار</span>
+                  <input type="checkbox" id="adPageArticles" checked class="w-4 h-4 rounded text-emerald-500">
+                </label>
+
+                <label class="flex items-center justify-between p-3 rounded-xl bg-slate-900/60 border border-white/5 cursor-pointer">
+                  <span class="text-xs font-bold text-gray-200"><i class="fas fa-play-circle text-amber-400 ml-1"></i> مشغل التطبيقات (Runner)</span>
+                  <input type="checkbox" id="adPageRunner" checked class="w-4 h-4 rounded text-emerald-500">
+                </label>
+
+                <label class="flex items-center justify-between p-3 rounded-xl bg-slate-900/60 border border-white/5 cursor-pointer">
+                  <span class="text-xs font-bold text-gray-200"><i class="fas fa-crown text-amber-400 ml-1"></i> داخل تطبيق المليونير</span>
+                  <input type="checkbox" id="adPageMillionaireApp" checked class="w-4 h-4 rounded text-emerald-500">
+                </label>
+
+                <label class="flex items-center justify-between p-3 rounded-xl bg-slate-900/60 border border-white/5 cursor-pointer">
+                  <span class="text-xs font-bold text-gray-200"><i class="fas fa-shield-alt text-teal-400 ml-1"></i> تحييد الإعلانات العائمة تلقائياً</span>
+                  <input type="checkbox" id="adNeutralizeFloating" checked class="w-4 h-4 rounded text-emerald-500">
+                </label>
+
+                <label class="flex items-center justify-between p-3 rounded-xl bg-slate-900/60 border border-white/5 cursor-pointer">
+                  <span class="text-xs font-bold text-gray-200"><i class="fas fa-laptop text-blue-400 ml-1"></i> العرض على اللابتوب والكمبيوتر</span>
+                  <input type="checkbox" id="adDeviceDesktop" checked class="w-4 h-4 rounded text-emerald-500">
+                </label>
+
+                <label class="flex items-center justify-between p-3 rounded-xl bg-slate-900/60 border border-white/5 cursor-pointer">
+                  <span class="text-xs font-bold text-gray-200"><i class="fas fa-mobile-screen text-blue-400 ml-1"></i> العرض على الموبايل</span>
+                  <input type="checkbox" id="adDeviceMobile" checked class="w-4 h-4 rounded text-emerald-500">
+                </label>
+              </div>
+            </div>
+
             <!-- 2.5 Ad Frequency & User Experience Control (Anti-Annoyance) -->
             <div class="glass-panel p-6 border border-amber-500/30 space-y-4">
               <div class="flex items-center gap-2 pb-3 border-b border-white/5">
@@ -682,6 +737,43 @@
               </div>
             </div>
 
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 border-t border-white/5 pt-4">
+              <div>
+                <label class="block text-xs font-bold text-gray-300 mb-2">بريد التواصل الرسمي</label>
+                <input type="email" id="contactEmail" placeholder="contact@millionair.site" class="w-full py-2.5 px-3 rounded-xl bg-slate-900 border border-white/10 text-sm">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-gray-300 mb-2">رابط قناة التليجرام (Telegram)</label>
+                <input type="text" id="telegramLink" placeholder="https://t.me/..." class="w-full py-2.5 px-3 rounded-xl bg-slate-900 border border-white/10 text-sm">
+              </div>
+            </div>
+
+            <!-- Advanced Site Features & Layout Toggles -->
+            <div class="border-t border-white/5 pt-4 space-y-3">
+              <h4 class="text-xs font-bold text-emerald-400 flex items-center gap-1.5">
+                <i class="fas fa-sliders-h"></i>
+                <span>التحكم المتقدم في خصائص ومظهر الموقع:</span>
+              </h4>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <label class="flex items-center justify-between p-3 rounded-xl bg-slate-900/60 border border-white/5 cursor-pointer">
+                  <span class="text-xs font-bold text-gray-200">إظهار شارة النقاط والمكافآت في شريط الموقع</span>
+                  <input type="checkbox" id="siteShowNavbarReward" checked class="w-4 h-4 rounded text-emerald-500">
+                </label>
+                <label class="flex items-center justify-between p-3 rounded-xl bg-slate-900/60 border border-white/5 cursor-pointer">
+                  <span class="text-xs font-bold text-gray-200">إظهار زر المكافآت العائم داخل التطبيقات</span>
+                  <input type="checkbox" id="siteShowFloatingReward" checked class="w-4 h-4 rounded text-emerald-500">
+                </label>
+                <label class="flex items-center justify-between p-3 rounded-xl bg-slate-900/60 border border-white/5 cursor-pointer">
+                  <span class="text-xs font-bold text-gray-200">تفعيل شريط البحث والتصنيفات بالرئيسية</span>
+                  <input type="checkbox" id="siteEnableSearch" checked class="w-4 h-4 rounded text-emerald-500">
+                </label>
+                <label class="flex items-center justify-between p-3 rounded-xl bg-slate-900/60 border border-white/5 cursor-pointer">
+                  <span class="text-xs font-bold text-gray-200">تفعيل قسم المقالات والأخبار بالرئيسية</span>
+                  <input type="checkbox" id="siteEnableArticles" checked class="w-4 h-4 rounded text-emerald-500">
+                </label>
+              </div>
+            </div>
+
             <button type="submit" class="btn-primary py-3 px-8 text-sm font-bold shadow-xl mt-4">
               <i class="fas fa-check"></i>
               <span>حفظ الإعدادات</span>
@@ -710,7 +802,7 @@
     <div class="modal-content p-6 sm:p-8">
       <div class="flex items-center justify-between pb-4 border-b border-white/10 mb-6">
         <h3 id="modalTitle" class="text-lg font-bold text-white">إضافة تطبيق جديد</h3>
-        <button onclick="closeAppModal()" class="text-gray-400 hover:text-white"><i class="fas fa-times text-lg"></i></button>
+        <button type="button" onclick="closeAppModal()" class="text-gray-400 hover:text-white"><i class="fas fa-times text-lg"></i></button>
       </div>
 
       <form id="appModalForm" class="space-y-4">
@@ -750,15 +842,15 @@
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div>
             <label class="block text-xs font-bold text-gray-300 mb-1">رابط تحميل التطبيق المباشر</label>
-            <input type="url" name="downloadUrl" id="appDownloadUrl" placeholder="https://example.com/download" class="w-full py-2 px-3 rounded-xl bg-slate-900 border border-white/10 text-sm">
+            <input type="text" name="downloadUrl" id="appDownloadUrl" placeholder="https://... أو /apps/..." class="w-full py-2 px-3 rounded-xl bg-slate-900 border border-white/10 text-sm">
           </div>
           <div>
             <label class="block text-xs font-bold text-amber-400 mb-1">رابط تشغيل التطبيق بالويب (اختياري)</label>
-            <input type="url" name="webAppUrl" id="appWebAppUrl" placeholder="https://..." class="w-full py-2 px-3 rounded-xl bg-slate-900 border border-white/10 text-sm">
+            <input type="text" name="webAppUrl" id="appWebAppUrl" placeholder="https://... أو /apps/..." class="w-full py-2 px-3 rounded-xl bg-slate-900 border border-white/10 text-sm">
           </div>
           <div>
-            <label class="block text-xs font-bold text-gray-300 mb-1">رابط صورة/أيقونة التطبيق (URL)</label>
-            <input type="url" name="iconUrl" id="appIconUrl" placeholder="https://..." class="w-full py-2 px-3 rounded-xl bg-slate-900 border border-white/10 text-sm">
+            <label class="block text-xs font-bold text-gray-300 mb-1">رابط صورة/أيقونة التطبيق (URL أو مسار)</label>
+            <input type="text" name="iconUrl" id="appIconUrl" placeholder="https://... أو /apps/..." class="w-full py-2 px-3 rounded-xl bg-slate-900 border border-white/10 text-sm">
           </div>
         </div>
 
@@ -794,9 +886,15 @@
           </div>
         </div>
 
-        <div>
-          <label class="block text-xs font-bold text-gray-300 mb-1">الوصف التفصيلي الكامل (عربي)</label>
-          <textarea name="fullDescAr" id="appFullDescAr" rows="3" class="w-full py-2 px-3 rounded-xl bg-slate-900 border border-white/10 text-sm"></textarea>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-gray-300 mb-1">الوصف التفصيلي الكامل (عربي)</label>
+            <textarea name="fullDescAr" id="appFullDescAr" rows="3" class="w-full py-2 px-3 rounded-xl bg-slate-900 border border-white/10 text-sm"></textarea>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-300 mb-1">الوصف التفصيلي الكامل (إنجليزي)</label>
+            <textarea name="fullDescEn" id="appFullDescEn" rows="3" class="w-full py-2 px-3 rounded-xl bg-slate-900 border border-white/10 text-sm"></textarea>
+          </div>
         </div>
 
         <div class="flex items-center justify-end gap-3 pt-4 border-t border-white/10">
