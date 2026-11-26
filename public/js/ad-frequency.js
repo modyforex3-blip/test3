@@ -1,7 +1,8 @@
 /**
  * Millionaire Smart Ad Frequency & User Experience Controller
- * - Blocks unprompted popunders without breaking legitimate app actions (share, export, download, external links)
- * - Neutralizes floating/stacked Monetag In-Page Push ads and confines them strictly inside Top/Bottom Banners
+ * - Blocks unprompted popunders without breaking legitimate app actions
+ * - Catches nested or top-level floating Monetag In-Page Push ads (even inside wrapper divs)
+ *   and confines them strictly inside Top/Bottom Banners or the active Reward Modal
  */
 
 (function() {
@@ -87,7 +88,7 @@
     return originalWindowOpen.apply(this, arguments);
   };
 
-  // Block hidden ad link clicks
+  // Block hidden ad link clicks when not watching reward ad
   document.addEventListener('click', function(e) {
     if (shouldBlockAd()) {
       const target = e.target && e.target.closest ? e.target.closest('a') : null;
@@ -101,7 +102,7 @@
     }
   }, true);
 
-  // --- Neutralize Floating Monetag In-Page Push Ads & Confine to Top/Bottom Banners ---
+  // --- Neutralize Floating Monetag In-Page Push Ads & Confine to Banners / Reward Modal ---
   const PROTECTED_IDS = new Set([
     'root',
     'rewardAdModal',
@@ -116,7 +117,8 @@
     'runnerInAppTopAd',
     'runnerInAppBottomAd',
     'runnerContainer',
-    'monetagZoneSlot'
+    'monetagZoneSlot',
+    'rewardAdPlacement'
   ]);
 
   let neutralizedCount = 0;
@@ -124,7 +126,7 @@
   function isProtectedElement(el) {
     if (!el || el.nodeType !== 1) return true;
     const tag = el.tagName;
-    if (tag === 'SCRIPT' || tag === 'STYLE' || tag === 'LINK' || tag === 'META' || tag === 'HEADER' || tag === 'MAIN' || tag === 'FOOTER') {
+    if (tag === 'HEAD' || tag === 'BODY' || tag === 'HTML' || tag === 'SCRIPT' || tag === 'STYLE' || tag === 'LINK' || tag === 'META' || tag === 'HEADER' || tag === 'MAIN' || tag === 'FOOTER') {
       return true;
     }
     if (el.id && PROTECTED_IDS.has(el.id)) return true;
@@ -141,6 +143,7 @@
       el.closest('#runnerInAppBottomAd') ||
       el.closest('#floatingRewardContainer') ||
       el.closest('#mobileMenu') ||
+      el.closest('#rewardAdPlacement') ||
       el.closest('header') ||
       el.closest('main') ||
       el.closest('footer')
@@ -149,6 +152,22 @@
     }
     if (el.classList.contains('reward-modal-backdrop') || el.classList.contains('modal-overlay')) {
       return true;
+    }
+    return false;
+  }
+
+  function hasFixedDescendant(el) {
+    if (!el || !el.querySelectorAll) return false;
+    const descendants = el.querySelectorAll('div, aside, section, iframe');
+    for (let i = 0; i < descendants.length; i++) {
+      const d = descendants[i];
+      try {
+        const cs = window.getComputedStyle(d);
+        const z = parseInt(d.style.zIndex || cs.zIndex || '0', 10) || 0;
+        if ((d.style.position === 'fixed' || cs.position === 'fixed') && z >= 100) {
+          return true;
+        }
+      } catch (_) {}
     }
     return false;
   }
@@ -178,60 +197,66 @@
       (el.tagName === 'IFRAME' && el.src && (el.src.includes('quge5.com') || el.src.includes('nap5k.com') || el.src.includes('3nbf4.com')))
     );
 
-    if (!isFloatingAd && !isMonetagNode) return;
+    if (!isFloatingAd && !isMonetagNode && !hasFixedDescendant(el)) return;
 
-    // Determine target banner container (Top Banner first, then Bottom Banner for 2nd ad)
-    const topContainer = document.getElementById('topAdContainer') ||
-                         document.getElementById('inAppTopBanner') ||
-                         document.getElementById('runnerInAppTopAd');
-    const bottomContainer = document.getElementById('bottomAdContainer') ||
-                            document.getElementById('inAppBottomBanner') ||
-                            document.getElementById('runnerInAppBottomAd');
+    // If Reward Modal is currently open, route new Monetag ads straight into #rewardAdPlacement!
+    const rewardModal = document.getElementById('rewardAdModal');
+    const isRewardOpen = rewardModal && !rewardModal.classList.contains('hidden');
+    let targetContainer = null;
 
-    let targetContainer = topContainer;
-    if (neutralizedCount % 2 === 1 && bottomContainer) {
-      targetContainer = bottomContainer;
-    }
-    if (!targetContainer) {
-      targetContainer = document.getElementById('monetagZoneSlot');
+    if (isRewardOpen) {
+      targetContainer = document.getElementById('rewardAdPlacement');
+    } else {
+      const topContainer = document.getElementById('topAdContainer') ||
+                           document.getElementById('inAppTopBanner') ||
+                           document.getElementById('runnerInAppTopAd');
+      const bottomContainer = document.getElementById('bottomAdContainer') ||
+                              document.getElementById('inAppBottomBanner') ||
+                              document.getElementById('runnerInAppBottomAd');
+
+      targetContainer = topContainer;
+      if (neutralizedCount % 2 === 1 && bottomContainer) {
+        targetContainer = bottomContainer;
+      }
+      if (!targetContainer) {
+        targetContainer = document.getElementById('monetagZoneSlot') || document.getElementById('rewardAdPlacement');
+      }
     }
 
     if (targetContainer) {
       neutralizedCount++;
       el.dataset.neutralizedAd = 'true';
 
-      // Strip floating fixed overlay styles so it becomes part of the banner
-      el.style.setProperty('position', 'relative', 'important');
-      el.style.setProperty('top', 'auto', 'important');
-      el.style.setProperty('left', 'auto', 'important');
-      el.style.setProperty('right', 'auto', 'important');
-      el.style.setProperty('bottom', 'auto', 'important');
-      el.style.setProperty('transform', 'none', 'important');
-      el.style.setProperty('width', 'auto', 'important');
-      el.style.setProperty('max-width', '100%', 'important');
-      el.style.setProperty('margin', '4px auto', 'important');
-      el.style.setProperty('z-index', '5', 'important');
-      el.style.setProperty('display', 'block', 'important');
+      const resetFixed = (node) => {
+        node.style.setProperty('position', 'relative', 'important');
+        node.style.setProperty('top', 'auto', 'important');
+        node.style.setProperty('left', 'auto', 'important');
+        node.style.setProperty('right', 'auto', 'important');
+        node.style.setProperty('bottom', 'auto', 'important');
+        node.style.setProperty('transform', 'none', 'important');
+        node.style.setProperty('max-width', '100%', 'important');
+        node.style.setProperty('margin', '4px auto', 'important');
+        node.style.setProperty('z-index', '5', 'important');
+      };
 
-      // Also neutralize any fixed children inside this ad wrapper
+      resetFixed(el);
       if (el.querySelectorAll) {
-        el.querySelectorAll('div, iframe').forEach(child => {
-          const cPos = child.style.position || (window.getComputedStyle ? window.getComputedStyle(child).position : '');
-          if (cPos === 'fixed') {
-            child.style.setProperty('position', 'relative', 'important');
-            child.style.setProperty('top', 'auto', 'important');
-            child.style.setProperty('left', 'auto', 'important');
-            child.style.setProperty('right', 'auto', 'important');
-            child.style.setProperty('bottom', 'auto', 'important');
-            child.style.setProperty('margin', '4px auto', 'important');
-          }
+        el.querySelectorAll('div, aside, section, iframe').forEach(child => {
+          try {
+            const cPos = child.style.position || window.getComputedStyle(child).position;
+            if (cPos === 'fixed' || cPos === 'absolute') {
+              resetFixed(child);
+            }
+          } catch (_) {}
         });
       }
 
       const wrapper = targetContainer.querySelector('.ad-banner-clean') ||
                       targetContainer.querySelector('.ad-inner-wrapper') ||
                       targetContainer;
-      targetContainer.style.display = 'flex';
+      if (!isRewardOpen) {
+        targetContainer.style.display = 'flex';
+      }
       if (el.parentNode !== wrapper) {
         wrapper.appendChild(el);
       }
@@ -239,8 +264,9 @@
   }
 
   function scanBodyForFloatingAds() {
-    if (!document.body) return;
-    Array.from(document.body.children).forEach(neutralizeAdElement);
+    if (document.body) {
+      Array.from(document.body.children).forEach(neutralizeAdElement);
+    }
     if (document.documentElement) {
       Array.from(document.documentElement.children).forEach(child => {
         if (child.tagName !== 'HEAD' && child.tagName !== 'BODY') {
@@ -260,27 +286,28 @@
             }
           }
         } else if (m.type === 'attributes' && m.target && m.target.nodeType === 1) {
-          neutralizeAdElement(m.target);
+          const topParent = m.target.closest('body > *, html > *');
+          if (topParent) neutralizeAdElement(topParent);
         }
       }
     });
 
-    if (document.body) {
-      observer.observe(document.body, {
+    if (document.documentElement) {
+      observer.observe(document.documentElement, {
         childList: true,
-        subtree: false,
+        subtree: true,
         attributes: true,
         attributeFilter: ['style', 'class']
       });
-      scanBodyForFloatingAds();
     }
+    scanBodyForFloatingAds();
 
-    // Periodic scan for the first 15s to catch asynchronously styled Monetag nodes
+    // Periodic scan for the first 20s to catch delayed or Shadow-wrapped Monetag nodes
     let scans = 0;
     const scanTimer = setInterval(() => {
       scanBodyForFloatingAds();
       scans++;
-      if (scans >= 30) clearInterval(scanTimer);
+      if (scans >= 40) clearInterval(scanTimer);
     }, 500);
   }
 

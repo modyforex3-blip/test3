@@ -294,14 +294,21 @@
 
   function renderRewardAd(container) {
     if (!container) return;
-    const timestamp = Date.now();
+    const ts = Date.now();
 
-    // Dedicated Monetag Ad Viewport via clean sandbox frame + responsive banner
+    // Render Monetag & AdSense directly in top-level DOM (Monetag blocks nested iframes)
     container.innerHTML = `
-      <div class="reward-monetag-frame-wrapper w-full flex flex-col items-center justify-center">
-        <iframe id="rewardMonetagIframe" src="/reward-ad-frame.html?t=${timestamp}" class="w-full min-h-[170px] border-0 rounded-xl" allow="autoplay; fullscreen"></iframe>
-        
-        <div class="mt-2.5 flex items-center justify-between w-full text-[11px] text-gray-400 px-1">
+      <div class="reward-monetag-direct-wrapper w-full flex flex-col items-center justify-center gap-2">
+        <div id="rewardMonetagLiveSlot" class="w-full min-h-[110px] flex flex-col items-center justify-center rounded-xl bg-slate-900/60 border border-white/10 p-3">
+          <div class="text-[11px] text-emerald-400 font-bold mb-2 flex items-center gap-1.5">
+            <i class="fas fa-satellite-dish animate-pulse"></i>
+            <span>إعلان شبكة Monetag المباشر</span>
+          </div>
+          <div id="rewardMonetagTarget" class="w-full flex flex-col items-center justify-center min-h-[60px]"></div>
+          <ins class="adsbygoogle" style="display:inline-block;width:100%;max-width:468px;min-height:60px" data-ad-client="ca-pub-6429184518728912" data-ad-slot="6300978111" data-ad-format="horizontal" data-full-width-responsive="true"></ins>
+        </div>
+
+        <div class="mt-1 flex items-center justify-between w-full text-[11px] text-gray-400 px-1">
           <span class="flex items-center gap-1.5 text-emerald-400 font-semibold">
             <i class="fas fa-badge-check"></i>
             <span>إعلان رسمي معتمد من Monetag</span>
@@ -313,6 +320,32 @@
         </div>
       </div>
     `;
+
+    // Mount fresh Monetag Zone 12339753 & Zone 314974 directly in top-level DOM
+    const target = document.getElementById('rewardMonetagTarget');
+    if (target) {
+      try {
+        const s1 = document.createElement('script');
+        s1.dataset.zone = '12339753';
+        s1.src = `https://nap5k.com/tag.min.js?r=${ts}`;
+        s1.async = true;
+        target.appendChild(s1);
+
+        const s2 = document.createElement('script');
+        s2.dataset.zone = '314974';
+        s2.src = `https://quge5.com/88/tag.min.js?r=${ts}`;
+        s2.async = true;
+        s2.setAttribute('data-cfasync', 'false');
+        target.appendChild(s2);
+      } catch (_) {}
+    }
+
+    // Trigger AdSense
+    try {
+      if (window.adsbygoogle) {
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+      }
+    } catch (_) {}
   }
 
   function openRewardModal() {
