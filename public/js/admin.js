@@ -209,6 +209,10 @@ function populateSettingsForm() {
   setChk('siteShowFloatingReward', f.showFloatingReward !== false);
   setChk('siteEnableSearch', f.enableSearch !== false);
   setChk('siteEnableArticles', f.enableArticles !== false);
+
+  const cdb = s.cloudDb || {};
+  setVal('cloudDbProvider', cdb.provider || 'github');
+  setVal('cloudDbTarget', cdb.provider === 'jsonbin' ? (cdb.jsonbinBinId || '') : (cdb.githubRepo || 'modyforex3-blip/test3'));
 }
 
 function populateAdsForm() {
@@ -409,6 +413,23 @@ function setupAdminListeners() {
           enableArticles: document.getElementById('siteEnableArticles') ? document.getElementById('siteEnableArticles').checked : true
         }
       };
+
+      const cProvider = document.getElementById('cloudDbProvider') ? document.getElementById('cloudDbProvider').value : 'github';
+      const cTarget = document.getElementById('cloudDbTarget') ? document.getElementById('cloudDbTarget').value.trim() : '';
+      const cToken = document.getElementById('cloudDbToken') ? document.getElementById('cloudDbToken').value.trim() : '';
+
+      const existingCloud = (dashboardData.settings && dashboardData.settings.cloudDb) || {};
+      payload.cloudDb = {
+        ...existingCloud,
+        provider: cProvider,
+        githubRepo: cProvider === 'github' ? (cTarget || 'modyforex3-blip/test3') : (existingCloud.githubRepo || 'modyforex3-blip/test3'),
+        githubBranch: 'data-store',
+        jsonbinBinId: cProvider === 'jsonbin' ? cTarget : (existingCloud.jsonbinBinId || '')
+      };
+      if (cToken) {
+        if (cProvider === 'github') payload.cloudDb.githubToken = cToken;
+        else if (cProvider === 'jsonbin') payload.cloudDb.jsonbinKey = cToken;
+      }
 
       const newPass = document.getElementById('newAdminPassword').value.trim();
       if (newPass) {
@@ -814,3 +835,37 @@ function switchAdminTab(tabId) {
   const btn = document.getElementById('btn-' + tabId);
   if (btn) btn.classList.add('bg-emerald-500/20', 'text-emerald-400');
 }
+
+async function syncCloudDatabaseNow() {
+  const statusEl = document.getElementById('cloudDbStatusMsg');
+  if (statusEl) {
+    statusEl.textContent = 'جارٍ المزامنة مع قاعدة البيانات السحابية...';
+    statusEl.className = 'text-xs text-amber-400 mt-2';
+  }
+  try {
+    const res = await fetch('/api/admin/cloud-db/sync', { method: 'POST' });
+    const data = await res.json();
+    if (data.success) {
+      if (statusEl) {
+        statusEl.textContent = 'تمت المزامنة السحابية بنجاح!';
+        statusEl.className = 'text-xs text-emerald-400 mt-2';
+      }
+      alert('تمت المزامنة مع قاعدة البيانات السحابية بنجاح!');
+      await loadDashboardData();
+    } else {
+      const msg = data.message || 'فشلت المزامنة السحابية — تأكد من إدخال التوكن وحفظ الإعدادات أولاً.';
+      if (statusEl) {
+        statusEl.textContent = msg;
+        statusEl.className = 'text-xs text-rose-400 mt-2';
+      }
+      alert(msg);
+    }
+  } catch (err) {
+    if (statusEl) {
+      statusEl.textContent = 'حدث خطأ أثناء الاتصال بالخادم للمزامنة.';
+      statusEl.className = 'text-xs text-rose-400 mt-2';
+    }
+    alert('حدث خطأ أثناء الاتصال بالخادم');
+  }
+}
+

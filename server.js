@@ -6,6 +6,7 @@ const multer = require('multer');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const aiBlogger = require('./ai-blogger');
+const cloudDB = require('./cloud-db');
 
 let AdmZip;
 try {
@@ -41,6 +42,7 @@ function readDatabase() {
 function writeDatabase(data) {
   try {
     fs.writeFileSync(dbPath, JSON.stringify(data, null, 2), 'utf8');
+    cloudDB.scheduleCloudPush(data);
     return true;
   } catch (err) {
     console.error('Error writing database:', err);
@@ -198,7 +200,8 @@ function requireAdmin(req, res, next) {
 app.get('/api/public-data', (req, res) => {
   const db = readDatabase();
   const safeSettings = { ...db.settings };
-  delete safeSettings.adminPassword; // never expose password
+  delete safeSettings.adminPassword;
+  delete safeSettings.cloudDb; // never expose password
 
   res.json({
     success: true,
@@ -225,6 +228,7 @@ app.get('/api/articles/:id', (req, res) => {
   const relatedArticles = (db.articles || []).filter(a => a.id !== req.params.id).slice(0, 3);
   const safeSettings = { ...db.settings };
   delete safeSettings.adminPassword;
+  delete safeSettings.cloudDb;
 
   res.json({
     success: true,
@@ -249,6 +253,7 @@ app.get('/api/apps/:id', (req, res) => {
 
   const safeSettings = { ...db.settings };
   delete safeSettings.adminPassword;
+  delete safeSettings.cloudDb;
 
   res.json({
     success: true,
@@ -704,6 +709,25 @@ app.post('/api/admin/settings', requireAdmin, (req, res) => {
   res.json({ success: true, settings: db.settings, message: 'تم حفظ إعدادات الموقع والإعلانات بنجاح' });
 });
 
+// Admin Cloud Database Status & Manual Sync
+app.get('/api/admin/cloud-db/status', requireAdmin, (req, res) => {
+  res.json({ success: true, status: cloudDB.getStatus() });
+});
+
+app.post('/api/admin/cloud-db/sync', requireAdmin, async (req, res) => {
+  try {
+    await cloudDB.pullFromCloud();
+    const pushRes = await cloudDB.pushToCloudNow();
+    if (pushRes.success) {
+      res.json({ success: true, status: cloudDB.getStatus(), message: 'تمت مزامنة وحفظ قاعدة البيانات سحابياً بنجاح!' });
+    } else {
+      res.status(400).json({ success: false, status: cloudDB.getStatus(), message: pushRes.error || 'يرجى ضبط مفتاح قاعدة البيانات السحابية أولاً' });
+    }
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
 // Admin delete message
 app.delete('/api/admin/messages/:id', requireAdmin, (req, res) => {
   const db = readDatabase();
@@ -814,8 +838,15 @@ app.get('/health', (req, res) => {
 });
 
 // Start Server
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
   console.log(`🚀 خادم موقع مليونير يعمل بنجاح على: http://localhost:${PORT}`);
+
+  // Restore persisted articles, apps, & settings from Online Cloud Database
+  try {
+    await cloudDB.pullFromCloud();
+  } catch (e) {
+    console.warn('[CloudDB] Startup pull warning:', e.message);
+  }
 
   // Start AI Auto-Blogger Daily Scheduler
   aiBlogger.initAIBloggerScheduler();

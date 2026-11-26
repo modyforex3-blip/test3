@@ -19,9 +19,12 @@ function getDB() {
   return { articles: [], aiBlogger: {} };
 }
 
+const cloudDB = require('./cloud-db');
+
 function saveDB(data) {
   try {
     fs.writeFileSync(dbPath, JSON.stringify(data, null, 2), 'utf8');
+    cloudDB.scheduleCloudPush(data);
     return true;
   } catch (e) {
     console.error('Error saving DB in AI Blogger:', e);

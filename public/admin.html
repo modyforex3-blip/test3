@@ -944,6 +944,37 @@
               </div>
             </div>
 
+            <!-- Always-On Free Online Cloud Database Persistence -->
+            <div class="border-t border-white/5 pt-4 space-y-3">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <h4 class="text-xs font-bold text-amber-400 flex items-center gap-1.5">
+                  <i class="fas fa-cloud"></i>
+                  <span>قاعدة البيانات السحابية الدائمة (حفظ المقالات والتطبيقات للأبد ضد التحديثات)</span>
+                </h4>
+                <button type="button" onclick="syncCloudDatabaseNow()" class="btn-gold text-[11px] py-1.5 px-3 font-bold flex items-center gap-1.5">
+                  <i class="fas fa-sync-alt"></i> <span>مزامنة ونسخ احتياطي الآن</span>
+                </button>
+              </div>
+              <p class="text-[11px] text-gray-400">تربط الموقع بقاعدة بيانات أونلاين مجانية دائمة (فرع <code>data-store</code> على GitHub أو <code>JSONBin.io</code>) حتى لا تضيع أي مقالة أو تطبيق عند إعادة تشغيل أو تحديث Render.</p>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div>
+                  <label class="block text-[11px] font-bold text-gray-300 mb-1">مزود قاعدة البيانات السحابية</label>
+                  <select id="cloudDbProvider" class="w-full py-2 px-3 rounded-xl bg-slate-900 border border-white/10 text-xs text-white">
+                    <option value="github">GitHub Cloud Branch (مجاني للأبد - موصى به)</option>
+                    <option value="jsonbin">JSONBin.io Cloud (مجاني)</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-[11px] font-bold text-gray-300 mb-1">المستودع / Bin ID</label>
+                  <input type="text" id="cloudDbTarget" placeholder="modyforex3-blip/test3" class="w-full py-2 px-3 rounded-xl bg-slate-900 border border-white/10 text-xs font-mono">
+                </div>
+                <div>
+                  <label class="block text-[11px] font-bold text-gray-300 mb-1">مفتاح الوصول السحابي (Token / Key)</label>
+                  <input type="password" id="cloudDbToken" placeholder="اترك فارغاً إذا كان مضبوطاً في Render" class="w-full py-2 px-3 rounded-xl bg-slate-900 border border-white/10 text-xs font-mono">
+                </div>
+              </div>
+            </div>
+
             <button type="submit" class="btn-primary py-3 px-8 text-sm font-bold shadow-xl mt-4">
               <i class="fas fa-check"></i>
               <span>حفظ الإعدادات</span>
