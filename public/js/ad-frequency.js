@@ -56,32 +56,23 @@
   }
 
   function shouldBlockAd() {
+    // If user is intentionally watching a voluntary rewarded ad, allow it
+    if (window.__IS_REWARD_AD_ACTIVE__ === true) {
+      return false;
+    }
+
+    // Per user policy: Ads must NEVER open automatically upon clicking app/page content,
+    // only when explicitly choosing the "Watch ad for reward" button.
+    if (config.disablePopupsInApps !== false || config.blockAutoPopups !== false) {
+      return true;
+    }
+
     // If popups are completely turned off in settings
     if (config.adFrequencyRate === 'off') {
       return true;
     }
 
-    // If inside an app and in-app popups are disabled
-    if (config.disablePopupsInApps && isInsideApp()) {
-      return true;
-    }
-
-    const now = Date.now();
-    const cooldownMs = (config.adCooldownMinutes || 10) * 60 * 1000;
-    const lastPopupTime = parseInt(sessionStorage.getItem(STORAGE_KEY_LAST_POPUP) || '0', 10);
-    const sessionCount = parseInt(sessionStorage.getItem(STORAGE_KEY_SESSION_COUNT) || '0', 10);
-
-    // Max session count reached
-    if (sessionCount >= (config.maxPopupsPerSession || 2)) {
-      return true;
-    }
-
-    // Cooldown not reached
-    if (now - lastPopupTime < cooldownMs) {
-      return true;
-    }
-
-    return false;
+    return true;
   }
 
   function registerAdImpression() {

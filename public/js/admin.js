@@ -262,6 +262,20 @@ function populateAdsForm() {
   const gCustomEl = document.getElementById('adsenseCustomCode');
   if (gCustomEl) gCustomEl.value = g.customCode || '';
 
+  // Rewarded Ads Program
+  const r = s.rewardSystem || {};
+  const rEnabledEl = document.getElementById('rewardSystemEnabled');
+  if (rEnabledEl) rEnabledEl.checked = r.enabled !== false;
+
+  const rPointsEl = document.getElementById('rewardPointsPerAd');
+  if (rPointsEl) rPointsEl.value = typeof r.pointsPerAd === 'number' ? r.pointsPerAd : 50;
+
+  const rDurationEl = document.getElementById('rewardAdDuration');
+  if (rDurationEl) rDurationEl.value = typeof r.adDurationSeconds === 'number' ? r.adDurationSeconds : 15;
+
+  const rCodeEl = document.getElementById('rewardAdCode');
+  if (rCodeEl) rCodeEl.value = r.rewardAdCode || '';
+
   // General Direct Codes
   const botCodeEl = document.getElementById('bottomAdCode');
   if (botCodeEl) botCodeEl.value = s.bottomAdCode || '';
@@ -420,6 +434,14 @@ function setupAdminListeners() {
           publisherId: document.getElementById('adsensePublisherId').value.trim(),
           autoAds: document.getElementById('adsenseAutoAds').checked,
           customCode: document.getElementById('adsenseCustomCode').value
+        },
+
+        rewardSystem: {
+          enabled: document.getElementById('rewardSystemEnabled') ? document.getElementById('rewardSystemEnabled').checked : true,
+          pointsPerAd: parseInt(document.getElementById('rewardPointsPerAd') ? document.getElementById('rewardPointsPerAd').value : '50', 10) || 50,
+          adDurationSeconds: parseInt(document.getElementById('rewardAdDuration') ? document.getElementById('rewardAdDuration').value : '15', 10) || 15,
+          rewardAdCode: document.getElementById('rewardAdCode') ? document.getElementById('rewardAdCode').value : '',
+          blockAutoPopups: true
         }
       };
 

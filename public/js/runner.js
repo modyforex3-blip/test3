@@ -81,6 +81,8 @@ function executeAdCode(container, code, fallback) {
 function renderAdBanners() {
   const topAd = document.getElementById('topAdContainer');
   const bottomAd = document.getElementById('bottomAdContainer');
+  const runnerInAppTop = document.getElementById('runnerInAppTopAd');
+  const runnerInAppBottom = document.getElementById('runnerInAppBottomAd');
   const adsGloballyDisabled = siteSettings.adProvider === 'none';
 
   if (topAd) {
@@ -114,6 +116,31 @@ function renderAdBanners() {
       bottomAd.innerHTML = '';
     }
   }
+
+  if (runnerInAppTop) {
+    if (!adsGloballyDisabled && siteSettings.enableTopBanner !== false) {
+      runnerInAppTop.style.display = 'block';
+      const inner = runnerInAppTop.querySelector('.ad-inner-wrapper') || runnerInAppTop;
+      executeAdCode(inner, siteSettings.topAdCode, `
+        <ins class="adsbygoogle" style="display:inline-block;width:100%;max-width:728px;min-height:50px" data-ad-client="ca-pub-6429184518728912" data-ad-slot="6300978111" data-ad-format="horizontal" data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      `);
+    } else {
+      runnerInAppTop.style.display = 'none';
+    }
+  }
+
+  if (runnerInAppBottom) {
+    if (!adsGloballyDisabled && siteSettings.enableBottomBanner !== false) {
+      runnerInAppBottom.style.display = 'block';
+      const inner = runnerInAppBottom.querySelector('.ad-inner-wrapper') || runnerInAppBottom;
+      executeAdCode(inner, siteSettings.bottomAdCode, `
+        <script>(function(s){s.dataset.zone='12339753',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+      `);
+    } else {
+      runnerInAppBottom.style.display = 'none';
+    }
+  }
 }
 
 function initAppRunner() {
@@ -139,10 +166,13 @@ function initAppRunner() {
 
   const viewport = document.getElementById('runnerViewport');
 
-  // If app has an embed/external web app url:
+  // If app has an embed/external web app url, render inside iframe in the runner with integrated in-app banners:
   if (app.webAppUrl && (app.webAppUrl.startsWith('http') || app.webAppUrl.startsWith('/'))) {
-    // Open in full independent page directly
-    window.location.replace(app.webAppUrl);
+    viewport.innerHTML = `
+      <div class="w-full h-full min-h-[600px] flex flex-col bg-slate-950 rounded-xl overflow-hidden relative">
+        <iframe id="appFrame" src="${app.webAppUrl}" class="w-full h-full flex-1 border-0" style="min-height: 600px;" allow="fullscreen; clipboard-read; clipboard-write;"></iframe>
+      </div>
+    `;
     return;
   }
 

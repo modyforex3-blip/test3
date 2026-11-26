@@ -563,7 +563,51 @@
               </div>
             </div>
 
-            <!-- 5. General Custom Ad Codes -->
+            <!-- 5. Rewarded Ads & Points System Configuration -->
+            <div class="glass-panel p-6 border border-amber-500/30 space-y-4">
+              <div class="flex items-center justify-between pb-3 border-b border-white/5">
+                <div class="flex items-center gap-2">
+                  <div class="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold text-sm">
+                    <i class="fas fa-gift"></i>
+                  </div>
+                  <div>
+                    <h3 class="font-bold text-white text-sm">برنامج المكافآت وكسب النقاط (Rewarded Ads Program)</h3>
+                    <p class="text-[11px] text-gray-400">تحكم بالنافذة المنبثقة لمشاهدة الإعلانات لكسب النقاط ومنع أي فتح عشوائي للإعلانات</p>
+                  </div>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" id="rewardSystemEnabled" class="sr-only peer" checked>
+                  <div class="w-11 h-6 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-500"></div>
+                </label>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-bold text-gray-300 mb-1">عدد النقاط المكتسبة لكل إعلان (Reward Points per Ad)</label>
+                  <input type="number" id="rewardPointsPerAd" min="5" max="1000" value="50" class="w-full text-xs p-2.5 rounded-xl bg-slate-900 border border-white/10 text-amber-400 font-bold">
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-gray-300 mb-1">مدة مؤقت مشاهدة الإعلان بالثواني (Timer Duration in Seconds)</label>
+                  <input type="number" id="rewardAdDuration" min="5" max="60" value="15" class="w-full text-xs p-2.5 rounded-xl bg-slate-900 border border-white/10 text-emerald-400 font-bold">
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-gray-300 mb-1">
+                  كود الإعلان المخصص لشاشة المكافآت (Rewarded Ad Code - اختياري)
+                </label>
+                <textarea id="rewardAdCode" rows="2" placeholder="ضع هنا كود الإعلان المراد عرضه داخل الشاشة المنبثقة للمكافأة (Monetag أو AdSense)" class="w-full font-mono text-xs p-3 rounded-xl bg-slate-900 border border-white/10 text-amber-300"></textarea>
+              </div>
+
+              <div class="flex items-center gap-2 p-3 bg-slate-900/60 rounded-xl border border-white/5">
+                <i class="fas fa-shield-check text-emerald-400 text-lg"></i>
+                <div class="text-xs text-gray-300">
+                  <strong>حظر النوافذ الإعلانية العشوائية:</strong> الإعلانات المنبثقة محصورة حصرياً عند نقر المستخدم الطوعي على زر المكافأة، ولا تفتح بمفردها أبداً عند الضغط على محتويات الصفحة أو التطبيق.
+                </div>
+              </div>
+            </div>
+
+            <!-- 6. General Custom Ad Codes -->
             <div class="glass-panel p-6 border border-white/10 space-y-4">
               <h3 class="font-bold text-white text-sm mb-2 flex items-center gap-2">
                 <i class="fas fa-code text-amber-400"></i>

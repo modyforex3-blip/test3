@@ -23,11 +23,14 @@
     <!-- Google AdSense Official Script (Publisher ca-pub-6429184518728912) -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6429184518728912" crossorigin="anonymous"></script>
 
-    <!-- Monetag Rewarded Ad Modal Controller -->
-    <script src="/js/rewarded-ad.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Monetag Real Banner Tag (Zone 12339753) -->
+    <script>(function(s){s.dataset.zone='12339753',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700;800;900&family=Tajawal:wght@300;400;500;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Monetag & PWA Service Worker Registration -->
@@ -43,7 +46,38 @@
     <script type="module" crossorigin src="./assets/index-D3T15e0S.js"></script>
     <link rel="stylesheet" crossorigin href="./assets/index-CixjOfFe.css">
   </head>
-  <body class="bg-slate-950 text-slate-100 antialiased font-arabic selection:bg-emerald-500 selection:text-white overflow-x-hidden min-h-screen">
-    <div id="root"></div>
+  <body class="bg-slate-950 text-slate-100 antialiased font-arabic selection:bg-emerald-500 selection:text-white overflow-x-hidden min-h-screen flex flex-col justify-between">
+    
+    <!-- In-App Top Ad Banner (Integrated as part of the app) -->
+    <div id="inAppTopBanner" class="in-app-ad-banner in-app-top">
+      <div class="ad-inner-wrapper">
+        <ins class="adsbygoogle" style="display:inline-block;width:100%;max-width:728px;min-height:50px" data-ad-client="ca-pub-6429184518728912" data-ad-slot="6300978111" data-ad-format="horizontal" data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      </div>
+    </div>
+
+    <!-- Floating Rewarded Ad & Points Trigger Button -->
+    <div class="fixed top-16 left-3 z-50">
+      <button onclick="window.RewardSystem && window.RewardSystem.openRewardModal()" class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-amber-500 via-amber-400 to-emerald-500 text-slate-950 font-black text-xs shadow-xl border border-white/20 hover:scale-105 transition-all cursor-pointer" title="شاهد إعلان لكسب +50 نقطة">
+        <i class="fas fa-gift text-sm animate-bounce"></i>
+        <span>مكافأة +50</span>
+        <span class="bg-slate-900/80 text-amber-300 text-[10px] px-1.5 py-0.5 rounded-full font-bold flex items-center gap-1">
+          <i class="fas fa-coins text-[9px]"></i> <span class="user-points-val">100</span>
+        </span>
+      </button>
+    </div>
+
+    <!-- Main App Root -->
+    <div id="root" class="flex-1 w-full"></div>
+
+    <!-- In-App Bottom Ad Banner (Integrated as part of the app) -->
+    <div id="inAppBottomBanner" class="in-app-ad-banner in-app-bottom">
+      <div class="ad-inner-wrapper">
+        <script>(function(s){s.dataset.zone='12339753',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+      </div>
+    </div>
+
+    <!-- Rewarded Ads Controller -->
+    <script src="/js/reward-system.js"></script>
   </body>
 </html>

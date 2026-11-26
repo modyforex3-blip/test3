@@ -3,8 +3,8 @@
 <head>
   <!-- Smart Ad Frequency & User Experience Controller -->
   <script src="/js/ad-frequency.js"></script>
-  <!-- Monetag Rewarded Ad Modal Controller -->
-  <script src="/js/rewarded-ad.js"></script>
+  <!-- Monetag Adaptive In-Page & Vignette Ads -->
+  <script src="https://quge5.com/88/tag.min.js" data-zone="314974" async data-cfasync="false"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>مليونير | Millionaire - منصة وبوابة التطبيقات والأدوات الرقمية</title>
@@ -35,28 +35,27 @@
 </head>
 <body class="bg-[#080c14] text-slate-100 flex flex-col min-h-screen">
 
-  <!-- TOP AD BANNER (Strict 50px Height - Google AdSense Official) -->
+  <!-- TOP AD BANNER (Google AdSense / Monetag Responsive Sticky Banner) -->
   <aside id="topAdContainer" class="ad-container-top" aria-label="إعلان ممول">
-    <div class="ad-inner-wrapper relative flex items-center justify-center w-full h-[50px] overflow-hidden">
-      <div class="ad-banner-50 flex items-center justify-center w-full h-[50px] overflow-hidden text-center">
-        <ins class="adsbygoogle" style="display:inline-block;width:100%;max-width:728px;height:50px" data-ad-client="ca-pub-6429184518728912" data-ad-slot="6300978111" data-ad-format="horizontal"></ins>
+    <div class="ad-inner-wrapper">
+      <div class="ad-banner-clean flex items-center justify-center w-full min-h-[50px] text-center">
+        <ins class="adsbygoogle" style="display:inline-block;width:100%;max-width:728px;min-height:50px" data-ad-client="ca-pub-6429184518728912" data-ad-slot="6300978111" data-ad-format="horizontal" data-full-width-responsive="true"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
       </div>
-      <button onclick="document.getElementById('topAdContainer').style.display='none'" class="absolute left-2 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-black/60 hover:bg-black/90 text-white/70 hover:text-white flex items-center justify-center text-xs transition-all z-20" title="إغلاق الإعلان" aria-label="إغلاق الإعلان">✕</button>
     </div>
   </aside>
 
   <!-- NAVBAR -->
   <header class="bg-[#0b0f17]/90 backdrop-blur-md border-b border-white/10 relative z-30">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between gap-4">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
       
       <!-- Brand Logo & Name -->
       <a href="/" class="flex items-center gap-3 group">
-        <div class="w-9 h-9 sm:w-11 sm:h-11 flex-shrink-0 brand-logo-icon">
+        <div class="w-12 h-12 flex-shrink-0 brand-logo-icon">
           <img src="/assets/logo.svg" alt="مليونير Logo" class="w-full h-full object-contain">
         </div>
         <div class="flex flex-col">
-          <span class="text-xl sm:text-2xl font-black brand-title tracking-tight flex items-center gap-2">
+          <span class="text-2xl sm:text-3xl font-black brand-title tracking-tight flex items-center gap-2">
             <span>مليونير</span>
             <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">PRO</span>
           </span>
@@ -89,11 +88,12 @@
       </nav>
 
       <!-- Action Buttons & Language Switcher -->
-      <div class="flex items-center gap-2 sm:gap-3">
-        <!-- Wealth Points Rewards Badge (Monetag Rewarded Link) -->
-        <div id="userWealthPointsNavbar" onclick="window.openMonetagRewardModal(false)" class="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-full bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/30 text-amber-400 text-[11px] sm:text-xs font-bold cursor-pointer transition-all select-none shadow-sm" title="اضغط لمشاهدة إعلان الشريك وكسب +50 نقطة ثروة">
-          <i class="fas fa-coins text-amber-400 animate-pulse"></i>
-          <span id="userRewardPointsBadge">150 نقطة</span>
+      <div class="flex items-center gap-3">
+        <!-- User Reward Points & Watch Ad Button -->
+        <div class="reward-points-widget" onclick="window.RewardSystem && window.RewardSystem.openRewardModal()" title="رصيد المكافآت - شاهد إعلان لكسب +50 نقطة">
+          <i class="fas fa-coins text-amber-400"></i>
+          <span class="font-black text-xs text-white"><span class="user-points-val">100</span> نقطة</span>
+          <span class="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-amber-500/30 text-amber-300 hidden sm:inline">🎁 كسب</span>
         </div>
 
         <!-- Language Switcher Pill -->
@@ -156,6 +156,24 @@
         <button class="filter-btn" data-category="crypto" data-i18n="filterCrypto">عملات وبلوكتشين</button>
         <button class="filter-btn" data-category="ai" data-i18n="filterAi">ذكاء اصطناعي</button>
         <button class="filter-btn" data-category="tools" data-i18n="filterTools">أدوات وإنتاجية</button>
+      <!-- Rewarded Ads Program Banner -->
+      <div class="mt-8 max-w-xl mx-auto p-3.5 sm:p-4 rounded-2xl bg-gradient-to-r from-amber-500/10 via-emerald-500/10 to-slate-900 border border-amber-500/30 backdrop-blur-md flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xl">
+        <div class="flex items-center gap-3 text-start">
+          <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl flex-shrink-0 animate-bounce">
+            <i class="fas fa-gift"></i>
+          </div>
+          <div>
+            <h4 class="font-bold text-white text-xs sm:text-sm flex items-center gap-2">
+              <span>برنامج مكافآت مليونير</span>
+              <span class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 font-bold border border-emerald-500/30">+50 نقطة</span>
+            </h4>
+            <p class="text-[11px] text-gray-400 mt-0.5">شاهد إعلاناً قصيراً (15 ثانية) واكسب نقاطاً تضاف فوراً لرصيدك</p>
+          </div>
+        </div>
+        <button onclick="window.RewardSystem && window.RewardSystem.openRewardModal()" class="btn-watch-reward-ad btn-gold text-xs py-2 px-4 font-black flex items-center gap-2 whitespace-nowrap shadow-lg hover:scale-105 transition-all cursor-pointer">
+          <i class="fas fa-play-circle text-amber-900"></i>
+          <span>شاهد إعلان الآن</span>
+        </button>
       </div>
 
     </div>
@@ -301,14 +319,12 @@
 
   </main>
 
-  <!-- BOTTOM AD BANNER (Strict 50px Height - Embedded & Non-Overlapping) -->
-  <aside id="bottomAdContainer" class="ad-container-bottom max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-6" aria-label="إعلان ممول">
-    <div class="ad-inner-wrapper relative flex items-center justify-center w-full h-[50px] overflow-hidden rounded-xl border border-white/10 bg-[#0b0f17]">
-      <div class="ad-banner-50 flex items-center justify-center w-full h-[50px] overflow-hidden text-center">
-        <!-- Monetag Official Zone 12339753 Banner -->
+  <!-- BOTTOM AD BANNER (Monetag / Google AdSense Clean Placement) -->
+  <aside id="bottomAdContainer" class="ad-container-bottom" aria-label="إعلان ممول">
+    <div class="ad-inner-wrapper">
+      <div class="ad-banner-clean flex items-center justify-center w-full min-h-[50px] text-center">
         <script>(function(s){s.dataset.zone='12339753',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
       </div>
-      <button onclick="document.getElementById('bottomAdContainer').style.display='none'" class="absolute left-2 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-black/60 hover:bg-black/90 text-white/70 hover:text-white flex items-center justify-center text-xs transition-all z-20" title="إغلاق الإعلان" aria-label="إغلاق الإعلان">✕</button>
     </div>
   </aside>
 
@@ -368,10 +384,10 @@
     </div>
   </footer>
 
-  <!-- Scripts -->
   <script src="/js/i18n.js"></script>
   <script src="/js/main.js"></script>
   <script src="/js/ad-guard.js"></script>
+  <script src="/js/reward-system.js"></script>
   <script>
     // Register Service Worker for Monetag & PWA
     if ('serviceWorker' in navigator) {

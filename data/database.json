@@ -21,6 +21,13 @@
     "enableAdaptiveAds": true,
     "enableOnClickAds": false,
     "cleanAppRunner": true,
+    "rewardSystem": {
+      "enabled": true,
+      "pointsPerAd": 50,
+      "adDurationSeconds": 15,
+      "rewardAdCode": "<!-- Rewarded Partner Placement -->\n<div class=\"reward-ad-content flex flex-col items-center justify-center w-full min-h-[140px] text-center p-3\">\n  <div class=\"w-12 h-12 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl mb-2\">\n    <i class=\"fas fa-award\"></i>\n  </div>\n  <div class=\"text-white font-bold text-sm\">برنامج شركاء مليونير الذهبي</div>\n  <p class=\"text-xs text-gray-400 mt-1 max-w-xs\">استمتع بميزات حصرية ونقاط إضافية عند إكمال مشاهدة العرض</p>\n</div>",
+      "blockAutoPopups": true
+    },
     "topAdCode": "<!-- Google AdSense Official Responsive Top Banner -->\n<div class=\"ad-banner-clean flex items-center justify-center w-full min-h-[50px] text-center\">\n  <ins class=\"adsbygoogle\" style=\"display:inline-block;width:100%;max-width:728px;min-height:50px\" data-ad-client=\"ca-pub-6429184518728912\" data-ad-slot=\"6300978111\" data-ad-format=\"horizontal\" data-full-width-responsive=\"true\"></ins>\n  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>\n</div>",
     "bottomAdCode": "<!-- Monetag Official Bottom Banner -->\n<div class=\"ad-banner-clean flex items-center justify-center w-full min-h-[50px] text-center\">\n  <script>(function(s){s.dataset.zone='12339753',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>\n</div>",
     "inFeedAdCode": "<!-- Monetag / AdSense In-Feed Native Ad -->\n<div class=\"ad-card-box\"><span class=\"ad-badge\">إعلان مدمج / Sponsored</span><div class=\"text-center py-4\"><p class=\"font-bold text-amber-400\">شريك إعلاني رسمي</p><p class=\"text-xs text-gray-400 mt-1\">عروض وحلول برمجية وتقنية موثوقة</p></div></div>",
