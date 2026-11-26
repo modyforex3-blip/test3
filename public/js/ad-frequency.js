@@ -281,34 +281,26 @@
       for (const m of mutations) {
         if (m.type === 'childList') {
           for (const node of m.addedNodes) {
-            if (node.nodeType === 1) {
+            if (node.nodeType === 1 && !isProtectedElement(node)) {
               neutralizeAdElement(node);
             }
           }
-        } else if (m.type === 'attributes' && m.target && m.target.nodeType === 1) {
-          const topParent = m.target.closest('body > *, html > *');
-          if (topParent) neutralizeAdElement(topParent);
         }
       }
     });
 
+    if (document.body) {
+      observer.observe(document.body, { childList: true, subtree: false });
+    }
     if (document.documentElement) {
-      observer.observe(document.documentElement, {
-        childList: true,
-        subtree: true,
-        attributes: true,
-        attributeFilter: ['style', 'class']
-      });
+      observer.observe(document.documentElement, { childList: true, subtree: false });
     }
     scanBodyForFloatingAds();
 
-    // Periodic scan for the first 20s to catch delayed or Shadow-wrapped Monetag nodes
-    let scans = 0;
-    const scanTimer = setInterval(() => {
-      scanBodyForFloatingAds();
-      scans++;
-      if (scans >= 40) clearInterval(scanTimer);
-    }, 500);
+    // Targeted delayed scans without continuous polling overhead
+    [800, 2000, 4500, 8000].forEach(delay => {
+      setTimeout(scanBodyForFloatingAds, delay);
+    });
   }
 
   if (document.readyState === 'loading') {
