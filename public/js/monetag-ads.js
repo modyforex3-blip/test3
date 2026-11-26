@@ -65,15 +65,31 @@
 
   // 2. Mount Monetag in Page Banners (Top & Bottom)
   function mountPageBanners() {
+    // Top banner
     const topSlot = document.querySelector('#topAdContainer .monetag-slot, #topAdContainer [data-monetag-zone]');
     if (topSlot && topSlot.children.length === 0) {
       loadMonetagBanner(topSlot, activeConfig.bannerZone, activeConfig.bannerScript);
     }
+    // Also try to push AdSense on top banner
+    try {
+      const topIns = document.querySelector('#topAdContainer ins.adsbygoogle');
+      if (topIns && !topIns.dataset.adsbygoogleStatus) {
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+      }
+    } catch (_) {}
 
+    // Bottom banner
     const bottomSlot = document.querySelector('#bottomAdContainer .monetag-slot, #bottomAdContainer [data-monetag-zone]');
     if (bottomSlot && bottomSlot.children.length === 0) {
       loadMonetagBanner(bottomSlot, activeConfig.bannerZone, activeConfig.bannerScript);
     }
+    // Also try to push AdSense on bottom banner
+    try {
+      const bottomIns = document.querySelector('#bottomAdContainer ins.adsbygoogle');
+      if (bottomIns && !bottomIns.dataset.adsbygoogleStatus) {
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+      }
+    } catch (_) {}
   }
 
   // 3. Mount Monetag in Application Banners (Runner & Millionaire OS)
@@ -142,6 +158,11 @@
     } else {
       runMounts();
     }
+
+    // Desktop retry: re-attempt banner injection after scripts have time to load
+    setTimeout(() => { mountPageBanners(); mountAppBanners(); }, 1500);
+    setTimeout(() => { mountPageBanners(); mountAppBanners(); }, 4000);
+
     return cfg;
   });
 

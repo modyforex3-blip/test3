@@ -364,7 +364,8 @@ function setupRunnerControls() {
   // Fullscreen toggle
   const fsBtn = document.getElementById('fullscreenBtn');
   if (fsBtn) {
-    fsBtn.addEventListener('click', () => {
+    fsBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
       const elem = document.getElementById('runnerContainer');
       if (!document.fullscreenElement) {
         elem.requestFullscreen().catch(err => alert(`Error: ${err.message}`));
@@ -377,7 +378,8 @@ function setupRunnerControls() {
   // Reload button
   const reloadBtn = document.getElementById('reloadAppBtn');
   if (reloadBtn) {
-    reloadBtn.addEventListener('click', () => {
+    reloadBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
       initAppRunner();
     });
   }
@@ -385,15 +387,55 @@ function setupRunnerControls() {
   // Install PWA button
   const installBtn = document.getElementById('installAppBtn');
   if (installBtn) {
-    installBtn.addEventListener('click', promptPWAInstall);
+    installBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      promptPWAInstall();
+    });
   }
 
-  // Ad-Shield: Prevent external ad popunder scripts from hijacking clicks inside the app
+  // --- Reward Button: Open reward modal → after reward, navigate to app details ---
+  const rewardBtn = document.querySelector('.btn-watch-reward-ad, [data-reward-btn]');
+  if (rewardBtn) {
+    // Remove any old inline onclick to avoid double-firing
+    rewardBtn.removeAttribute('onclick');
+    rewardBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      // Open reward modal
+      if (window.RewardSystem && typeof window.RewardSystem.openRewardModal === 'function') {
+        window.RewardSystem.openRewardModal();
+      }
+      // After reward claimed, go to app details page
+      const once = () => {
+        window.removeEventListener('millionaire:points-updated', once);
+        if (currentApp) {
+          setTimeout(() => {
+            window.location.href = `/app.html?id=${currentApp.id}`;
+          }, 2800);
+        }
+      };
+      window.addEventListener('millionaire:points-updated', once);
+    });
+  }
+
+  // Ad-Shield: Prevent popunders from hijacking any click inside the runner or toolbar
+  document.addEventListener('click', (e) => {
+    // If the click is NOT on a reward button, stop any popunder from firing
+    const isRewardClick = e.target.closest('.btn-watch-reward-ad, [data-reward-btn]');
+    if (!isRewardClick) {
+      window.__ALLOW_USER_INTENT_OPEN__ = false;
+    }
+  }, true);
+
   const runnerContainer = document.getElementById('runnerContainer');
   if (runnerContainer) {
     runnerContainer.addEventListener('click', (e) => {
       // Stop event from bubbling up to window/document level ad listeners
-      e.stopPropagation();
+      // but allow reward button clicks through
+      const isReward = e.target.closest('.btn-watch-reward-ad, [data-reward-btn]');
+      if (!isReward) {
+        e.stopPropagation();
+      }
     }, false);
   }
 }

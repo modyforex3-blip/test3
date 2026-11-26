@@ -941,7 +941,73 @@ div[class*="ipp-"] {
   overflow: hidden !important;
   margin: 0 auto !important;
   z-index: 20 !important;
+}/* ============================================================
+   MOBILE STABLE REWARD BUTTON & AD BANNER FIXES
+   ============================================================ */
+
+/* Stable floating reward button - never jumps on mobile scroll */
+#floatingRewardContainer {
+  position: fixed !important;
+  bottom: calc(70px + env(safe-area-inset-bottom, 0px)) !important;
+  left: 12px !important;
+  right: auto !important;
+  top: auto !important;
+  z-index: 40 !important;
+  transform: translateZ(0) !important;
+  -webkit-transform: translateZ(0) !important;
+  will-change: transform !important;
+  pointer-events: none;
 }
 
+#floatingRewardContainer button,
+#floatingRewardBtn {
+  pointer-events: auto !important;
+  /* No animate-bounce on button container - prevents layout jitter */
+  animation: none !important;
+}
+
+#floatingRewardBtn i.fa-gift {
+  /* Allow subtle pulse instead of bounce which causes reflow */
+  animation: mil-pulse-gift 2s ease-in-out infinite !important;
+}
+
+@keyframes mil-pulse-gift {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.15); opacity: 0.85; }
+}
+
+/* Prevent ads from causing page shake/reflow */
+.ad-container-top,
+.ad-container-bottom,
+#topAdContainer,
+#bottomAdContainer {
+  will-change: auto !important;
+  transform: translateZ(0) !important;
+  contain: layout size !important;
+}
+
+/* Desktop: ensure banner slots are visible and have minimum presence */
+@media (min-width: 768px) {
+  #topAdContainer .monetag-slot,
+  #bottomAdContainer .monetag-slot {
+    min-width: 320px !important;
+    min-height: 50px !important;
+  }
+  .ad-inner-wrapper {
+    min-height: 50px !important;
+    max-height: 50px !important;
+  }
+}
+
+/* Mobile: compact reward button */
+@media (max-width: 480px) {
+  #floatingRewardContainer {
+    bottom: calc(60px + env(safe-area-inset-bottom, 0px)) !important;
+    left: 8px !important;
+  }
+  #floatingRewardBtn span:last-child {
+    display: none; /* hide points badge on very small screens */
+  }
+}
 
 

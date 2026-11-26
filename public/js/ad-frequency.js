@@ -43,15 +43,11 @@
     .catch(() => {});
 
   function shouldBlockAd() {
+    // Always allow ads only inside the voluntary reward modal
     if (window.__IS_REWARD_AD_ACTIVE__ === true) {
-      return false;
+      return false; // let reward-modal ads through
     }
-    if (config.disablePopupsInApps !== false || config.blockAutoPopups !== false) {
-      return true;
-    }
-    if (config.adFrequencyRate === 'off') {
-      return true;
-    }
+    // Block everything else (popunders, in-page push outside banners, etc.)
     return true;
   }
 
