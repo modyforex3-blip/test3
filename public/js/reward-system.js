@@ -292,6 +292,51 @@
     }
   }
 
+  function renderRewardAd(container) {
+    if (!container) return;
+    let adCode = (systemConfig.rewardAdCode && systemConfig.rewardAdCode.trim()) || '';
+    // If code is empty or dummy placeholder, inject Monetag + Google AdSense live rewarded placement
+    if (!adCode || adCode.includes('برنامج شركاء مليونير الذهبي') || adCode.includes('منظومة المليونير الحصرية')) {
+      adCode = `
+        <div class="reward-live-ad-box flex flex-col items-center justify-center w-full min-h-[160px] text-center p-3">
+          <div id="rewardLiveMonetagSlot" class="w-full max-w-[468px] min-h-[60px] flex items-center justify-center mb-2">
+            <ins class="adsbygoogle" style="display:inline-block;width:100%;max-width:468px;min-height:60px" data-ad-client="ca-pub-6429184518728912" data-ad-slot="6300978111" data-ad-format="horizontal" data-full-width-responsive="true"></ins>
+          </div>
+          <div id="rewardMonetagBanner" class="w-full max-w-[468px] min-h-[50px] flex items-center justify-center"></div>
+        </div>
+      `;
+    }
+
+    container.innerHTML = adCode;
+
+    // Execute scripts inside container
+    const scripts = Array.from(container.querySelectorAll('script'));
+    scripts.forEach(oldScript => {
+      const newScript = document.createElement('script');
+      Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
+      if (oldScript.textContent) newScript.textContent = oldScript.textContent;
+      oldScript.parentNode.replaceChild(newScript, oldScript);
+    });
+
+    // Dynamically mount Monetag script directly into rewardMonetagBanner
+    const mBanner = container.querySelector('#rewardMonetagBanner');
+    if (mBanner) {
+      try {
+        const s = document.createElement('script');
+        s.dataset.zone = '12339753';
+        s.src = 'https://nap5k.com/tag.min.js';
+        mBanner.appendChild(s);
+      } catch (_) {}
+    }
+
+    // Trigger adsbygoogle if present
+    try {
+      if (window.adsbygoogle && container.querySelector('ins.adsbygoogle')) {
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+      }
+    } catch (_) {}
+  }
+
   function openRewardModal() {
     createModalIfNotExists();
     const modal = document.getElementById('rewardAdModal');
@@ -318,20 +363,10 @@
     claimBtn.classList.add('hidden');
     claimBtn.disabled = true;
 
-    // Execute dynamic ad in container if provided
+    // Execute real live ad in container
     const placement = document.getElementById('rewardAdPlacement');
-    if (systemConfig.rewardAdCode && systemConfig.rewardAdCode.trim()) {
-      try {
-        placement.innerHTML = systemConfig.rewardAdCode;
-        // Re-execute scripts
-        const scripts = Array.from(placement.querySelectorAll('script'));
-        scripts.forEach(oldScript => {
-          const newScript = document.createElement('script');
-          Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
-          if (oldScript.textContent) newScript.textContent = oldScript.textContent;
-          oldScript.parentNode.replaceChild(newScript, oldScript);
-        });
-      } catch (_) {}
+    if (placement) {
+      renderRewardAd(placement);
     }
 
     // Show modal

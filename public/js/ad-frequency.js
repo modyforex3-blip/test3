@@ -125,9 +125,89 @@
     }
   }, true);
 
+  // --- Neutralize Monetag Floating/Stacked In-Page Push Ads on Mobile ---
+  // Confines any floating top ads into #topAdContainer inside the page layout
+  // so they never cover page content or navbar
+  function neutralizeAdElement(el) {
+    if (!el || el.nodeType !== 1) return;
+    if (el.id === 'rewardAdModal' || el.id === 'mobileMenu' || el.classList.contains('reward-modal-backdrop')) return;
+
+    const s = el.style;
+    const computed = window.getComputedStyle ? window.getComputedStyle(el) : null;
+    const pos = s.position || (computed ? computed.position : '');
+    const topVal = s.top || (computed ? computed.top : '');
+    const zIndex = parseInt(s.zIndex || (computed ? computed.zIndex : '0'), 10);
+
+    const isFloatingTopAd = (
+      (pos === 'fixed' || pos === 'absolute') &&
+      (topVal === '0px' || topVal === '0' || parseInt(topVal, 10) <= 60) &&
+      (zIndex > 100 || !zIndex) &&
+      !el.closest('#rewardAdModal') &&
+      !el.closest('header')
+    );
+
+    const isMonetagNode = (
+      (el.id && (el.id.includes('monetag') || el.id.includes('zone_'))) ||
+      (typeof el.className === 'string' && (el.className.includes('monetag') || el.className.includes('zone-') || el.className.includes('ipp-'))) ||
+      (el.tagName === 'IFRAME' && (el.src.includes('quge5.com') || el.src.includes('nap5k.com') || el.src.includes('3nbf4.com')))
+    );
+
+    if (isFloatingTopAd || isMonetagNode) {
+      const topContainer = document.getElementById('topAdContainer');
+      if (topContainer) {
+        el.style.setProperty('position', 'relative', 'important');
+        el.style.setProperty('top', 'auto', 'important');
+        el.style.setProperty('left', 'auto', 'important');
+        el.style.setProperty('right', 'auto', 'important');
+        el.style.setProperty('bottom', 'auto', 'important');
+        el.style.setProperty('transform', 'none', 'important');
+        el.style.setProperty('max-width', '728px', 'important');
+        el.style.setProperty('margin', '6px auto', 'important');
+        el.style.setProperty('z-index', '10', 'important');
+        el.style.setProperty('display', 'block', 'important');
+
+        const wrapper = topContainer.querySelector('.ad-inner-wrapper') || topContainer;
+        if (el.parentNode !== wrapper) {
+          wrapper.appendChild(el);
+        }
+      }
+    }
+  }
+
+  function initAdNeutralizer() {
+    const observer = new MutationObserver(mutations => {
+      for (const m of mutations) {
+        for (const node of m.addedNodes) {
+          if (node.nodeType === 1) {
+            neutralizeAdElement(node);
+            const nested = node.querySelectorAll ? node.querySelectorAll('div, iframe') : [];
+            nested.forEach(neutralizeAdElement);
+          }
+        }
+      }
+    });
+
+    if (document.body) {
+      observer.observe(document.body, { childList: true, subtree: true });
+      document.body.querySelectorAll('body > div, body > iframe').forEach(neutralizeAdElement);
+    } else {
+      document.addEventListener('DOMContentLoaded', () => {
+        observer.observe(document.body, { childList: true, subtree: true });
+        document.body.querySelectorAll('body > div, body > iframe').forEach(neutralizeAdElement);
+      });
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAdNeutralizer);
+  } else {
+    initAdNeutralizer();
+  }
+
   window.__MILLIONAIRE_AD_CTRL__ = {
     shouldBlockAd,
     registerAdImpression,
     getConfig: () => config
   };
 })();
+

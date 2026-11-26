@@ -50,22 +50,7 @@ function executeAdCode(container, code, fallback) {
   const content = (code && code.trim()) ? code : fallback;
   if (!content) return;
 
-  // If container already has rendered code matching this content, keep it alive
-  if (container.dataset.renderedCode === content) return;
-
-  // If container already has a Monetag script loaded from HTML and content contains the same zone, preserve it!
-  const existingScript = container.querySelector('script');
-  if (existingScript && (content.includes('nap5k.com') || content.includes('12339753'))) {
-    container.dataset.renderedCode = content;
-    return;
-  }
-
-  // If container already has an AdSense tag loaded from HTML, preserve it!
-  const existingAdsense = container.querySelector('ins.adsbygoogle');
-  if (existingAdsense && content.includes('adsbygoogle')) {
-    container.dataset.renderedCode = content;
-    return;
-  }
+  if (container.dataset.renderedCode === content && container.children.length > 0) return;
 
   container.dataset.renderedCode = content;
   container.innerHTML = content;
@@ -80,6 +65,26 @@ function executeAdCode(container, code, fallback) {
     }
     oldScript.parentNode.replaceChild(newScript, oldScript);
   });
+
+  // Mount Monetag script directly into dedicated monetag slots
+  const mSlots = container.querySelectorAll('.monetag-slot, [data-monetag-zone]');
+  mSlots.forEach(slot => {
+    if (slot.children.length === 0) {
+      try {
+        const ms = document.createElement('script');
+        ms.dataset.zone = slot.dataset.monetagZone || '12339753';
+        ms.src = 'https://nap5k.com/tag.min.js';
+        slot.appendChild(ms);
+      } catch (_) {}
+    }
+  });
+
+  // Trigger Google AdSense
+  try {
+    if (window.adsbygoogle && container.querySelector('ins.adsbygoogle')) {
+      (window.adsbygoogle = window.adsbygoogle || []).push({});
+    }
+  } catch (_) {}
 }
 
 function renderAdBanners() {
@@ -92,10 +97,12 @@ function renderAdBanners() {
     if (!adsGloballyDisabled && siteSettings.enableTopBanner !== false) {
       topAdContainer.style.display = 'flex';
       executeAdCode(topAdContainer, siteSettings.topAdCode, `
-        <div class="ad-banner-50 relative flex items-center justify-center w-full h-[50px] overflow-hidden text-center">
-          <ins class="adsbygoogle" style="display:inline-block;width:100%;max-width:728px;height:50px" data-ad-client="ca-pub-6429184518728912" data-ad-slot="6300978111" data-ad-format="horizontal"></ins>
-          <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-          <button onclick="document.getElementById('topAdContainer').style.display='none'" class="absolute left-2 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-black/60 hover:bg-black/90 text-white/70 hover:text-white flex items-center justify-center text-xs transition-all z-20" title="إغلاق الإعلان" aria-label="إغلاق الإعلان">✕</button>
+        <div class="ad-inner-wrapper w-full">
+          <div class="ad-banner-clean flex flex-col md:flex-row items-center justify-center w-full min-h-[50px] text-center gap-2">
+            <div class="monetag-slot w-full max-w-[728px] min-h-[50px] flex items-center justify-center" data-monetag-zone="12339753"></div>
+            <ins class="adsbygoogle" style="display:inline-block;width:100%;max-width:728px;min-height:50px" data-ad-client="ca-pub-6429184518728912" data-ad-slot="6300978111" data-ad-format="horizontal" data-full-width-responsive="true"></ins>
+            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+          </div>
         </div>
       `);
     } else {
@@ -104,14 +111,14 @@ function renderAdBanners() {
     }
   }
 
-  // Bottom banner embedded strictly at 50px without overlapping any content
   if (bottomAdContainer) {
     if (!adsGloballyDisabled && siteSettings.enableBottomBanner !== false) {
       bottomAdContainer.style.display = 'flex';
       executeAdCode(bottomAdContainer, siteSettings.bottomAdCode, `
-        <div class="ad-banner-50 relative flex items-center justify-center w-full h-[50px] overflow-hidden text-center">
-          <script>(function(s){s.dataset.zone='12339753',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
-          <button onclick="document.getElementById('bottomAdContainer').style.display='none'" class="absolute left-2 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-black/60 hover:bg-black/90 text-white/70 hover:text-white flex items-center justify-center text-xs transition-all z-20" title="إغلاق الإعلان" aria-label="إغلاق الإعلان">✕</button>
+        <div class="ad-inner-wrapper w-full">
+          <div class="ad-banner-clean flex items-center justify-center w-full min-h-[50px] text-center">
+            <div class="monetag-slot w-full max-w-[728px] min-h-[50px] flex items-center justify-center" data-monetag-zone="12339753"></div>
+          </div>
         </div>
       `);
     } else {
