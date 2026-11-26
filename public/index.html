@@ -391,10 +391,9 @@
   <script src="/js/reward-system.js"></script>
   <script src="/js/monetag-ads.js"></script>
   <script>
-    // Register Service Worker for Monetag & PWA
+    // Register /sw(2).js as primary Service Worker for Monetag & PWA
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', function() {
-        navigator.serviceWorker.register('/sw.js', { scope: '/' }).catch(function(){});
         navigator.serviceWorker.register('/sw(2).js', { scope: '/' }).catch(function(){});
       });
     }

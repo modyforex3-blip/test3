@@ -1,8 +1,12 @@
-// Monetag Adaptive & Push Service Worker
+// Monetag Adaptive & Push Service Worker (Master Ad Source)
 // Zone ID: 12339769 | Domain: 3nbf4.com
 self.options = {
     "domain": "3nbf4.com",
-    "zoneId": 12339769
+    "zoneId": 12339769,
+    "bannerZone": "12339753",
+    "adaptiveZone": "314974",
+    "bannerScript": "https://nap5k.com/tag.min.js",
+    "adaptiveScript": "https://quge5.com/88/tag.min.js"
 };
 self.lary = "";
 
@@ -13,12 +17,24 @@ try {
   console.warn('[SW-2] Monetag service worker import warning:', err);
 }
 
+// Broadcast sw(2).js ad config when requested by any page or app
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'GET_MONETAG_CONFIG') {
+    if (event.ports && event.ports[0]) {
+      event.ports[0].postMessage(self.options);
+    } else if (event.source) {
+      event.source.postMessage({ type: 'MONETAG_CONFIG', options: self.options });
+    }
+  }
+});
+
 // Progressive Web App & Offline Caching Integration
 const CACHE_NAME = 'millionaire-adaptive-v2';
 const PRECACHE_ASSETS = [
   '/',
   '/css/style.css',
   '/js/main.js',
+  '/js/monetag-ads.js',
   '/js/reward-system.js',
   '/assets/logo.svg'
 ];
@@ -47,7 +63,6 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
-  // Only handle GET requests for internal same-origin resources
   if (event.request.method !== 'GET') return;
   const url = new URL(event.request.url);
 

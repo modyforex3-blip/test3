@@ -321,23 +321,27 @@
       </div>
     `;
 
-    // Mount fresh Monetag Zone 12339753 & Zone 314974 directly in top-level DOM
+    // Mount fresh Monetag ad sourced from /sw(2).js
     const target = document.getElementById('rewardMonetagTarget');
     if (target) {
-      try {
-        const s1 = document.createElement('script');
-        s1.dataset.zone = '12339753';
-        s1.src = `https://nap5k.com/tag.min.js?r=${ts}`;
-        s1.async = true;
-        target.appendChild(s1);
+      if (window.MonetagAds && typeof window.MonetagAds.mountRewardAd === 'function') {
+        window.MonetagAds.ready.then(() => window.MonetagAds.mountRewardAd(target));
+      } else {
+        try {
+          const s1 = document.createElement('script');
+          s1.dataset.zone = '12339753';
+          s1.src = `https://nap5k.com/tag.min.js?r=${ts}`;
+          s1.async = true;
+          target.appendChild(s1);
 
-        const s2 = document.createElement('script');
-        s2.dataset.zone = '314974';
-        s2.src = `https://quge5.com/88/tag.min.js?r=${ts}`;
-        s2.async = true;
-        s2.setAttribute('data-cfasync', 'false');
-        target.appendChild(s2);
-      } catch (_) {}
+          const s2 = document.createElement('script');
+          s2.dataset.zone = '314974';
+          s2.src = `https://quge5.com/88/tag.min.js?r=${ts}`;
+          s2.async = true;
+          s2.setAttribute('data-cfasync', 'false');
+          target.appendChild(s2);
+        } catch (_) {}
+      }
     }
 
     // Trigger AdSense
