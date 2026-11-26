@@ -780,6 +780,10 @@ app.get('/article/:id', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'article.html'));
 });
 
+app.get('/articles', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'articles.html'));
+});
+
 app.get('/contact', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'contact.html'));
 });

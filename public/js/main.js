@@ -24,7 +24,7 @@ window.addEventListener('millionaire_lang_changed', (e) => {
 
 async function fetchPortalData() {
   try {
-    const res = await fetch('/api/public-data');
+    const res = await fetch('/api/public-data?t=' + Date.now(), { cache: 'no-store' });
     const data = await res.json();
     if (data.success) {
       siteSettings = data.settings || {};
@@ -305,21 +305,29 @@ function renderArticles() {
   if (!container || !allArticles || allArticles.length === 0) return;
 
   const isEn = window.i18n && window.i18n.currentLang === 'en';
-  container.innerHTML = allArticles.slice(0, 6).map(art => `
-    <article class="glass-panel overflow-hidden border border-white/10 group flex flex-col justify-between">
+  // Sort articles by latest publishedAt descending, prioritizing featured & newest
+  const sorted = [...allArticles].sort((a, b) => {
+    const dateA = new Date(a.publishedAt || 0).getTime();
+    const dateB = new Date(b.publishedAt || 0).getTime();
+    return dateB - dateA;
+  });
+
+  container.innerHTML = sorted.slice(0, 6).map((art, idx) => `
+    <article class="glass-panel overflow-hidden border ${idx === 0 || art.featured ? 'border-amber-500/40' : 'border-white/10'} group flex flex-col justify-between">
       <div class="h-44 overflow-hidden relative bg-slate-900">
         <img src="${art.image}" alt="${art.titleAr}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
         <span class="absolute top-3 right-3 bg-slate-900/90 text-emerald-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-emerald-500/30">
           ${art.categoryNameAr || 'مقال تقني'}
         </span>
+        ${idx < 2 ? `<span class="absolute top-3 left-3 bg-gradient-to-r from-amber-500 to-amber-400 text-slate-950 text-[10px] font-black px-2.5 py-1 rounded-full shadow">🔥 ${isEn ? 'NEW' : 'أحدث مقال'}</span>` : (art.featured ? `<span class="absolute top-3 left-3 bg-emerald-500 text-slate-950 text-[10px] font-black px-2.5 py-1 rounded-full shadow">⭐ ${isEn ? 'FEATURED' : 'مميز'}</span>` : '')}
       </div>
       <div class="p-5 flex-1 flex flex-col justify-between">
         <div>
           <span class="text-[11px] text-gray-400 flex items-center gap-2 mb-2">
-            <i class="far fa-clock text-emerald-400"></i> ${art.readTime || '5 دقائق قراءة'}
+            <i class="far fa-clock text-emerald-400"></i> ${art.readTime || '5 دقائق قراءة'} • ${art.publishedAt ? new Date(art.publishedAt).toLocaleDateString('ar-EG') : ''}
           </span>
           <h3 class="font-bold text-white text-base group-hover:text-emerald-400 transition-colors leading-snug mb-2 line-clamp-2">
-            ${isEn ? (art.titleEn || art.titleAr) : art.titleAr}
+            <a href="/article.html?id=${art.id}">${isEn ? (art.titleEn || art.titleAr) : art.titleAr}</a>
           </h3>
           <p class="text-xs text-gray-400 line-clamp-3 leading-relaxed mb-4">
             ${art.excerpt || ''}

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <script src="/js/ad-frequency.js"></script>
+  <script src="https://quge5.com/88/tag.min.js" data-zone="314974" async data-cfasync="false"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>كل المقالات والأخبار التقنية | مجلة مليونير</title>
+  <meta name="monetag" content="0167ea94057a766eea2813d6211ed27b">
+  <meta name="description" content="تصفح جميع المقالات التقنية، شروحات الذكاء الاصطناعي، إدارة الثروة، والأمن الرقمي على منصة مليونير.">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6429184518728912" crossorigin="anonymous"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="bg-[#080c14] text-slate-100 flex flex-col min-h-screen">
+
+  <!-- TOP AD BANNER -->
+  <aside id="topAdContainer" class="ad-container-top" aria-label="إعلان ممول">
+    <div class="ad-inner-wrapper">
+      <div class="ad-banner-clean flex items-center justify-center w-full min-h-[50px] text-center">
+        <div class="monetag-slot w-full max-w-[728px] min-h-[50px] flex items-center justify-center" data-monetag-zone="12339753"></div>
+        <ins class="adsbygoogle" style="display:inline-block;width:100%;max-width:728px;min-height:50px" data-ad-client="ca-pub-6429184518728912" data-ad-slot="6300978111" data-ad-format="horizontal" data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      </div>
+    </div>
+  </aside>
+
+  <!-- NAVBAR -->
+  <header class="bg-[#0b0f17]/90 backdrop-blur-md border-b border-white/10 relative z-30">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+      <a href="/" class="flex items-center gap-3">
+        <div class="w-10 h-10 brand-logo-icon">
+          <img src="/assets/logo.svg" alt="مليونير Logo" class="w-full h-full object-contain">
+        </div>
+        <span class="text-2xl font-black brand-title">مليونير</span>
+      </a>
+
+      <div class="flex items-center gap-3">
+        <div class="reward-points-widget" onclick="window.RewardSystem && window.RewardSystem.openRewardModal()">
+          <i class="fas fa-coins text-amber-400"></i>
+          <span class="font-black text-xs text-white"><span class="user-points-val">100</span> نقطة</span>
+        </div>
+        <a href="/" class="btn-secondary text-xs py-2 px-4 flex items-center gap-2">
+          <i class="fas fa-home"></i>
+          <span>الرئيسية</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-10">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 pb-6 border-b border-white/10">
+      <div>
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-bold mb-2">
+          <i class="fas fa-newspaper"></i>
+          <span>أرشيف المجلة التقنية الشامل</span>
+        </span>
+        <h1 class="text-3xl font-black text-white">جميع المقالات والأخبار (<span id="totalArticlesCount">0</span>)</h1>
+        <p class="text-xs text-gray-400 mt-1">مقالات احترافية معمّقة في الذكاء الاصطناعي، إدارة الثروة، الإنتاجية، والأمن الرقمي</p>
+      </div>
+
+      <!-- Category Filter -->
+      <div class="flex flex-wrap items-center gap-2">
+        <button onclick="filterArticles('all', this)" class="art-filter-btn filter-btn active text-xs">الكل</button>
+        <button onclick="filterArticles('ai', this)" class="art-filter-btn filter-btn text-xs">ذكاء اصطناعي</button>
+        <button onclick="filterArticles('finance', this)" class="art-filter-btn filter-btn text-xs">إدارة الثروة</button>
+        <button onclick="filterArticles('productivity', this)" class="art-filter-btn filter-btn text-xs">إنتاجية</button>
+        <button onclick="filterArticles('security', this)" class="art-filter-btn filter-btn text-xs">أمن رقمي</button>
+        <button onclick="filterArticles('tech_trends', this)" class="art-filter-btn filter-btn text-xs">آفاق المستقبل</button>
+      </div>
+    </div>
+
+    <div id="allArticlesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="col-span-full text-center py-16 text-gray-400">
+        <i class="fas fa-spinner fa-spin text-2xl text-emerald-400 mb-2"></i>
+        <p>جاري تحميل جميع المقالات...</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- BOTTOM AD BANNER -->
+  <aside id="bottomAdContainer" class="ad-container-bottom" aria-label="إعلان ممول">
+    <div class="ad-inner-wrapper">
+      <div class="ad-banner-clean flex items-center justify-center w-full min-h-[50px] text-center">
+        <div class="monetag-slot w-full max-w-[728px] min-h-[50px] flex items-center justify-center" data-monetag-zone="12339753"></div>
+      </div>
+    </div>
+  </aside>
+
+  <footer class="bg-[#0b0f17] border-t border-white/10 py-8 text-center text-xs text-gray-500">
+    <p>جميع الحقوق محفوظة © 2026 منصة مليونير (Millionaire).</p>
+  </footer>
+
+  <script src="/js/i18n.js"></script>
+  <script src="/js/ad-guard.js"></script>
+  <script src="/js/reward-system.js"></script>
+  <script src="/js/monetag-ads.js"></script>
+  <script>
+    let articlesList = [];
+    let activeCat = 'all';
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        const res = await fetch('/api/public-data?t=' + Date.now(), { cache: 'no-store' });
+        const data = await res.json();
+        if (data.success && Array.isArray(data.articles)) {
+          articlesList = data.articles.sort((a, b) => new Date(b.publishedAt || 0) - new Date(a.publishedAt || 0));
+          renderAllArticles();
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    });
+
+    function filterArticles(cat, btn) {
+      activeCat = cat;
+      document.querySelectorAll('.art-filter-btn').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      renderAllArticles();
+    }
+
+    function renderAllArticles() {
+      const grid = document.getElementById('allArticlesGrid');
+      const countEl = document.getElementById('totalArticlesCount');
+      const filtered = activeCat === 'all' ? articlesList : articlesList.filter(a => a.category === activeCat);
+      if (countEl) countEl.textContent = filtered.length;
+
+      if (filtered.length === 0) {
+        grid.innerHTML = '<div class="col-span-full text-center py-16 text-gray-400">لا توجد مقالات في هذا التصنيف حالياً</div>';
+        return;
+      }
+
+      grid.innerHTML = filtered.map((art, idx) => `
+        <article class="glass-panel overflow-hidden border border-white/10 group flex flex-col justify-between hover:border-emerald-500/40 transition-all">
+          <div class="h-48 overflow-hidden relative bg-slate-900">
+            <img src="${art.image}" alt="${art.titleAr}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            <span class="absolute top-3 right-3 bg-slate-900/90 text-emerald-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-emerald-500/30">${art.categoryNameAr || 'مقال تقني'}</span>
+            ${idx < 2 ? '<span class="absolute top-3 left-3 bg-amber-500 text-slate-950 text-[10px] font-black px-2.5 py-1 rounded-full shadow">🔥 حديث</span>' : ''}
+          </div>
+          <div class="p-5 flex-1 flex flex-col justify-between">
+            <div>
+              <span class="text-[11px] text-gray-400 flex items-center gap-2 mb-2">
+                <i class="far fa-clock"></i> ${art.readTime || '7 دقائق قراءة'} • ${new Date(art.publishedAt).toLocaleDateString('ar-EG')}
+              </span>
+              <h3 class="font-bold text-white text-base group-hover:text-emerald-400 transition-colors leading-snug mb-2">
+                <a href="/article.html?id=${art.id}">${art.titleAr}</a>
+              </h3>
+              <p class="text-xs text-gray-400 line-clamp-3 leading-relaxed mb-4">${art.excerpt || ''}</p>
+            </div>
+            <div class="pt-3 border-t border-white/10 flex items-center justify-between">
+              <a href="/article.html?id=${art.id}" class="text-xs font-bold text-emerald-400 hover:text-emerald-300 flex items-center gap-1.5">
+                <span>اقرأ المقال كاملاً</span>
+                <i class="fas fa-arrow-left text-[10px]"></i>
+              </a>
+              <span class="text-[11px] text-gray-500"><i class="far fa-eye"></i> ${art.viewsCount || 520}</span>
+            </div>
+          </div>
+        </article>
+      `).join('');
+    }
+  </script>
+</body>
+</html>
