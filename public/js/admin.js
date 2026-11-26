@@ -344,6 +344,14 @@ function populateAIBloggerForm() {
   if (lastRunEl && b.lastRun) {
     lastRunEl.textContent = new Date(b.lastRun).toLocaleString('ar-EG');
   }
+
+  const catCheckboxes = document.querySelectorAll('input[name="aiAllowedCat"]');
+  if (catCheckboxes.length > 0) {
+    const allowed = Array.isArray(b.allowedCategories) && b.allowedCategories.length > 0 ? b.allowedCategories : null;
+    catCheckboxes.forEach(cb => {
+      cb.checked = allowed ? allowed.includes(cb.value) : true;
+    });
+  }
 }
 
 function setupAdminListeners() {
@@ -514,7 +522,7 @@ function setupAdminListeners() {
     });
   }
 
-  // Upload App Package (.ZIP) Form
+  // Upload App Package (ZIP / Uncompressed Folder / Single HTML) Form
   const uploadPackageForm = document.getElementById('uploadPackageForm');
   if (uploadPackageForm) {
     uploadPackageForm.addEventListener('submit', async (e) => {
@@ -522,13 +530,42 @@ function setupAdminListeners() {
       const progress = document.getElementById('pkgUploadProgress');
       const submitBtn = document.getElementById('pkgSubmitBtn');
 
+      const mode = window.__CURRENT_UPLOAD_MODE__ || 'zip';
+      const zipInput = document.getElementById('pkgZipFile');
+      const folderInput = document.getElementById('pkgFolderInput');
+      const htmlInput = document.getElementById('pkgSingleHtmlFile');
+
+      if (mode === 'zip' && (!zipInput || !zipInput.files || zipInput.files.length === 0)) {
+        return alert('يرجى اختيار ملف الحزمة المضغوطة (.zip)');
+      }
+      if (mode === 'folder' && (!folderInput || !folderInput.files || folderInput.files.length === 0)) {
+        return alert('يرجى اختيار مجلد التطبيق غير المضغوط');
+      }
+      if (mode === 'html' && (!htmlInput || !htmlInput.files || htmlInput.files.length === 0)) {
+        return alert('يرجى اختيار ملف HTML مفرد');
+      }
+
       if (progress) progress.classList.remove('hidden');
       if (submitBtn) {
         submitBtn.disabled = true;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جارٍ الرفع والفك...';
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جارٍ الرفع والنشر...';
       }
 
       const formData = new FormData(uploadPackageForm);
+      const protectEl = document.getElementById('pkgProtectSource');
+      formData.set('protectSource', protectEl && protectEl.checked ? 'true' : 'false');
+
+      // Clear non-active file inputs and append folder files with relative paths if folder mode
+      if (mode !== 'zip') formData.delete('packageZip');
+      if (mode !== 'html') formData.delete('singleHtmlFile');
+      if (mode === 'folder' && folderInput && folderInput.files.length > 0) {
+        const relPaths = [];
+        Array.from(folderInput.files).forEach(file => {
+          formData.append('folderFiles', file);
+          relPaths.push(file.webkitRelativePath || file.name);
+        });
+        formData.set('folderPaths', JSON.stringify(relPaths));
+      }
 
       try {
         const res = await fetch('/api/admin/apps/upload-package', {
@@ -539,12 +576,12 @@ function setupAdminListeners() {
         if (data.success) {
           closeUploadPackageModal();
           await loadDashboardData();
-          alert(data.message || 'تم رفع واستخراج حزمة التطبيق ونشرها بنجاح!');
+          alert(data.message || 'تم رفع ونشر التطبيق وتأمينه بنجاح!');
         } else {
           alert(data.message || 'فشل في رفع ومعالجة التطبيق');
         }
       } catch (err) {
-        alert('حدث خطأ في الاتصال بالخادم أثناء رفع الحزمة');
+        alert('حدث خطأ في الاتصال بالخادم أثناء رفع التطبيق');
       } finally {
         if (progress) progress.classList.add('hidden');
         if (submitBtn) {
@@ -563,12 +600,14 @@ function setupAdminListeners() {
       const freqEl = document.getElementById('aiFrequency') || document.getElementById('aiBloggerFrequency');
       const styleEl = document.getElementById('aiStyle') || document.getElementById('aiBloggerStyle');
       const autoEl = document.getElementById('aiAutoPublish') || document.getElementById('aiBloggerEnabled');
+      const allowedCategories = Array.from(document.querySelectorAll('input[name="aiAllowedCat"]:checked')).map(cb => cb.value);
 
       const payload = {
         enabled: autoEl ? autoEl.checked : true,
         autoPublish: autoEl ? autoEl.checked : true,
         style: styleEl ? styleEl.value : 'unique_engaging',
-        frequency: freqEl ? freqEl.value : 'daily'
+        frequency: freqEl ? freqEl.value : 'daily',
+        allowedCategories
       };
       try {
         const res = await fetch('/api/admin/ai-blogger/settings', {
@@ -578,7 +617,7 @@ function setupAdminListeners() {
         });
         const data = await res.json();
         if (data.success) {
-          alert('تم حفظ إعدادات روبوت الذكاء الاصطناعي بنجاح!');
+          alert('تم حفظ إعدادات ومجالات روبوت الذكاء الاصطناعي بنجاح!');
           await loadDashboardData();
         } else {
           alert(data.message || 'فشل الحفظ');
@@ -590,18 +629,44 @@ function setupAdminListeners() {
   }
 }
 
+function setUploadMode(mode) {
+  window.__CURRENT_UPLOAD_MODE__ = mode;
+  const boxes = { zip: 'pkgBoxZip', folder: 'pkgBoxFolder', html: 'pkgBoxHtml' };
+  const btns = { zip: 'modeBtnZip', folder: 'modeBtnFolder', html: 'modeBtnHtml' };
+
+  Object.keys(boxes).forEach(k => {
+    const box = document.getElementById(boxes[k]);
+    if (box) box.classList.toggle('hidden', k !== mode);
+    const btn = document.getElementById(btns[k]);
+    if (btn) {
+      if (k === mode) {
+        btn.className = 'pkg-mode-btn py-2.5 px-3 rounded-xl border border-indigo-500 bg-indigo-500/20 text-indigo-300 text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer';
+      } else {
+        btn.className = 'pkg-mode-btn py-2.5 px-3 rounded-xl border border-white/10 bg-slate-900 text-gray-300 text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer';
+      }
+    }
+  });
+}
+
 async function triggerAIBlogGeneration() {
   const btn = document.getElementById('btnGenerateNow') || document.getElementById('btnTriggerAIBlog');
+  const catEl = document.getElementById('aiImmediateCategory');
+  const category = catEl ? catEl.value : 'all';
+
   const originalContent = btn ? btn.innerHTML : '';
   if (btn) {
     btn.disabled = true;
     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>جارٍ صياغة المقال بالذكاء الاصطناعي...</span>';
   }
   try {
-    const res = await fetch('/api/admin/ai-blogger/generate', { method: 'POST' });
+    const res = await fetch('/api/admin/ai-blogger/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ category })
+    });
     const data = await res.json();
     if (data.success) {
-      alert('تم بنجاح صياغة ونشر مقال جديد بواسطة الروبوت الذكي!');
+      alert('تم بنجاح صياغة ونشر مقال احترافي جديد في المجال المحدد!');
       await loadDashboardData();
     } else {
       alert(data.message || 'فشل التوليد');

@@ -237,8 +237,11 @@ function generateNewArticle(customCategory = null) {
   if (!db.articles) db.articles = [];
 
   let available = articleTemplates;
-  if (customCategory) {
+  if (customCategory && customCategory !== 'all') {
     const matched = articleTemplates.filter(t => t.category === customCategory);
+    if (matched.length > 0) available = matched;
+  } else if (db.aiBlogger && Array.isArray(db.aiBlogger.allowedCategories) && db.aiBlogger.allowedCategories.length > 0) {
+    const matched = articleTemplates.filter(t => db.aiBlogger.allowedCategories.includes(t.category));
     if (matched.length > 0) available = matched;
   }
 

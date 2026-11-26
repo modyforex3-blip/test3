@@ -429,18 +429,22 @@ app.post('/api/admin/apps', requireAdmin, upload.single('iconFile'), (req, res) 
   }
 });
 
-// Admin upload entire App Package (.ZIP) directly to platform
+// Admin upload entire App Package (.ZIP, Uncompressed Folder, or Single HTML) directly to platform
 app.post('/api/admin/apps/upload-package', requireAdmin, uploadPackage.fields([
   { name: 'packageZip', maxCount: 1 },
+  { name: 'folderFiles', maxCount: 500 },
+  { name: 'singleHtmlFile', maxCount: 1 },
   { name: 'iconFile', maxCount: 1 }
 ]), (req, res) => {
   try {
     const files = req.files || {};
     const packageFile = files.packageZip ? files.packageZip[0] : null;
+    const folderFiles = files.folderFiles || [];
+    const singleHtmlFile = files.singleHtmlFile ? files.singleHtmlFile[0] : null;
     const iconFile = files.iconFile ? files.iconFile[0] : null;
 
-    if (!packageFile) {
-      return res.status(400).json({ success: false, message: 'يرجى اختيار ملف الحزمة البرمجية (.zip)' });
+    if (!packageFile && folderFiles.length === 0 && !singleHtmlFile) {
+      return res.status(400).json({ success: false, message: 'يرجى اختيار ملف مضغوط (.zip) أو مجلد غير مضغوط أو ملف HTML مفرد' });
     }
 
     // Determine slug
@@ -451,14 +455,46 @@ app.post('/api/admin/apps/upload-package', requireAdmin, uploadPackage.fields([
     if (!fs.existsSync(appsBaseDir)) fs.mkdirSync(appsBaseDir, { recursive: true });
 
     const targetDir = path.join(appsBaseDir, slug);
+    if (!fs.existsSync(targetDir)) fs.mkdirSync(targetDir, { recursive: true });
 
-    // Extract zip
-    const extracted = extractZipToDirectory(packageFile.path, targetDir);
-    // Remove temp zip file
-    try { fs.unlinkSync(packageFile.path); } catch (_) {}
+    if (packageFile) {
+      // 1. Extract ZIP package
+      const extracted = extractZipToDirectory(packageFile.path, targetDir);
+      try { fs.unlinkSync(packageFile.path); } catch (_) {}
+      if (!extracted) {
+        return res.status(500).json({ success: false, message: 'فشل في فك ضغط ملف الحزمة البرمجية (.zip)' });
+      }
+    } else if (folderFiles.length > 0) {
+      // 2. Uncompressed Folder upload preserving relative structure
+      let relPaths = [];
+      try {
+        relPaths = req.body.folderPaths ? JSON.parse(req.body.folderPaths) : [];
+      } catch (_) {}
 
-    if (!extracted) {
-      return res.status(500).json({ success: false, message: 'فشل في فك ضغط ملف الحزمة البرمجية (.zip)' });
+      folderFiles.forEach((file, idx) => {
+        const rawRel = (relPaths[idx] || file.originalname || '').replace(/\\/g, '/');
+        const safeParts = rawRel.split('/').filter(part => part && part !== '.' && part !== '..');
+        // Strip top-level selected folder name if present so index.html sits cleanly at root
+        const relSubPath = safeParts.length > 1 ? safeParts.slice(1).join('/') : (safeParts[0] || file.originalname);
+        const destPath = path.join(targetDir, relSubPath);
+        const destDir = path.dirname(destPath);
+        if (!fs.existsSync(destDir)) fs.mkdirSync(destDir, { recursive: true });
+        try {
+          fs.renameSync(file.path, destPath);
+        } catch (_) {
+          fs.copyFileSync(file.path, destPath);
+          try { fs.unlinkSync(file.path); } catch (__) {}
+        }
+      });
+    } else if (singleHtmlFile) {
+      // 3. Single HTML file upload -> index.html
+      const destHtml = path.join(targetDir, 'index.html');
+      try {
+        fs.renameSync(singleHtmlFile.path, destHtml);
+      } catch (_) {
+        fs.copyFileSync(singleHtmlFile.path, destHtml);
+        try { fs.unlinkSync(singleHtmlFile.path); } catch (__) {}
+      }
     }
 
     // Normalize directory if all files were nested inside a single folder
@@ -481,6 +517,28 @@ app.post('/api/admin/apps/upload-package', requireAdmin, uploadPackage.fields([
       }
     } catch (normErr) {
       console.warn('Folder normalization warning:', normErr.message);
+    }
+
+    // Inject Anti-Copy & Anti-Theft Protection Shield into index.html if enabled
+    const protectSource = req.body.protectSource !== 'false';
+    const indexHtmlPath = path.join(targetDir, 'index.html');
+    if (protectSource && fs.existsSync(indexHtmlPath)) {
+      try {
+        let htmlContent = fs.readFileSync(indexHtmlPath, 'utf8');
+        if (!htmlContent.includes('/js/app-protect.js')) {
+          const shieldTag = '\n  <!-- Millionaire Anti-Copy & Anti-Theft Shield -->\n  <script src="/js/app-protect.js"></script>\n';
+          if (htmlContent.includes('</head>')) {
+            htmlContent = htmlContent.replace('</head>', `${shieldTag}</head>`);
+          } else if (htmlContent.includes('</body>')) {
+            htmlContent = htmlContent.replace('</body>', `${shieldTag}</body>`);
+          } else {
+            htmlContent = shieldTag + htmlContent;
+          }
+          fs.writeFileSync(indexHtmlPath, htmlContent, 'utf8');
+        }
+      } catch (shieldErr) {
+        console.warn('Anti-copy shield injection warning:', shieldErr.message);
+      }
     }
 
     // Determine icon

@@ -178,11 +178,21 @@
               <p class="text-xs text-gray-400 mt-1">يقوم الروبوت بتوليد ونشر مقالات تقنية حصرية يومياً بأسلوب مشوق ومتفرد غير مكرر</p>
             </div>
             
-            <!-- Generate Now Button -->
-            <button onclick="triggerAIBlogGeneration()" id="btnGenerateNow" class="btn-gold text-xs py-3 px-5 font-bold flex items-center gap-2 shadow-xl whitespace-nowrap">
-              <i class="fas fa-bolt text-sm"></i>
-              <span>توليد ونشر مقال جديد فوراً</span>
-            </button>
+            <!-- Generate Now Controls -->
+            <div class="flex flex-wrap items-center gap-2">
+              <select id="aiImmediateCategory" class="py-2.5 px-3 rounded-xl bg-slate-900 border border-white/10 text-xs text-white font-semibold">
+                <option value="all">تنوع تلقائي حسب المجالات المحددة</option>
+                <option value="ai">ذكاء اصطناعي ثوري</option>
+                <option value="finance">إدارة الثروة والتقنية المالية</option>
+                <option value="productivity">إنتاجية متفردة</option>
+                <option value="security">أمن رقمي استراتيجي</option>
+                <option value="tech_trends">آفاق المستقبل</option>
+              </select>
+              <button type="button" onclick="triggerAIBlogGeneration()" id="btnGenerateNow" class="btn-gold text-xs py-3 px-5 font-bold flex items-center gap-2 shadow-xl whitespace-nowrap">
+                <i class="fas fa-bolt text-sm"></i>
+                <span>توليد ونشر مقال جديد فوراً</span>
+              </button>
+            </div>
           </div>
 
           <!-- Bot Controls Grid -->
@@ -198,7 +208,7 @@
                 </span>
               </div>
               <p class="text-xs text-gray-400 leading-relaxed">
-                يعمل محرك الروبوت باستمرار على السيرفر ويتحقق من جدول النشر التلقائي كل يوم دون تدخل يدوي.
+                يعمل محرك الروبوت باستمرار على السيرفر ويتحقق من جدول النشر التلقائي وفق الفترة والمجالات التي تختارها.
               </p>
               <div class="text-[11px] text-gray-500 pt-2 border-t border-white/5">
                 <span>آخر مقال نُشر: </span>
@@ -210,7 +220,7 @@
             <div class="md:col-span-2 glass-panel p-5 border border-white/10">
               <h3 class="font-bold text-sm text-white mb-3 flex items-center gap-2">
                 <i class="fas fa-sliders-h text-teal-400"></i>
-                <span>إعدادات النشر وأسلوب الكتابة</span>
+                <span>إعدادات النشر، المجالات، وأسلوب الكتابة</span>
               </h3>
               <form id="aiBloggerSettingsForm" class="space-y-4">
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -233,6 +243,33 @@
                       <option value="analytical">تحليلي استشرافي عميق للأعمال</option>
                       <option value="actionable">إرشادات وأسرار برمجية مباشرة</option>
                     </select>
+                  </div>
+                </div>
+
+                <!-- Allowed Topic Categories for Auto & Manual Publishing -->
+                <div class="pt-2 border-t border-white/5">
+                  <label class="block text-xs font-bold text-teal-400 mb-2">مجالات المواضيع المفعّلة للنشر التلقائي والفوري:</label>
+                  <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                    <label class="flex items-center gap-2 p-2 rounded-lg bg-slate-900/70 border border-white/5 cursor-pointer text-xs text-gray-200">
+                      <input type="checkbox" name="aiAllowedCat" value="ai" checked class="w-3.5 h-3.5 rounded text-teal-500">
+                      <span>ذكاء اصطناعي ثوري</span>
+                    </label>
+                    <label class="flex items-center gap-2 p-2 rounded-lg bg-slate-900/70 border border-white/5 cursor-pointer text-xs text-gray-200">
+                      <input type="checkbox" name="aiAllowedCat" value="finance" checked class="w-3.5 h-3.5 rounded text-teal-500">
+                      <span>إدارة الثروة والمال</span>
+                    </label>
+                    <label class="flex items-center gap-2 p-2 rounded-lg bg-slate-900/70 border border-white/5 cursor-pointer text-xs text-gray-200">
+                      <input type="checkbox" name="aiAllowedCat" value="productivity" checked class="w-3.5 h-3.5 rounded text-teal-500">
+                      <span>إنتاجية متفردة</span>
+                    </label>
+                    <label class="flex items-center gap-2 p-2 rounded-lg bg-slate-900/70 border border-white/5 cursor-pointer text-xs text-gray-200">
+                      <input type="checkbox" name="aiAllowedCat" value="security" checked class="w-3.5 h-3.5 rounded text-teal-500">
+                      <span>أمن رقمي استراتيجي</span>
+                    </label>
+                    <label class="flex items-center gap-2 p-2 rounded-lg bg-slate-900/70 border border-white/5 cursor-pointer text-xs text-gray-200">
+                      <input type="checkbox" name="aiAllowedCat" value="tech_trends" checked class="w-3.5 h-3.5 rounded text-teal-500">
+                      <span>آفاق المستقبل</span>
+                    </label>
                   </div>
                 </div>
 
@@ -913,7 +950,7 @@
     </div>
   </div>
 
-  <!-- ================= UPLOAD APP PACKAGE (.ZIP) MODAL ================= -->
+  <!-- ================= UPLOAD APP PACKAGE (ZIP / FOLDER / HTML) MODAL ================= -->
   <div id="uploadPackageModal" class="modal-overlay">
     <div class="modal-content p-6 sm:p-8 max-w-2xl w-full">
       <div class="flex items-center justify-between pb-4 border-b border-white/10 mb-6">
@@ -922,20 +959,49 @@
             <i class="fas fa-file-archive"></i>
           </div>
           <div>
-            <h3 class="text-lg font-bold text-white">رفع مجلد وحزمة تطبيق جديد (.ZIP)</h3>
-            <p class="text-xs text-gray-400">فك ضغط ونشر التطبيق فورياً داخل مسار /public/apps/ وتفعيله بالمنصة</p>
+            <h3 class="text-lg font-bold text-white">رفع ونشر تطبيق جديد (ZIP / مجلد / HTML)</h3>
+            <p class="text-xs text-gray-400">ارفع حزمة مضغوطة، مجلداً غير مضغوط، أو ملف HTML مفرد مع حماية تلقائية ضد النسخ والسرقة</p>
           </div>
         </div>
-        <button onclick="closeUploadPackageModal()" class="text-gray-400 hover:text-white"><i class="fas fa-times text-lg"></i></button>
+        <button type="button" onclick="closeUploadPackageModal()" class="text-gray-400 hover:text-white"><i class="fas fa-times text-lg"></i></button>
       </div>
 
       <form id="uploadPackageForm" class="space-y-4">
-        <!-- ZIP File Input Box -->
-        <div class="p-4 rounded-2xl bg-indigo-950/30 border-2 border-dashed border-indigo-500/40 text-center">
+        <!-- Upload Type Switcher -->
+        <div class="grid grid-cols-3 gap-2">
+          <button type="button" onclick="setUploadMode('zip')" id="modeBtnZip" class="pkg-mode-btn py-2.5 px-3 rounded-xl border border-indigo-500 bg-indigo-500/20 text-indigo-300 text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer">
+            <i class="fas fa-file-archive"></i> <span>ملف مضغوط (.ZIP)</span>
+          </button>
+          <button type="button" onclick="setUploadMode('folder')" id="modeBtnFolder" class="pkg-mode-btn py-2.5 px-3 rounded-xl border border-white/10 bg-slate-900 text-gray-300 text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer">
+            <i class="fas fa-folder-open"></i> <span>مجلد غير مضغوط</span>
+          </button>
+          <button type="button" onclick="setUploadMode('html')" id="modeBtnHtml" class="pkg-mode-btn py-2.5 px-3 rounded-xl border border-white/10 bg-slate-900 text-gray-300 text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer">
+            <i class="fas fa-file-code"></i> <span>ملف HTML مفرد</span>
+          </button>
+        </div>
+
+        <!-- 1. ZIP File Input Box -->
+        <div id="pkgBoxZip" class="p-4 rounded-2xl bg-indigo-950/30 border-2 border-dashed border-indigo-500/40 text-center">
           <i class="fas fa-cloud-upload-alt text-3xl text-indigo-400 mb-2"></i>
           <label class="block text-xs font-bold text-white mb-1">اختر ملف الحزمة البرمجية المضغوطة (.ZIP) *</label>
           <p class="text-[11px] text-gray-400 mb-3">يجب أن تحتوي الحزمة على ملف index.html ومجلدات الـ JS/CSS والأصول</p>
-          <input type="file" name="packageZip" id="pkgZipFile" accept=".zip" required class="block w-full text-xs text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-500 cursor-pointer">
+          <input type="file" name="packageZip" id="pkgZipFile" accept=".zip" class="block w-full text-xs text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-500 cursor-pointer">
+        </div>
+
+        <!-- 2. Uncompressed Folder Input Box -->
+        <div id="pkgBoxFolder" class="hidden p-4 rounded-2xl bg-emerald-950/30 border-2 border-dashed border-emerald-500/40 text-center">
+          <i class="fas fa-folder-open text-3xl text-emerald-400 mb-2"></i>
+          <label class="block text-xs font-bold text-white mb-1">اختر مجلد التطبيق غير المضغوط مباشرة من جهازك *</label>
+          <p class="text-[11px] text-gray-400 mb-3">سيتم رفع جميع الملفات والمجلدات الفرعية داخل المجلد مع الحفاظ على بنية المسارات</p>
+          <input type="file" id="pkgFolderInput" webkitdirectory directory multiple class="block w-full text-xs text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-emerald-600 file:text-white hover:file:bg-emerald-500 cursor-pointer">
+        </div>
+
+        <!-- 3. Single HTML File Input Box -->
+        <div id="pkgBoxHtml" class="hidden p-4 rounded-2xl bg-amber-950/30 border-2 border-dashed border-amber-500/40 text-center">
+          <i class="fas fa-file-code text-3xl text-amber-400 mb-2"></i>
+          <label class="block text-xs font-bold text-white mb-1">اختر ملف HTML مفرد (.html / .htm) *</label>
+          <p class="text-[11px] text-gray-400 mb-3">سيتم نشره تلقائياً كـ index.html وتطبيق درع الحماية ضد النسخ والسرقة عليه</p>
+          <input type="file" name="singleHtmlFile" id="pkgSingleHtmlFile" accept=".html,.htm" class="block w-full text-xs text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-amber-600 file:text-slate-950 hover:file:bg-amber-500 cursor-pointer">
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -978,7 +1044,7 @@
           </div>
           <div>
             <label class="block text-xs font-bold text-gray-300 mb-1">رابط تحميل APK اختياري</label>
-            <input type="url" name="downloadUrl" id="pkgDownloadUrl" placeholder="https://.../app.apk" class="w-full py-2 px-3 rounded-xl bg-slate-900 border border-white/10 text-sm">
+            <input type="text" name="downloadUrl" id="pkgDownloadUrl" placeholder="https://... أو /apps/..." class="w-full py-2 px-3 rounded-xl bg-slate-900 border border-white/10 text-sm">
           </div>
         </div>
 
@@ -993,9 +1059,15 @@
           </div>
         </div>
 
-        <div class="flex items-center gap-2 pt-1">
-          <input type="checkbox" name="featured" id="pkgFeatured" class="w-4 h-4 rounded text-indigo-500 focus:ring-indigo-400">
-          <label for="pkgFeatured" class="text-xs font-bold text-amber-400 cursor-pointer">تمييز التطبيق على الصفحة الرئيسية (Featured App)</label>
+        <div class="space-y-2 pt-1">
+          <div class="flex items-center gap-2">
+            <input type="checkbox" name="protectSource" id="pkgProtectSource" checked class="w-4 h-4 rounded text-emerald-500 focus:ring-emerald-400">
+            <label for="pkgProtectSource" class="text-xs font-bold text-emerald-400 cursor-pointer"><i class="fas fa-shield-alt ml-1"></i> تفعيل درع الحماية ضد النسخ والسرقة (منع كليك يمين، النسخ، الحفظ، وعرض المصدر)</label>
+          </div>
+          <div class="flex items-center gap-2">
+            <input type="checkbox" name="featured" id="pkgFeatured" class="w-4 h-4 rounded text-indigo-500 focus:ring-indigo-400">
+            <label for="pkgFeatured" class="text-xs font-bold text-amber-400 cursor-pointer">تمييز التطبيق على الصفحة الرئيسية (Featured App)</label>
+          </div>
         </div>
 
         <!-- Progress Indicator -->
