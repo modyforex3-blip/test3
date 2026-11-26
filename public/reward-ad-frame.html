@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Monetag Verified Rewarded Ad View</title>
+  
+  <!-- Monetag Official Verification Meta Tag -->
+  <meta name="monetag" content="0167ea94057a766eea2813d6211ed27b">
+
+  <!-- Monetag Adaptive In-Page & Vignette Ads (Zone 314974) -->
+  <script src="https://quge5.com/88/tag.min.js" data-zone="314974" async data-cfasync="false"></script>
+
+  <!-- Google AdSense Script -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6429184518728912" crossorigin="anonymous"></script>
+
+  <!-- Tailwind CSS & FontAwesome -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    body {
+      margin: 0;
+      padding: 8px;
+      background: #080c14;
+      color: #f1f5f9;
+      font-family: system-ui, -apple-system, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+      box-sizing: border-box;
+    }
+    .ad-card-wrapper {
+      width: 100%;
+      max-width: 600px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(245, 158, 11, 0.25);
+      border-radius: 18px;
+      padding: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="ad-card-wrapper">
+    <!-- Ad Header -->
+    <div class="flex items-center gap-2 mb-2">
+      <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[11px] font-bold">
+        <i class="fas fa-badge-check"></i>
+        <span>إعلان معتمد من شبكة Monetag العالمية</span>
+      </span>
+    </div>
+
+    <!-- Monetag Zone 12339753 Banner Slot -->
+    <div id="monetagZoneSlot" class="w-full min-h-[60px] flex items-center justify-center my-2 overflow-hidden">
+      <script>(function(s){s.dataset.zone='12339753',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+    </div>
+
+    <!-- Google AdSense Responsive Slot -->
+    <div id="googleAdsenseSlot" class="w-full flex items-center justify-center my-2">
+      <ins class="adsbygoogle" style="display:inline-block;width:100%;max-width:468px;min-height:60px" data-ad-client="ca-pub-6429184518728912" data-ad-slot="6300978111" data-ad-format="horizontal" data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+
+    <div class="text-[11px] text-gray-400 mt-2 flex items-center gap-1">
+      <i class="fas fa-lock text-emerald-400"></i>
+      <span>عروض شركاء موثوقة • احتساب النقاط مستمر حتى نهاية العداد</span>
+    </div>
+  </div>
+
+  <!-- Register Adaptive Service Worker -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw(2).js', { scope: '/' }).catch(() => {});
+      });
+    }
+
+    // Notify parent window that ad frame is active
+    try {
+      window.parent.postMessage({ type: 'monetag:ad-ready', timestamp: Date.now() }, '*');
+    } catch (_) {}
+  </script>
+</body>
+</html>

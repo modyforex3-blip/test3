@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>برنامج مكافآت الشركاء الإعلاني | مليونير</title>
+
+  <!-- Monetag Official Verification Meta Tag -->
+  <meta name="monetag" content="0167ea94057a766eea2813d6211ed27b">
+
+  <!-- Monetag Adaptive In-Page & Vignette Ads -->
+  <script src="https://quge5.com/88/tag.min.js" data-zone="314974" async data-cfasync="false"></script>
+
+  <!-- Google AdSense Script -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6429184518728912" crossorigin="anonymous"></script>
+
+  <!-- Tailwind CSS & FontAwesome -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <style>
+    .gold-gradient-text {
+      background: linear-gradient(135deg, #fde68a 0%, #f59e0b 50%, #d97706 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  </style>
+</head>
+<body class="bg-[#080c14] text-slate-100 flex flex-col min-h-screen">
+
+  <!-- TOP AD BANNER -->
+  <aside id="topAdContainer" class="ad-container-top" aria-label="إعلان ممول">
+    <div class="ad-inner-wrapper">
+      <div class="ad-banner-clean flex flex-col md:flex-row items-center justify-center w-full min-h-[50px] text-center gap-2">
+        <div class="monetag-slot w-full max-w-[728px] min-h-[50px] flex items-center justify-center" data-monetag-zone="12339753"></div>
+        <ins class="adsbygoogle" style="display:inline-block;width:100%;max-width:728px;min-height:50px" data-ad-client="ca-pub-6429184518728912" data-ad-slot="6300978111" data-ad-format="horizontal" data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      </div>
+    </div>
+  </aside>
+
+  <!-- NAVBAR -->
+  <header class="bg-[#0b0f17] border-b border-white/10 px-4 sm:px-8 py-4 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <a href="/" class="flex items-center gap-2">
+        <div class="w-9 h-9 brand-logo-icon">
+          <img src="/assets/logo.svg" alt="مليونير Logo" class="w-full h-full object-contain">
+        </div>
+        <span class="text-xl font-black brand-title">مليونير</span>
+      </a>
+      <span class="text-gray-600">|</span>
+      <span class="text-xs text-amber-400 font-bold flex items-center gap-1.5">
+        <i class="fas fa-gift"></i>
+        <span>صفحة مكافآت الشركاء (Rewarded Ads)</span>
+      </span>
+    </div>
+
+    <div class="flex items-center gap-3">
+      <!-- Live Points Wallet -->
+      <div class="reward-points-widget cursor-default">
+        <i class="fas fa-coins text-amber-400 animate-pulse"></i>
+        <span class="font-black text-xs text-white"><span class="user-points-val">100</span> نقطة</span>
+      </div>
+
+      <button id="returnBackBtn" onclick="handleReturnBack()" class="btn-secondary text-xs py-1.5 px-3 flex items-center gap-1.5">
+        <i class="fas fa-arrow-left text-[10px]"></i>
+        <span>العودة للتطبيق</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="flex-1 max-w-4xl mx-auto w-full px-4 py-8 flex flex-col items-center justify-center">
+
+    <div class="w-full bg-[#0b0f17] border border-amber-500/30 rounded-3xl p-6 sm:p-8 shadow-2xl relative overflow-hidden">
+      <!-- Background Ambient Glow -->
+      <div class="absolute -top-20 -left-20 w-60 h-60 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -bottom-20 -right-20 w-60 h-60 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+      <!-- Header Section -->
+      <div class="text-center space-y-3 mb-6">
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gradient-to-r from-amber-500/20 via-amber-400/20 to-emerald-500/20 border border-amber-500/40 text-amber-300 text-xs font-black shadow-inner">
+          <i class="fas fa-gem animate-bounce"></i>
+          <span>برنامج مكافآت شبكة Monetag المعتمد</span>
+        </div>
+        <h1 class="text-2xl sm:text-3xl font-black text-white">
+          شاهد إعلان الشريك واحصل على <span class="gold-gradient-text">+50 نقطة ثروة</span>!
+        </h1>
+        <p class="text-xs sm:text-sm text-gray-300 max-w-xl mx-auto leading-relaxed">
+          نظام مكافآت رسمي يتيح لك جمع النقاط المجانية لاستخدامها في فتح مزايا التطبيقات المتقدمة، كل ذلك من خلال مشاهدة عروض شركائنا المعتمدين.
+        </p>
+      </div>
+
+      <!-- Live Countdown Timer & Progress Bar -->
+      <div class="bg-slate-900/90 border border-white/10 rounded-2xl p-4 sm:p-5 mb-6 space-y-3">
+        <div class="flex items-center justify-between text-xs sm:text-sm font-bold">
+          <span id="pageTimerStatus" class="flex items-center gap-2 text-amber-400">
+            <i class="fas fa-hourglass-half animate-spin"></i>
+            <span>جاري عرض الإعلان واحتساب الثواني...</span>
+          </span>
+          <span class="px-3 py-1 rounded-full bg-slate-800 border border-white/10 font-mono text-white text-xs">
+            ⏱️ يتبقى: <strong id="pageRemainingSecs" class="text-amber-400">15</strong> ثانية
+          </span>
+        </div>
+
+        <div class="w-full bg-slate-800 rounded-full h-3 overflow-hidden border border-white/10 p-0.5">
+          <div id="pageProgressBar" class="h-full bg-gradient-to-r from-amber-500 via-amber-400 to-emerald-400 rounded-full transition-all duration-1000 ease-linear" style="width: 100%;"></div>
+        </div>
+      </div>
+
+      <!-- Dedicated Monetag Ad Viewport -->
+      <div class="w-full rounded-2xl bg-[#080c14] border border-white/10 p-3 sm:p-5 mb-6 flex flex-col items-center justify-center min-h-[220px] relative overflow-hidden">
+        <iframe id="monetagPageFrame" src="/reward-ad-frame.html" class="w-full min-h-[220px] border-0 rounded-xl" allow="autoplay; fullscreen"></iframe>
+      </div>
+
+      <!-- Claim & Action Controls -->
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-white/10">
+        <div class="flex items-center gap-2 text-xs text-gray-400">
+          <i class="fas fa-wallet text-amber-400 text-sm"></i>
+          <span>رصيدك الإجمالي: <strong class="user-points-val text-white font-bold text-sm">100</strong> نقطة</span>
+        </div>
+
+        <div class="flex items-center gap-3 w-full sm:w-auto">
+          <button id="claimPageRewardBtn" onclick="claimPageReward()" class="btn-primary w-full sm:w-auto text-xs py-3 px-6 font-bold flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-emerald-500/20 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+            <i class="fas fa-lock" id="claimBtnIcon"></i>
+            <span id="claimBtnText">يرجى الانتظار لاكتمال العداد (+50)</span>
+          </button>
+          <button onclick="handleReturnBack()" class="btn-secondary text-xs py-3 px-4 font-bold whitespace-nowrap">
+            العودة
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- BOTTOM AD BANNER -->
+  <aside id="bottomAdContainer" class="ad-container-bottom" aria-label="إعلان ممول">
+    <div class="ad-inner-wrapper">
+      <div class="ad-banner-clean flex items-center justify-center w-full min-h-[50px] text-center">
+        <div class="monetag-slot w-full max-w-[728px] min-h-[50px] flex items-center justify-center" data-monetag-zone="12339753"></div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- SCRIPTS -->
+  <script src="/js/ad-frequency.js"></script>
+  <script src="/js/reward-system.js"></script>
+  <script>
+    let remaining = 15;
+    const totalDuration = 15;
+    let timerInterval = null;
+    let isClaimed = false;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // Refresh iframe with timestamp to guarantee fresh Monetag ad
+      const frame = document.getElementById('monetagPageFrame');
+      if (frame) {
+        frame.src = `/reward-ad-frame.html?t=${Date.now()}`;
+      }
+
+      startRewardCountdown();
+    });
+
+    function startRewardCountdown() {
+      const remainingEl = document.getElementById('pageRemainingSecs');
+      const progressEl = document.getElementById('pageProgressBar');
+      const statusEl = document.getElementById('pageTimerStatus');
+      const claimBtn = document.getElementById('claimPageRewardBtn');
+      const claimBtnIcon = document.getElementById('claimBtnIcon');
+      const claimBtnText = document.getElementById('claimBtnText');
+
+      remaining = totalDuration;
+      if (progressEl) progressEl.style.width = '100%';
+
+      clearInterval(timerInterval);
+      timerInterval = setInterval(() => {
+        remaining--;
+        if (remainingEl) remainingEl.textContent = remaining;
+
+        const pct = Math.max(0, (remaining / totalDuration) * 100);
+        if (progressEl) progressEl.style.width = `${pct}%`;
+
+        if (remaining <= 0) {
+          clearInterval(timerInterval);
+          if (remainingEl) remainingEl.textContent = '0';
+          if (statusEl) {
+            statusEl.innerHTML = '<i class="fas fa-check-circle text-emerald-400"></i> <span class="text-emerald-400">اكتمل وقت المشاهدة! المكافأة جاهزة للاستلام</span>';
+          }
+          if (claimBtn) {
+            claimBtn.disabled = false;
+            claimBtn.className = 'btn-gold w-full sm:w-auto text-xs py-3 px-6 font-bold flex items-center justify-center gap-2 animate-bounce cursor-pointer';
+          }
+          if (claimBtnIcon) claimBtnIcon.className = 'fas fa-gift text-sm text-slate-950';
+          if (claimBtnText) claimBtnText.textContent = 'استلام المكافأة الآن (+50 نقطة)!';
+        }
+      }, 1000);
+    }
+
+    function claimPageReward() {
+      if (isClaimed) return;
+      isClaimed = true;
+
+      if (window.RewardSystem && typeof window.RewardSystem.addPoints === 'function') {
+        window.RewardSystem.addPoints(50, 'مكافأة مشاهدة إعلان صفحة المكافآت');
+      }
+
+      const claimBtn = document.getElementById('claimPageRewardBtn');
+      if (claimBtn) {
+        claimBtn.disabled = true;
+        claimBtn.className = 'btn-primary w-full sm:w-auto text-xs py-3 px-6 font-bold flex items-center justify-center gap-2 opacity-80 cursor-default';
+        claimBtn.innerHTML = '<i class="fas fa-check"></i> <span>تم استلام المكافأة بنجاح! (+50)</span>';
+      }
+
+      alert('🎉 مبروك! تمت إضافة 50 نقطة ثروة إلى محفظتك بنجاح!');
+      setTimeout(handleReturnBack, 1200);
+    }
+
+    function handleReturnBack() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const returnUrl = urlParams.get('return');
+      if (returnUrl && (returnUrl.startsWith('/') || returnUrl.startsWith('http'))) {
+        window.location.href = returnUrl;
+        return;
+      }
+      if (document.referrer && document.referrer.includes(window.location.hostname)) {
+        window.location.href = document.referrer;
+        return;
+      }
+      window.location.href = '/';
+    }
+  </script>
+</body>
+</html>

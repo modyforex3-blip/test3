@@ -675,6 +675,14 @@ app.get('/privacy', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'privacy.html'));
 });
 
+app.get('/reward', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'reward.html'));
+});
+
+app.get('/reward-ad', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'reward.html'));
+});
+
 app.get('/admin', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'admin.html'));
 });
