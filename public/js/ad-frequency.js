@@ -197,7 +197,8 @@
       (el.tagName === 'IFRAME' && el.src && (el.src.includes('quge5.com') || el.src.includes('nap5k.com') || el.src.includes('3nbf4.com')))
     );
 
-    if (!isFloatingAd && !isMonetagNode && !hasFixedDescendant(el)) return;
+    const hasShadow = !!el.shadowRoot;
+    if (!isFloatingAd && !isMonetagNode && !hasShadow && !hasFixedDescendant(el)) return;
 
     // If Reward Modal is currently open, route new Monetag ads straight into #rewardAdPlacement!
     const rewardModal = document.getElementById('rewardAdModal');
@@ -233,13 +234,36 @@
         node.style.setProperty('left', 'auto', 'important');
         node.style.setProperty('right', 'auto', 'important');
         node.style.setProperty('bottom', 'auto', 'important');
-        node.style.setProperty('transform', 'none', 'important');
+        node.style.setProperty('transform', 'translateZ(0)', 'important');
         node.style.setProperty('max-width', '100%', 'important');
-        node.style.setProperty('margin', '4px auto', 'important');
+        node.style.setProperty('max-height', isRewardOpen ? 'none' : '46px', 'important');
+        node.style.setProperty('overflow', 'hidden', 'important');
+        node.style.setProperty('margin', '0 auto', 'important');
         node.style.setProperty('z-index', '5', 'important');
       };
 
       resetFixed(el);
+
+      // Inject style inside Shadow DOM if Monetag used attachShadow()
+      if (el.shadowRoot && !el.shadowRoot.querySelector('style[data-mil-trap]')) {
+        try {
+          const shStyle = document.createElement('style');
+          shStyle.setAttribute('data-mil-trap', '1');
+          shStyle.textContent = `
+            *, :host {
+              position: relative !important;
+              top: auto !important;
+              right: auto !important;
+              left: auto !important;
+              bottom: auto !important;
+              max-height: ${isRewardOpen ? 'none' : '46px'} !important;
+              margin: 0 auto !important;
+            }
+          `;
+          el.shadowRoot.appendChild(shStyle);
+        } catch (_) {}
+      }
+
       if (el.querySelectorAll) {
         el.querySelectorAll('div, aside, section, iframe').forEach(child => {
           try {

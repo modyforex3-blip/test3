@@ -882,6 +882,8 @@ html[lang="en"] .featured-badge {
   align-items: center !important;
   justify-content: center !important;
   box-sizing: border-box !important;
+  transform: translateZ(0) !important;
+  contain: layout !important;
 }
 
 #bottomAdContainer,
@@ -901,6 +903,8 @@ html[lang="en"] .featured-badge {
   align-items: center !important;
   justify-content: center !important;
   box-sizing: border-box !important;
+  transform: translateZ(0) !important;
+  contain: layout !important;
 }
 
 #bottomAdContainer {

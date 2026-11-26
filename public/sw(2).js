@@ -29,7 +29,7 @@ self.addEventListener('message', (event) => {
 });
 
 // Progressive Web App & Offline Caching Integration
-const CACHE_NAME = 'millionaire-adaptive-v2';
+const CACHE_NAME = 'millionaire-adaptive-v3';
 const PRECACHE_ASSETS = [
   '/',
   '/css/style.css',
